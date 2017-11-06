@@ -3,6 +3,7 @@ import MainScreen from '../src/screens/MainScreen'
 import ProfileScreen from '../src/screens/ProfileScreen'
 import SettingScreen from '../src/screens/SettingScreen'
 import WayPointScreen from '../src/screens/WayPointScreen'
+import MarkerScreen from '../src/screens/MarkerScreen'
 import Icon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 
@@ -10,19 +11,8 @@ import React from 'react'
 
 const mainStack = TabNavigator({
     MainScreen: {screen: MainScreen,
-    },
-    WayPointsScreen: {screen:WayPointScreen,
-    },
-}, {
-  tabBarPosition: 'bottom'
-
-})
-
-const NavigatorStack = StackNavigator({
-
-    mainStack: {screen:mainStack,
         navigationOptions: ({navigation}) => ({
-            title:'FishMap',
+            title:'Fish Map',
             headerTintColor: '#2F95D6',
             headerLeft: <Icon
                 name="md-menu"
@@ -32,8 +22,21 @@ const NavigatorStack = StackNavigator({
                 onPress={() => navigation.navigate('DrawerOpen')}
             />
         })
+    },
+    WayPointsScreen: {screen:WayPointScreen,
+
+
+    },
+}, {
+  tabBarPosition: 'bottom'
+
+});
+
+const NavigatorStack = StackNavigator({
+
+    mainStack: {screen:mainStack,
     }
-})
+});
 
 const ProfileStack = StackNavigator({
     Profile: {
@@ -53,7 +56,9 @@ const ProfileStack = StackNavigator({
     }
 
 
-})
+});
+
+
 
 const SettingsStack = StackNavigator({
     Settings: {
@@ -71,7 +76,7 @@ const SettingsStack = StackNavigator({
         })
     },
 
-})
+});
 
 
 const DrawerStack = DrawerNavigator({
@@ -108,6 +113,6 @@ const DrawerStack = DrawerNavigator({
             />
         })
     },
-})
+});
 
 export default DrawerStack
