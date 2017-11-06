@@ -1,0 +1,13 @@
+import {SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION} from '../constants/constants'
+
+export const setFishmark = (data) => ({
+    type: SET_FISHMARK_POSITION,
+    data,
+});
+
+export const moveToFishmarkPosition = (position,selected) => ({
+    type: MOVE_TO_FISHMARK_POSITION,
+    position,
+    selected
+})
+
