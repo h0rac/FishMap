@@ -9,7 +9,7 @@ import Waypoints from '../components/Waypoints'
 class WayPointScreen extends Component {
 
     static navigationOptions = {
-        title: "Way Points",
+        title: "Waypoints",
         headerTintColor: '#2F95D6',
 
     }
@@ -34,6 +34,7 @@ class WayPointScreen extends Component {
             <FlatList
                 data={this.props.positions.fishmarks}
                 renderItem={({item}) => <Waypoints navigation={this.props.navigation} item={item} callback={this._handleMoveToFishmarkPostion}/>}
+                keyExtractor={item =>item.latitude}
             />
         </View>)
     }

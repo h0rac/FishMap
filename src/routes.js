@@ -6,7 +6,7 @@ import WayPointScreen from '../src/screens/WayPointScreen'
 import MarkerScreen from '../src/screens/MarkerScreen'
 import Icon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
-
+import WayPointEditScreen from '../src/screens/WayPointEditScreen'
 
 
 const mainStack = TabNavigator({
@@ -23,19 +23,20 @@ const mainStack = TabNavigator({
             />
         })
     },
-    WayPointsScreen: {screen:WayPointScreen,
-
-
+    WayPointScreen: {screen:WayPointScreen,
     },
 }, {
-  tabBarPosition: 'bottom'
-
+  tabBarPosition: 'bottom',
 });
 
 const NavigatorStack = StackNavigator({
 
-    mainStack: {screen:mainStack,
-    }
+    mainStack: {
+        screen: mainStack,
+    },
+    WayPointEditScreen: {screen: WayPointEditScreen}
+}, {
+    mode:'modal'
 });
 
 const ProfileStack = StackNavigator({

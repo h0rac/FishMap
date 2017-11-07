@@ -13,10 +13,10 @@ class Waypoints extends Component {
 
     constructor(){
         super()
-        this.testfunc = this.testfunc.bind(this)
+        this.moveToFishWaypoint = this.moveToFishWaypoint.bind(this)
     }
 
-    testfunc =(screen) => {
+    moveToFishWaypoint =(screen) => {
         const region = {latitude:this.props.item.latitude,
             latitudeDelta: this.props.item.latitudeDelta,
             longitude: this.props.item.longitude,
@@ -31,8 +31,8 @@ class Waypoints extends Component {
 
     render() {
         return (
-            <TouchableHighlight onPress={()=>this.testfunc('MainScreen')} underlayColor={"oldlace"}>
-                <View key={this.props.item.key} style={styles.row}>
+            <TouchableHighlight onPress={()=>this.moveToFishWaypoint('MainScreen')} underlayColor={"oldlace"}>
+                <View  style={styles.row}>
                     <View style={styles.iconContainer}>
                         <Icon name="md-boat" style={styles.icon}  color={"#2F95D6"} />
                     </View>
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     name: {
-        fontSize: 14,
+        fontSize: 10,
         fontWeight:'bold'
     },
     level: {

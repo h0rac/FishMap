@@ -1,4 +1,4 @@
-import {SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA,MOVE_TO_FISHMARK_POSITION} from '../constants/constants'
+import {SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA,MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION} from '../constants/constants'
 import {setFishmark} from "../actions/fishmarks";
 
 const initialState= {
@@ -11,18 +11,19 @@ const initialState= {
 const reducer = (state=initialState, action) => {
     switch(action.type) {
         case SET_FISHMARK_POSITION:
-            return {
-                ...state,
-                fishmarks: [...state.fishmarks,action.data],
+            return {...state,fishmarks:[...state.fishmarks,action.data]};
 
-
-        };
         case MOVE_TO_FISHMARK_POSITION:
             return {
                 ...state,
                 region: action.position,
                 selected:action.selected
 
+            }
+        case DELETE_FISHMARK_POSITION:
+            return {
+                ...state,fishmarks:[...state.fishmarks.filter(mark => mark.longitude != action.position.longitude
+                || mark.latitude != action.position.latitude)]
             }
 
     default:
