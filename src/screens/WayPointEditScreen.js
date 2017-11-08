@@ -5,8 +5,11 @@ import PropTypes from 'prop-types'
 class WayPointEditScreen extends React.Component {
 
     static navigationOptions = {
+        headerStyle: {
+            backgroundColor: '#2F95D6',
+        },
         title: "Waypoint Editor",
-        headerTintColor: '#2F95D6',
+        headerTintColor: 'white',
     }
 
     render() {

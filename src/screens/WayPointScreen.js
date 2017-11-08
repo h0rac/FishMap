@@ -9,8 +9,11 @@ import Waypoints from '../components/Waypoints'
 class WayPointScreen extends Component {
 
     static navigationOptions = {
+        headerStyle: {
+            backgroundColor: '#2F95D6',
+        },
         title: "Waypoints",
-        headerTintColor: '#2F95D6',
+        headerTintColor: 'white',
 
     }
 

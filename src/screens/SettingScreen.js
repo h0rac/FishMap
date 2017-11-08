@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types'
 import {
     StyleSheet,
     Text,
@@ -14,7 +15,7 @@ class SettingScreen extends Component {
         title: "Settings",
         headerTintColor: '#2F95D6',
     }
-    static propTypes: {
+    static propTypes= {
         navigation: PropTypes.object,
     }
 

@@ -7,17 +7,21 @@ import MarkerScreen from '../src/screens/MarkerScreen'
 import Icon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 import WayPointEditScreen from '../src/screens/WayPointEditScreen'
+import LoginScreen from '../src/screens/LoginScreen'
 
 
 const mainStack = TabNavigator({
     MainScreen: {screen: MainScreen,
         navigationOptions: ({navigation}) => ({
+            headerStyle: {
+                    backgroundColor: '#2F95D6',
+            },
             title:'Fish Map',
-            headerTintColor: '#2F95D6',
+            headerTintColor: 'white',
             headerLeft: <Icon
                 name="md-menu"
                 size={28}
-                color={"#2F95D6"}
+                color={"white"}
                 style={{paddingLeft:20}}
                 onPress={() => navigation.navigate('DrawerOpen')}
             />
@@ -29,7 +33,13 @@ const mainStack = TabNavigator({
   tabBarPosition: 'bottom',
 });
 
+
+
 const NavigatorStack = StackNavigator({
+
+    LoginScreen: {screen: LoginScreen,
+
+    },
 
     mainStack: {
         screen: mainStack,
@@ -43,12 +53,15 @@ const ProfileStack = StackNavigator({
     Profile: {
         screen: ProfileScreen,
         navigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: '#2F95D6',
+            },
             drawerLabel: 'Profile',
-            headerTintColor: '#2F95D6',
+            headerTintColor: 'white',
             headerLeft: <Icon
                 name="md-close"
                 size={28}
-                color={"#2F95D6"}
+                color={"white"}
                 style={{paddingLeft:20}}
                 onPress={() => navigation.navigate('DrawerOpen')}
             />
@@ -65,12 +78,15 @@ const SettingsStack = StackNavigator({
     Settings: {
         screen: SettingScreen,
         navigationOptions: ({navigation}) => ({
+            headerStyle: {
+                backgroundColor: '#2F95D6',
+            },
             drawerLabel: 'Settings',
-            headerTintColor: '#2F95D6',
+            headerTintColor: 'white',
             headerLeft: <Icon
                 name="md-close"
                 size={28}
-                color={"#2F95D6"}
+                color={"white"}
                 style={{paddingLeft:20}}
                 onPress={() => navigation.navigate('DrawerOpen')}
             />
@@ -81,6 +97,7 @@ const SettingsStack = StackNavigator({
 
 
 const DrawerStack = DrawerNavigator({
+
     NavigatorStack: {screen: NavigatorStack,
         navigationOptions: ({navigation}) => ({
             drawerLabel: 'Home',

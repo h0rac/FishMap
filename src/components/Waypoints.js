@@ -31,7 +31,7 @@ class Waypoints extends Component {
 
     render() {
         return (
-            <TouchableHighlight onPress={()=>this.moveToFishWaypoint('MainScreen')} underlayColor={"oldlace"}>
+            <TouchableHighlight onPress={()=>this.moveToFishWaypoint('MainScreen')} underlayColor={"aliceblue"}>
                 <View  style={styles.row}>
                     <View style={styles.iconContainer}>
                         <Icon name="md-boat" style={styles.icon}  color={"#2F95D6"} />
