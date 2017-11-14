@@ -1,8 +1,10 @@
 import React from 'react'
-import {View,Text, TouchableHighlight, StyleSheet, Image, Linking, Platform} from 'react-native'
+import {View,Text, TouchableHighlight, StyleSheet, Image, Linking, Platform, AsyncStorage} from 'react-native'
 import SafariView from 'react-native-safari-view';
 import PropTypes from 'prop-types'
 import Icon from  'react-native-vector-icons/FontAwesome';
+import {setUserData} from "../actions/user";
+import {connect} from 'react-redux'
 
 import {OAUTH_URL} from '../constants/constants'
 
@@ -18,29 +20,43 @@ class LoginScreen extends React.Component {
     }
     constructor () {
         super()
-        state = {
-            user: undefined, // user has not logged in yet
-        };
         this.navigateToFishMapApp = this.navigateToFishMapApp.bind(this)
+
+    }
+    state = {
+        user: undefined
     }
 
     handleOpenURL = ({ url }) => {
         // Extract stringified user string out of the URL
         const [, user_string] = url.match(/user=([^#]+)/);
-        this.setState({
-            // Decode the user string and parse it into JSON
-            user: JSON.parse(decodeURI(user_string))
-        });
+
+        const data = JSON.parse(decodeURI(user_string))
+
+        console.log("DATA", data)
+
+        const userData = {
+            username: data.username,
+            avatar: data.avatar
+        }
+
+        this._setToken('token', JSON.stringify(data.token)).then(() => {
+            this.props.dispatch(setUserData(userData))
+        })
+
+
         if (Platform.OS === 'ios') {
             SafariView.dismiss();
         }
     };
 
-    loginWithGoogle = () => this.openURL(OAUTH_URL);
-
+    loginWithGoogle = () =>
+        this.openURL(OAUTH_URL);
 
 
     openURL = (url) => {
+
+
         // Use SafariView on iOS
         if (Platform.OS === 'ios') {
             SafariView.show({
@@ -55,9 +71,11 @@ class LoginScreen extends React.Component {
     };
 
     componentDidMount() {
-        // Add event listener to handle OAuthLogin:// URLs
+        // Add event listener to handle OAuthLogin:// URL
         Linking.addEventListener('url', this.handleOpenURL);
         // Launched from an external URL
+
+
         Linking.getInitialURL().then((url) => {
             if (url) {
                 this.handleOpenURL({ url });
@@ -68,18 +86,35 @@ class LoginScreen extends React.Component {
     componentWillUnmount() {
         // Remove event listener
         Linking.removeEventListener('url', this.handleOpenURL);
-    };
+    }
+
+    async _getToken (token) {
+        await AsyncStorage.getItem(token).then((data,err) => {
+            console.log("from storage token", JSON.parse(decodeURI(data)))
+            JSON.parse(decodeURI(data)) ? this.props.navigation.navigate('MainScreen'): err;
+    })}
+
 
     navigateToFishMapApp = ()=> {
         this.props.navigation.navigate('MainScreen')
+
+    }
+
+     async _setToken(item, selectedValue) {
+        console.log("selected value", selectedValue)
+        try {
+            await AsyncStorage.setItem(item, selectedValue);
+            console.log("item set to AsyncStorage", selectedValue)
+        } catch (error) {
+            console.log('AsyncStorage error: ' + error.message);
+        }
     }
 
     render() {
-        const user = this.state;
-        {console.log(user)}
+
         return (
         <View style={styles.container}>
-            {!user ? <View>
+            {this._getToken('token') ? <View>
                         <Image source={require('../assets/fishmap-lightsky.png')}/>
                         <Icon.Button
                             name="google"
@@ -89,8 +124,7 @@ class LoginScreen extends React.Component {
                             Login with Google
                         </Icon.Button>
                 </View>
-                    :
-                    this.navigateToFishMapApp()
+                    : null
             }
         </View>
         )
@@ -114,8 +148,10 @@ const styles = StyleSheet.create ({
 
 })
 
+const mapStateToProps = (state) => {
+    return {
+        userData: state.user
+    }
+}
 
-
-
-
-export default LoginScreen
+export default connect(mapStateToProps)(LoginScreen)

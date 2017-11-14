@@ -5,4 +5,7 @@ export const UPDATE_FISHMARK_DATA = "UPDATE_FISHMARK_DATA"
 export const MOVE_TO_FISHMARK_POSITION = "MOVE_TO_FISHMARK_POSITION"
 export const DELETE_FISHMARK_POSITION = "DELETE_FISHMARK_POSITION"
 
+
 export const OAUTH_URL = "http://localhost:3000/auth/google"
+
+export const SET_USER_DATA = "SET_USER_DATA"

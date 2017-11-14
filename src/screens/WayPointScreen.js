@@ -32,7 +32,6 @@ class WayPointScreen extends Component {
     }
 
     render() {
-        console.log("Waypoints", this.props.positions.fishmarks)
        return( <View style={styles.container} onLayout = {this.onLayout.bind(this)}>
             <FlatList
                 data={this.props.positions.fishmarks}

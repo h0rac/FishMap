@@ -1,29 +1,63 @@
 import React, {Component, PropTypes} from 'react';
 import FishMarker from '../components/FishMarker'
 
-import {StyleSheet,View,Alert,Platform} from 'react-native'
+import {StyleSheet,View,Alert,Platform, Linking, AsyncStorage, ActivityIndicator} from 'react-native'
 import MapView from 'react-native-maps';
 
 import {setFishmark} from '../actions/fishmarks'
 import {deleteFishmarkPosition} from "../actions/fishmarks";
 import {connect} from 'react-redux'
+import Icon from 'react-native-vector-icons/Ionicons'
+import SafariView from 'react-native-safari-view';
 
 class MainScreen extends Component {
-
-
-    static navigationOptions = {
-        title: "Map",
-        headerTintColor: '#2F95D6',
-    };
 
     constructor() {
         super()
 
         this._handleFishMarkerSet = this._handleFishMarkerSet.bind(this);
         this._handleFishMarkPress = this._handleFishMarkPress.bind(this);
+        this._handleLogout = this._handleLogout.bind(this);
+        this._logoutUser = this._logoutUser.bind(this)
+    }
 
+    async _logoutUser () {
+        await AsyncStorage.removeItem('token');
+           this.props.navigation.navigate('LoginScreen')
 
     }
+
+    _handleLogout () {
+        Alert.alert(
+            'Logout',
+            'Do you want to logout from FishMap ?',
+            [
+                {text: 'OK', onPress: () => this._logoutUser(), style: 'ok'},
+                {text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel'},
+            ],
+            { cancelable: true }
+        )
+    };
+
+    static navigationOptions = ({ navigation }) => {
+        const { params = {} } = navigation.state;
+        return {
+            headerRight:
+           <Icon
+            name="md-exit"
+            size={28}
+            color={"white"}
+            style={{paddingRight:20}}
+            onPress={() => params.handleLogout()}
+        />
+        };
+    };
+
+
+    componentDidMount() {
+        this.props.navigation.setParams({ handleLogout: this._handleLogout });
+    }
+
 
     _handleFishMarkerSet(e) {
 
@@ -68,7 +102,6 @@ class MainScreen extends Component {
             initPosition = this.props.positions.fishmarks[this.props.positions.fishmarks.length-1]
         }
 
-
         return (
             <View style={styles.container}>
                 <MapView onLongPress={this._handleFishMarkerSet}
@@ -103,7 +136,7 @@ const mapStateToProps = state => {
     return {
         positions: state.fishmarks,
         selectedPosition: state.fishmarks.region,
-        isSelected: state.fishmarks.selected
+        isSelected: state.fishmarks.selected,
     }
 }
 
