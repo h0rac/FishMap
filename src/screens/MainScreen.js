@@ -9,6 +9,7 @@ import {deleteFishmarkPosition} from "../actions/fishmarks";
 import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import SafariView from 'react-native-safari-view';
+import {loadFishmarkPositions} from "../actions/fishmarks";
 
 class MainScreen extends Component {
 
@@ -55,6 +56,7 @@ class MainScreen extends Component {
 
 
     componentDidMount() {
+        this.props.dispatch(loadFishmarkPositions())
         this.props.navigation.setParams({ handleLogout: this._handleLogout });
     }
 
@@ -102,6 +104,7 @@ class MainScreen extends Component {
             initPosition = this.props.positions.fishmarks[this.props.positions.fishmarks.length-1]
         }
 
+        console.log("TEST FISHMARKS", this.props.positions.fishmarks)
         return (
             <View style={styles.container}>
                 <MapView onLongPress={this._handleFishMarkerSet}
@@ -133,6 +136,7 @@ const styles = {
 };
 
 const mapStateToProps = state => {
+    console.log("TEST FISHMAKRS", state.fishmarks)
     return {
         positions: state.fishmarks,
         selectedPosition: state.fishmarks.region,
