@@ -10,6 +10,7 @@ import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import SafariView from 'react-native-safari-view';
 import {loadFishmarkPositions} from "../actions/fishmarks";
+import {logout,checkAuthToken} from '../actions/user'
 
 class MainScreen extends Component {
 
@@ -22,9 +23,10 @@ class MainScreen extends Component {
         this._logoutUser = this._logoutUser.bind(this)
     }
 
-    async _logoutUser () {
-        await AsyncStorage.removeItem('token');
+     _logoutUser () {
+        this.props.dispatch(logout())
            this.props.navigation.navigate('LoginScreen')
+
 
     }
 
@@ -56,6 +58,13 @@ class MainScreen extends Component {
 
 
     componentDidMount() {
+        //this.props.dispatch(checkAuthToken(this.props.navigation))
+
+        AsyncStorage.getItem('token').then(token => {
+            if(!token) {
+                this.props.navigation.pop()
+            }
+        })
         this.props.dispatch(loadFishmarkPositions())
         this.props.navigation.setParams({ handleLogout: this._handleLogout });
     }
@@ -63,8 +72,7 @@ class MainScreen extends Component {
 
     _handleFishMarkerSet(e) {
 
-        console.log(typeof (e.nativeEvent.coordinate.latitude))
-
+        //console.log(typeof (e.nativeEvent.coordinate.latitude))
         this.props.dispatch(setFishmark({...e.nativeEvent.coordinate,latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,title:"Marker-"+e.nativeEvent.coordinate.latitude.toFixed(6),
             key:this.props.positions.fishmarks.length, date:new Date().toDateString()}))
@@ -86,6 +94,7 @@ class MainScreen extends Component {
         )
     }
 
+
     render() {
 
         const region = {
@@ -96,22 +105,27 @@ class MainScreen extends Component {
         }
 
         let initPosition = null;
+
+        if(this.props.positions.fishmarks === undefined)
+            this.props.positions.fishmarks = []
+
         if(this.props.positions.fishmarks.length === 0) {
             initPosition = region;
         }else if(this.props.isSelected === true) {
             initPosition = this.props.selectedPosition
         } else {
-            initPosition = this.props.positions.fishmarks[this.props.positions.fishmarks.length-1]
+           initPosition = this.props.positions.fishmarks[this.props.positions.fishmarks.length-1]
         }
 
-        console.log("TEST FISHMARKS", this.props.positions.fishmarks)
         return (
             <View style={styles.container}>
                 <MapView onLongPress={this._handleFishMarkerSet}
+                         //onRegionChangeComplete={()=> this.props.dispatch(loadFishmarkPositions())}
                          ref="map"
                          style={styles.map}
                          region={initPosition}>
-                    {this.props.positions.fishmarks.map((marker,index) =>
+
+                        { this.props.positions.fishmarks.map((marker,index) =>
                         <FishMarker key={index} marker={marker}
                                     callbackPress={this._handleFishMarkPress}
                                     />
@@ -130,17 +144,23 @@ const styles = {
         alignItems:"center",
 
     },
+    indicator: {
+        flex:2,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+
     map: {
         ...StyleSheet.absoluteFillObject
     },
 };
 
 const mapStateToProps = state => {
-    console.log("TEST FISHMAKRS", state.fishmarks)
     return {
         positions: state.fishmarks,
         selectedPosition: state.fishmarks.region,
         isSelected: state.fishmarks.selected,
+        isFetching: state.fishmarks.isFetching
     }
 }
 

@@ -1,10 +1,11 @@
-import {SET_USER_DATA} from '../constants/constants'
+import {SET_USER_DATA, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN} from '../constants/constants'
 import {setFishmark} from "../actions/fishmarks";
 
 const intialState = {
-    user: {}
+    user: {},
+    success:false,
+    error:false
 }
-
 
 const reducer = (state=intialState, action) => {
     switch(action.type) {
@@ -12,6 +13,14 @@ const reducer = (state=intialState, action) => {
             return {
                 ...state.user = action.data};
 
+        case SUCCESS_SET_TOKEN:
+            return {
+                ...state, success:action.success
+            }
+        case FAILED_SET_TOKEN:
+            return {
+                ...state, error:action.error
+            }
         default:
             return state
     }
