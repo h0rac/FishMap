@@ -1,5 +1,5 @@
 import React from 'react'
-import {View,Text, TouchableHighlight, StyleSheet, Image, TextInput, Keyboard, Dimensions,Alert} from 'react-native'
+import {View,Text, TouchableHighlight, StyleSheet, Image, Platform, TextInput, Keyboard, Dimensions,Alert} from 'react-native'
 import SafariView from 'react-native-safari-view';
 import PropTypes from 'prop-types'
 import Icon from  'react-native-vector-icons/FontAwesome';
@@ -59,6 +59,9 @@ class LoginScreen extends React.Component {
 
     componentDidMount () {
         this.props.dispatch(checkAuthToken(this.props.navigation))
+        if(Platform.OS === "ios") {
+            this.setState({ios:true})
+        }
     }
 
     handleSubmit = () => {
@@ -106,21 +109,23 @@ class LoginScreen extends React.Component {
            mode = this.state.window.screen.height > this.state.window.screen.width ? "portrait" : "landscape";
         }
 
+
         return (
         <View style={styles.mainContainer}>
-            {mode === "portrait" && !this.state.keyboardShow ?
+            {mode && mode === "portrait" && !this.state.keyboardShow ?
             <View style={[styles.boxContainer, styles.boxImage]}>
                 <Image source={require('../assets/fishmap-lightsky.png')}/>
             </View>
                 :null}
+
              <View style={[styles.boxContainer, styles.boxInputs]}>
-                    <TextInput  style={styles.input}
+                    <TextInput  style={!this.state.ios ? styles.input:styles.inputIOS}
                                onChangeText={(email)=>this.setState({email:email})}
                                placeholder={"your@email.com"}
                                placeholderTextColor={"lightgray"}
                                underlineColorAndroid='#2F95D6'
                                selectionColor="white"/>
-                    <TextInput style={styles.input}
+                    <TextInput style={!this.state.ios ? styles.input:styles.inputIOS}
                                secureTextEntry={true}
                                selectionColor="white"
                                placeholder={"password"}
@@ -225,11 +230,18 @@ const styles = StyleSheet.create ({
         color:"white",
     },
     input: {
-        //alignContent:"center",
-        //alignItems:"center",
         color:"black",
-        width:220
+        width:220,
     },
+
+    inputIOS: {
+        color:"black",
+        width:220,
+        borderBottomColor:"#2F95D6", // for IOS
+        borderBottomWidth:1, //for IOS
+        height:50,
+    },
+
 
 })
 

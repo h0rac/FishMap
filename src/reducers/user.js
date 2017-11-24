@@ -1,10 +1,11 @@
-import {SET_USER_DATA, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN} from '../constants/constants'
+import {SET_USER_DATA, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN, FAILED_GET_USER_LOCATION, SUCCESS_GET_USER_LOCATION} from '../constants/constants'
 import {setFishmark} from "../actions/fishmarks";
 
 const intialState = {
     user: {},
     success:false,
-    error:false
+    error:false,
+    position:{}
 }
 
 const reducer = (state=intialState, action) => {
@@ -18,6 +19,16 @@ const reducer = (state=intialState, action) => {
                 ...state, success:action.success
             }
         case FAILED_SET_TOKEN:
+            return {
+                ...state, error:action.error
+            }
+
+        case SUCCESS_GET_USER_LOCATION:
+            return {
+                ...state, position:action.position
+            }
+
+        case FAILED_GET_USER_LOCATION:
             return {
                 ...state, error:action.error
             }

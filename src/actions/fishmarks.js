@@ -1,5 +1,5 @@
 import {SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION,
-    DELETE_FISHMARK_POSITION, LOAD_FISHMARK_POSITIONS, UPLOAD_FISHMARK_POSITIONS
+    DELETE_FISHMARK_POSITION, LOAD_POSITIONS, UPLOAD_FISHMARK_POSITIONS
 } from '../constants/constants'
 
 export const setFishmark = (data) => ({
@@ -18,8 +18,8 @@ export const deleteFishmarkPosition = (position) => ({
     position,
 });
 
-export const loadFishmarkPositions = () => ({
-    type: LOAD_FISHMARK_POSITIONS
+export const loadPositions = () => ({
+    type: LOAD_POSITIONS
 });
 
 export const uploadFishmarkPositions = data => ({

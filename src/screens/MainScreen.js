@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import FishMarker from '../components/FishMarker'
+import UserMarker from '../components/UserMarker'
 
 import {StyleSheet,View,Alert,Platform, Linking, AsyncStorage, ActivityIndicator} from 'react-native'
 import MapView from 'react-native-maps';
@@ -9,7 +10,7 @@ import {deleteFishmarkPosition} from "../actions/fishmarks";
 import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import SafariView from 'react-native-safari-view';
-import {loadFishmarkPositions} from "../actions/fishmarks";
+import {loadPositions} from "../actions/fishmarks";
 import {logout,checkAuthToken} from '../actions/user'
 
 class MainScreen extends Component {
@@ -65,7 +66,7 @@ class MainScreen extends Component {
                 this.props.navigation.pop()
             }
         })
-        this.props.dispatch(loadFishmarkPositions())
+        this.props.dispatch(loadPositions())
         this.props.navigation.setParams({ handleLogout: this._handleLogout });
     }
 
@@ -97,6 +98,9 @@ class MainScreen extends Component {
 
     render() {
 
+        console.log("User position", this.props.userLocation)
+
+
         const region = {
             latitude: 54.475408,
             longitude: 18.263086,
@@ -110,12 +114,14 @@ class MainScreen extends Component {
             this.props.positions.fishmarks = []
 
         if(this.props.positions.fishmarks.length === 0) {
-            initPosition = region;
+            initPosition = region
         }else if(this.props.isSelected === true) {
             initPosition = this.props.selectedPosition
         } else {
            initPosition = this.props.positions.fishmarks[this.props.positions.fishmarks.length-1]
         }
+
+        const userPos = this.props.userLocation.latitude ? this.props.userLocation: null
 
         return (
             <View style={styles.container}>
@@ -129,7 +135,9 @@ class MainScreen extends Component {
                         <FishMarker key={index} marker={marker}
                                     callbackPress={this._handleFishMarkPress}
                                     />
-                    )}
+                        )}
+                    {this.props.userLocation.latitude ?
+                        <UserMarker marker={userPos}/>:null }
                 </MapView>
             </View>
         )
@@ -160,7 +168,8 @@ const mapStateToProps = state => {
         positions: state.fishmarks,
         selectedPosition: state.fishmarks.region,
         isSelected: state.fishmarks.selected,
-        isFetching: state.fishmarks.isFetching
+        isFetching: state.fishmarks.isFetching,
+        userLocation: state.user.position
     }
 }
 
