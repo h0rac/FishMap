@@ -1,4 +1,4 @@
-import {SET_USER_DATA, LOGOUT, LOGIN, VERIFY_TOKEN} from '../constants/constants'
+import {SET_USER_DATA, LOGOUT, LOGIN, VERIFY_TOKEN, GET_USER_LOCATION} from '../constants/constants'
 
 export const setUserData = (data) => ({
     type: SET_USER_DATA,
@@ -17,4 +17,8 @@ export const login = (data) => ({
 export const checkAuthToken = (navigate) => ({
     type: VERIFY_TOKEN,
     navigate
+})
+
+export const getUserLocation = () => ( {
+    type: GET_USER_LOCATION
 })

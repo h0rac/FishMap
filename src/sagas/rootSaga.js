@@ -4,7 +4,7 @@ import {Dimensions} from 'react-native'
 import {SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA,MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION, LOAD_POSITIONS,
     UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, API_ENDPOINT, FAILED_SET_FISHMARK_POSITION, SUCCESS_FISHMARK_POSITION
     , SUCCESS_UPLOAD_FISHMARK_POSITIONS, LOGOUT, LOGIN, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN, SET_USER_DATA, VERIFY_TOKEN,
-    SUCCESS_GET_USER_LOCATION, FAILED_GET_USER_LOCATION
+    SUCCESS_GET_USER_LOCATION, FAILED_GET_USER_LOCATION, GET_USER_LOCATION
 } from '../constants/constants'
 
 import {AsyncStorage} from 'react-native'
@@ -34,7 +34,34 @@ const ASPECT_RATIO = width /height;
 const LATITUDE_DETLTA = 0.0922;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DETLTA
 
-function* fetchPositions() {
+
+function* getUserPosition() {
+
+    try {
+        //TODO enableHighAccuracy false in indoor, set to true when outdoor, false only for tests
+        const userLocation = yield call(getPosition, {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000})
+        console.log("TEST USER LOC", userLocation)
+
+
+        const userPosition = {
+            latitude: userLocation.coords.latitude,
+            longitude: userLocation.coords.longitude,
+            latitudeDelta: LATITUDE_DETLTA,
+            longitudeDelta: LONGITUDE_DELTA
+        }
+
+        if (userLocation) {
+            yield put({type: SUCCESS_GET_USER_LOCATION, position: userPosition})
+        } else {
+            yield put({type: FAILED_GET_USER_LOCATION, error: "FAILED TO GET USER LOCATION"})
+        }
+    }catch(e) {
+            yield put({type:FAILED_GET_USER_LOCATION, error:e})
+    }
+}
+
+
+function* fetchFishPositions() {
 
     try {
         const myHeaders = new Headers();
@@ -46,24 +73,6 @@ function* fetchPositions() {
         let params = {
             method:'GET',
             headers: myHeaders,
-        }
-
-        //TODO enableHighAccuracy false in indoor, set to true when outdoor, false only for tests
-        const userLocation =  yield call(getPosition, {enableHighAccuracy:false, timeout:20000, maximumAge:3600000})
-        console.log("TEST USER LOC", userLocation)
-
-
-         const userPosition = {
-                latitude: userLocation.coords.latitude,
-                longitude: userLocation.coords.longitude,
-                latitudeDelta: LATITUDE_DETLTA,
-                longitudeDelta: LONGITUDE_DELTA
-         }
-
-        if(userLocation) {
-            yield put({type:SUCCESS_GET_USER_LOCATION, position:userPosition})
-        }else{
-            yield put({type:FAILED_GET_USER_LOCATION, error:"FAILED TO GET USER LOCATION"})
         }
 
         const response = yield call(fetchFishmarks, params)
@@ -185,7 +194,8 @@ function* verifyToken(action) {
 
 export default function* rootSaga() {
 
-    yield takeEvery("LOAD_POSITIONS", fetchPositions)
+    yield takeEvery("GET_USER_LOCATION", getUserPosition)
+    yield takeEvery("LOAD_POSITIONS", fetchFishPositions)
     yield takeEvery("SET_FISHMARK_POSITION", setFishmarkPosition)
     yield takeEvery("LOGIN", loginUser)
     yield takeEvery("VERIFY_TOKEN", verifyToken)

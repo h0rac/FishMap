@@ -10,8 +10,8 @@ import {deleteFishmarkPosition} from "../actions/fishmarks";
 import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
 import SafariView from 'react-native-safari-view';
-import {loadPositions} from "../actions/fishmarks";
-import {logout,checkAuthToken} from '../actions/user'
+import {loadFishPositions} from "../actions/fishmarks";
+import {logout,checkAuthToken, getUserLocation} from '../actions/user'
 
 class MainScreen extends Component {
 
@@ -66,7 +66,8 @@ class MainScreen extends Component {
                 this.props.navigation.pop()
             }
         })
-        this.props.dispatch(loadPositions())
+        this.props.dispatch(getUserLocation())
+        this.props.dispatch(loadFishPositions())
         this.props.navigation.setParams({ handleLogout: this._handleLogout });
     }
 
@@ -110,18 +111,21 @@ class MainScreen extends Component {
 
         let initPosition = null;
 
+        const userPos = this.props.userLocation.latitude ? this.props.userLocation: null
+
         if(this.props.positions.fishmarks === undefined)
             this.props.positions.fishmarks = []
 
-        if(this.props.positions.fishmarks.length === 0) {
-            initPosition = region
-        }else if(this.props.isSelected === true) {
+        console.log("UserPos", userPos)
+
+        if(userPos || this.props.positions.fishmarks.length === 0) {
+            initPosition = userPos
+        }
+         if(this.props.isSelected === true) {
             initPosition = this.props.selectedPosition
         } else {
            initPosition = this.props.positions.fishmarks[this.props.positions.fishmarks.length-1]
         }
-
-        const userPos = this.props.userLocation.latitude ? this.props.userLocation: null
 
         return (
             <View style={styles.container}>

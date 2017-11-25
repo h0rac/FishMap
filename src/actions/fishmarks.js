@@ -18,7 +18,7 @@ export const deleteFishmarkPosition = (position) => ({
     position,
 });
 
-export const loadPositions = () => ({
+export const loadFishPositions = () => ({
     type: LOAD_POSITIONS
 });
 
