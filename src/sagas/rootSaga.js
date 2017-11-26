@@ -1,16 +1,31 @@
 import {takeEvery,select,put, call, all} from 'redux-saga/effects'
-import {Dimensions} from 'react-native'
+import {Dimensions, Alert} from 'react-native'
 
 import {SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA,MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION, LOAD_POSITIONS,
-    UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, API_ENDPOINT, FAILED_SET_FISHMARK_POSITION, SUCCESS_FISHMARK_POSITION
+    UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, API_ENDPOINT, FAILED_SET_FISHMARK_POSITION, SUCCESS_SET_FISHMARK_POSITION
     , SUCCESS_UPLOAD_FISHMARK_POSITIONS, LOGOUT, LOGIN, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN, SET_USER_DATA, VERIFY_TOKEN,
-    SUCCESS_GET_USER_LOCATION, FAILED_GET_USER_LOCATION, GET_USER_LOCATION
+    SUCCESS_GET_USER_LOCATION, FAILED_GET_USER_LOCATION, GET_USER_LOCATION, LOAD_WAYPOINTS_ON_PUSH,
+    SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH, FINISHED_UPDATE_WAYPOINTS_ON_PUSH
 } from '../constants/constants'
 
 import {AsyncStorage} from 'react-native'
 
 
 //helper functions
+
+
+const displayAlert = (title,msg) => {
+    Alert.alert(
+        title,
+        msg,
+        [
+            {text: 'OK', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        ],
+        { cancelable: true }
+    )
+}
+
+
 const getToken = token => (AsyncStorage.getItem(token))
 const removeToken = (token) => (AsyncStorage.removeItem(token))
 const setToken = (token) => AsyncStorage.setItem('token',JSON.stringify(token))
@@ -117,7 +132,7 @@ function* setFishmarkPosition(action) {
         if(result.success === false) {
             yield put({type:FAILED_SET_FISHMARK_POSITION, error:result.message})
         }else {
-            yield put({type: SUCCESS_FISHMARK_POSITION, message:result.message})
+            yield put({type: SUCCESS_SET_FISHMARK_POSITION, fishmarks:action.data, message:result.message})
         }
 
 
@@ -137,6 +152,27 @@ function* logoutUser(action) {
     const test = yield call(getToken,'token')
     console.log("Do we have token ?", test)
 }
+
+
+function* loadWaypointsOnPush(action) {
+
+    let loadedWaypoints = yield select(state => state.fishmarks.loadedWaypoints)
+    const fishmarks = yield select(state => state.fishmarks.fishmarks)
+    const seed = yield select(state => state.fishmarks.seed)
+
+
+    if(loadedWaypoints.length !== fishmarks.length) {
+        loadedWaypoints = fishmarks.filter((waypoint, index) => index <= seed).reverse()
+        yield put({type:SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, loadedWaypoints, refreshing:true})
+        yield put({type:FINISHED_UPDATE_WAYPOINTS_ON_PUSH, seed:seed+2, refreshing:false})
+
+    }
+    else {
+       displayAlert('Waypoints', 'No more waypoints to load')
+    }
+
+}
+
 
 function* loginUser(action) {
 
@@ -162,6 +198,7 @@ function* loginUser(action) {
 
         if(result.success === false) {
             yield put({type:FAILED_SET_TOKEN, error:result.message})
+            displayAlert('Login', result.message)
         }else {
 
             yield setToken(result.token);
@@ -177,6 +214,7 @@ function* loginUser(action) {
 
     }  catch (e) {
         yield put({type:FAILED_SET_TOKEN, error: e.message})
+        displayAlert('Login', e.message)
     }
 }
 
@@ -201,5 +239,6 @@ export default function* rootSaga() {
     yield takeEvery("LOGIN", loginUser)
     yield takeEvery("VERIFY_TOKEN", verifyToken)
     yield takeEvery("LOGOUT", logoutUser)
+    yield takeEvery("LOAD_WAYPOINTS_ON_PUSH", loadWaypointsOnPush)
 
 }

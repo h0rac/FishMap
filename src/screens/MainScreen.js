@@ -77,7 +77,7 @@ class MainScreen extends Component {
         //console.log(typeof (e.nativeEvent.coordinate.latitude))
         this.props.dispatch(setFishmark({...e.nativeEvent.coordinate,latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,title:"Marker-"+e.nativeEvent.coordinate.latitude.toFixed(6),
-            key:this.props.positions.fishmarks.length, date:new Date().toDateString()}))
+            key:this.props.positions.length, date:new Date().toDateString()}))
     };
 
 
@@ -113,19 +113,21 @@ class MainScreen extends Component {
 
         const userPos = this.props.userLocation.latitude ? this.props.userLocation: null
 
-        if(this.props.positions.fishmarks === undefined)
-            this.props.positions.fishmarks = []
+        if(this.props.positions === undefined)
+            this.props.positions = []
 
         console.log("UserPos", userPos)
 
-        if(userPos || this.props.positions.fishmarks.length === 0) {
+        if(userPos || this.props.positions.length === 0) {
             initPosition = userPos
         }
          if(this.props.isSelected === true) {
             initPosition = this.props.selectedPosition
         } else {
-           initPosition = this.props.positions.fishmarks[this.props.positions.fishmarks.length-1]
+           initPosition = this.props.positions[this.props.positions.length-1]
         }
+
+        console.log("POSITIONS MAINSRCEEEN", this.props.positions)
 
         return (
             <View style={styles.container}>
@@ -135,7 +137,7 @@ class MainScreen extends Component {
                          style={styles.map}
                          region={initPosition}>
 
-                        { this.props.positions.fishmarks.map((marker,index) =>
+                        { this.props.positions.map((marker,index) =>
                         <FishMarker key={index} marker={marker}
                                     callbackPress={this._handleFishMarkPress}
                                     />
@@ -168,8 +170,9 @@ const styles = {
 };
 
 const mapStateToProps = state => {
+    console.log("STATE IN MAINSCREEN", state.fishmarks.fishmarks)
     return {
-        positions: state.fishmarks,
+        positions: state.fishmarks.fishmarks,
         selectedPosition: state.fishmarks.region,
         isSelected: state.fishmarks.selected,
         isFetching: state.fishmarks.isFetching,

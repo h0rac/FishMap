@@ -1,9 +1,9 @@
 import {
     SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION,
-    LOAD_POSITIONS, UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, SUCCESS_FISHMARK_POSITION,
-    FAILED_SET_FISHMARK_POSITION,SUCCESS_UPLOAD_FISHMARK_POSITIONS
+    LOAD_POSITIONS, UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, SUCCESS_SET_FISHMARK_POSITION,
+    FAILED_SET_FISHMARK_POSITION,SUCCESS_UPLOAD_FISHMARK_POSITIONS, SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH,
+    FINISHED_UPDATE_WAYPOINTS_ON_PUSH
 } from '../constants/constants'
-import {setFishmark} from "../actions/fishmarks";
 
 const initialState= {
     fishmarks: [],
@@ -11,14 +11,15 @@ const initialState= {
     selected:false,
     error:null,
     isFetching:false,
-    message:null
+    message:null,
+    refreshing:false,
+    loadedWaypoints:[],
+    seed:4
 }
 
 
 const reducer = (state=initialState, action) => {
     switch(action.type) {
-        case SET_FISHMARK_POSITION:
-            return {...state,fishmarks:[...state.fishmarks,action.data]};
 
         case MOVE_TO_FISHMARK_POSITION:
             return {
@@ -44,11 +45,17 @@ const reducer = (state=initialState, action) => {
         case FAILED_UPLOAD_FISHMARK_POSITIONS:
             return {...state, error: action.error, isFetching:false}
 
-        case SUCCESS_FISHMARK_POSITION:
-            return {...state, message: action.message}
+        case SUCCESS_SET_FISHMARK_POSITION:
+            return {...state, fishmarks:[...state.fishmarks,action.data], message: action.message}
 
         case FAILED_SET_FISHMARK_POSITION:
             return {...state, error: action.error}
+
+        case SUCCESS_UPDATE_WAYPOINTS_ON_PUSH:
+            return {...state, loadedWaypoints:action.loadedWaypoints, refreshing:action.refreshing}
+
+        case FINISHED_UPDATE_WAYPOINTS_ON_PUSH:
+            return {...state, seed:action.seed, refreshing:action.refreshing}
 
     default:
         return state
