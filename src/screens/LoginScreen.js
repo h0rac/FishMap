@@ -18,7 +18,7 @@ class LoginScreen extends React.Component {
 
     static navigationOptions= {
         header: null,
-        drawerLockMode: 'locked-closed'
+        drawerLockMode: 'locked-closed',
     }
 
     constructor () {
@@ -27,7 +27,9 @@ class LoginScreen extends React.Component {
         this._keyboardDidHide = this._keyboardDidHide.bind(this)
         this._DimensionHandler = this._DimensionHandler.bind(this)
         this.handleErrors = this.handleErrors.bind(this)
+        this.validateEmail = this.validateEmail.bind(this)
         this.state = {
+             disableLogin:true,
         }
 
     }
@@ -62,20 +64,30 @@ class LoginScreen extends React.Component {
         if(Platform.OS === "ios") {
             this.setState({ios:true})
         }
+
     }
+
+    validateEmail = (email) => {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email);
+    };
 
     handleSubmit = () => {
 
-        if(this.state.email && this.state.password) {
+        console.log("is email ?", this.validateEmail(this.state.email))
+
+        if(this.validateEmail(this.state.email) && this.state.password) {
             const data = {
                 email:this.state.email,
                 password:this.state.password,
                 navigation: this.props.navigation
             }
+            console.log("login butt", this.state.disableLogin)
             this.props.dispatch(login(data))
 
+
         } else {
-            console.log("false")
+            this.setState({disableLogin:true})
         }
     }
 
@@ -100,6 +112,14 @@ class LoginScreen extends React.Component {
         }
     }
 
+    _handleInputValidation =()=> {
+
+        if((this.state.email || this.state.email !== '') && (this.state.password || this.state.password !== '')) {
+            this.setState({disableLogin:false})
+        }
+
+    }
+
 
     render() {
 
@@ -108,8 +128,6 @@ class LoginScreen extends React.Component {
             const {width, height} = this.state.window;
            mode = this.state.window.screen.height > this.state.window.screen.width ? "portrait" : "landscape";
         }
-
-
         return (
         <View style={styles.mainContainer}>
             {mode && mode === "portrait" && !this.state.keyboardShow ?
@@ -121,23 +139,30 @@ class LoginScreen extends React.Component {
              <View style={[styles.boxContainer, styles.boxInputs]}>
                     <TextInput  style={!this.state.ios ? styles.input:styles.inputIOS}
                                onChangeText={(email)=>this.setState({email:email})}
+                               onChange={this._handleInputValidation.bind(this)}
                                placeholder={"your@email.com"}
                                placeholderTextColor={"lightgray"}
                                underlineColorAndroid='#2F95D6'
-                               selectionColor="white"/>
+                               selectionColor="white"
+                                maxLength={40}/>
                     <TextInput style={!this.state.ios ? styles.input:styles.inputIOS}
                                secureTextEntry={true}
                                selectionColor="white"
+                               onChange={this._handleInputValidation.bind(this)}
                                placeholder={"password"}
                                placeholderTextColor={"lightgray"}
                                underlineColorAndroid='#2F95D6'
-                               onChangeText={(password)=>this.setState({password:password})}/>
+                               onChangeText={(password)=>this.setState({password:password})}
+                               maxLength={40}/>
              </View>
             <View style={[styles.boxContainer, styles.loginBox]}>
                 <Icon.Button
                     name="sign-in"
-                    backgroundColor="steelblue"
+                    backgroundColor={
+                        (!this.validateEmail(this.state.email) || this.state.email === '') ||
+                        (!this.state.password || this.state.password === '')  ? "gray":"steelblue"}
                     style={styles.buttonLogin}
+                    disabled={this.state.disableLogin}
                     onPress={this.handleSubmit}>
                     Login
                 </Icon.Button>
@@ -153,6 +178,7 @@ class LoginScreen extends React.Component {
                         name="user-o"
                         backgroundColor="green"
                         style={styles.buttonSignUp}
+                        onPress={()=>this.props.navigation.navigate('CreateAccountScreen')}
                         >
                         Create new Account
                     </Icon.Button>
@@ -222,6 +248,11 @@ const styles = StyleSheet.create ({
     buttonLogin: {
         width:220,
     },
+
+    buttonLoginDisabled: {
+        width:220,
+    },
+
     buttonSignUp: {
         width:220,
     },

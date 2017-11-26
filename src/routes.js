@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import React from 'react'
 import WayPointEditScreen from '../src/screens/WayPointEditScreen'
 import LoginScreen from '../src/screens/LoginScreen'
+import CreateAccountScreen from '../src/screens/CreateAccountScreen'
 
 
 const mainStack = TabNavigator({
@@ -38,6 +39,9 @@ const mainStack = TabNavigator({
 const NavigatorStack = StackNavigator({
 
     LoginScreen: {screen: LoginScreen,
+
+    },
+    CreateAccountScreen: {screen: CreateAccountScreen,
 
     },
 

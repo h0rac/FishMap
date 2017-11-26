@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text,View,FlatList,Image, TouchableHighlight, Platform, StyleSheet, Dimensions} from 'react-native'
+import {Text,View,FlatList,Image, TouchableHighlight, Platform, StyleSheet, Dimensions, Alert} from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons'
 import {connect} from 'react-redux'
 import {moveToFishmarkPosition} from '../actions/fishmarks'
@@ -20,6 +20,12 @@ class WayPointScreen extends Component {
     constructor() {
         super()
         this._handleMoveToFishmarkPostion = this._handleMoveToFishmarkPostion.bind(this);
+        this._handlePushToRefresh = this._handlePushToRefresh.bind(this)
+        this.state = {
+            refreshing:false,
+            loadedWaypoints:[],
+            seed:4
+        }
     }
 
     onLayout () {
@@ -31,12 +37,43 @@ class WayPointScreen extends Component {
 
     }
 
+    async _handlePushToRefresh () {
+
+        console.log("ALL WAYPOINTS", this.props.positions.fishmarks)
+
+        if(this.state.loadedWaypoints.length !== this.props.positions.fishmarks.length) {
+            await this.setState({
+                loadedWaypoints: this.props.positions.fishmarks.filter( (waypoint, index) => index <= this.state.seed).reverse(),
+                refreshing:true
+            })
+
+            console.log("LOADED WAYPOINTS", this.state.loadedWaypoints)
+            await this.setState({seed: this.state.seed +2, refreshing:false})
+        }
+        else {
+            Alert.alert(
+                'Waypoints',
+                'No more waypoints to load',
+                [
+                    {text: 'OK', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+                ],
+                { cancelable: true }
+            )
+        }
+
+    }
+
     render() {
+
+        console.log("BEFOrE rENDeR WAYPOINTS IN WINDOW", this.props.positions.fishmarks)
+
        return( <View style={styles.container} onLayout = {this.onLayout.bind(this)}>
             <FlatList
-                data={this.props.positions.fishmarks}
+                data={this.state.loadedWaypoints.length > 0 ? this.state.loadedWaypoints : this.props.positions.fishmarks.slice(0,5).reverse()}
                 renderItem={({item}) => <Waypoints navigation={this.props.navigation} item={item} callback={this._handleMoveToFishmarkPostion}/>}
                 keyExtractor={item =>item.latitude}
+                onRefresh={this._handlePushToRefresh}
+                refreshing={this.state.refreshing}
             />
         </View>)
     }

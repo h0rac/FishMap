@@ -83,7 +83,7 @@ function* fetchFishPositions() {
         }else {
             const fetchedFishmarks = yield result.waypoints
             yield put({type: UPLOAD_FISHMARK_POSITIONS, fetchedFishmarks, isFetching:true})
-            yield put({type: SUCCESS_UPLOAD_FISHMARK_POSITIONS})
+            yield put({type: SUCCESS_UPLOAD_FISHMARK_POSITIONS, isFetching:false})
         }
 
     }catch(e) {
@@ -170,6 +170,7 @@ function* loginUser(action) {
 
             if(token && JSON.parse(decodeURI(token))) {
                 yield put({type: SUCCESS_SET_TOKEN, message:result.message})
+                console.log("ACTION", action.data)
                 action.data.navigation.navigate('MainScreen')
             }
         }
