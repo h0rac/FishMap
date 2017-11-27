@@ -26,7 +26,6 @@ class LoginScreen extends React.Component {
         this._keyboardDidShow = this._keyboardDidShow.bind(this)
         this._keyboardDidHide = this._keyboardDidHide.bind(this)
         this._DimensionHandler = this._DimensionHandler.bind(this)
-        this.handleErrors = this.handleErrors.bind(this)
         this.validateEmail = this.validateEmail.bind(this)
         this.state = {
              disableLogin:true,
@@ -91,26 +90,7 @@ class LoginScreen extends React.Component {
         }
     }
 
-    handleErrors () {
 
-        const error = this.props.message ? this.props.message:null
-        console.log("Error", this.props.message)
-
-
-
-        if(!this.props.result) {
-            Alert.alert(
-                'Account not exist',
-                error,
-                [
-                    {text: 'OK', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-                ],
-                { cancelable: true }
-            )
-        }else {
-
-        }
-    }
 
     _handleInputValidation =()=> {
 

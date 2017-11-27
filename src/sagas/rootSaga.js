@@ -1,11 +1,15 @@
 import {takeEvery,select,put, call, all} from 'redux-saga/effects'
 import {Dimensions, Alert} from 'react-native'
 
-import {SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA,MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION, LOAD_POSITIONS,
-    UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, API_ENDPOINT, FAILED_SET_FISHMARK_POSITION, SUCCESS_SET_FISHMARK_POSITION
-    , SUCCESS_UPLOAD_FISHMARK_POSITIONS, LOGOUT, LOGIN, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN, SET_USER_DATA, VERIFY_TOKEN,
+import {
+    SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION, LOAD_POSITIONS,
+    UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, API_ENDPOINT, FAILED_SET_FISHMARK_POSITION,
+    SUCCESS_SET_FISHMARK_POSITION
+    , SUCCESS_UPLOAD_FISHMARK_POSITIONS, LOGOUT, LOGIN, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN, SET_USER_DATA,
+    VERIFY_TOKEN,
     SUCCESS_GET_USER_LOCATION, FAILED_GET_USER_LOCATION, GET_USER_LOCATION, LOAD_WAYPOINTS_ON_PUSH,
-    SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH, FINISHED_UPDATE_WAYPOINTS_ON_PUSH
+    SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH, FINISHED_UPDATE_WAYPOINTS_ON_PUSH,
+    DELETE_WAYPOINT, FAILED_DELETE_WAYPOINT, SUCCESS_DELETE_WAYPOINT,
 } from '../constants/constants'
 
 import {AsyncStorage} from 'react-native'
@@ -31,7 +35,7 @@ const removeToken = (token) => (AsyncStorage.removeItem(token))
 const setToken = (token) => AsyncStorage.setItem('token',JSON.stringify(token))
 const fetchFishmarks = params => fetch('http://'+API_ENDPOINT+'/api/v1/waypoints', params)
 const saveFishmark = params => fetch('http://'+API_ENDPOINT+'/api/v1/waypoint', params)
-const delFishmark = (id,params) => fetch(`'http://'+${API_ENDPOINT}+'/api/v1/waypoint?id=${id}'`,params)
+const delFishmark = (latitude,longitude,params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`,params)
 
 const authenticateUser = params=> fetch('http://'+API_ENDPOINT+'/api/v1/login', params)
 
@@ -93,12 +97,20 @@ function* fetchFishPositions() {
         const response = yield call(fetchFishmarks, params)
         const result = yield response.json()
 
+        console.log("FETCH RESULT", result)
+
         if(result.error) {
             yield put({type:FAILED_UPLOAD_FISHMARK_POSITIONS, error:result.error})
+            displayAlert('Fishmark Upload',result.error)
         }else {
             const fetchedFishmarks = yield result.waypoints
-            yield put({type: UPLOAD_FISHMARK_POSITIONS, fetchedFishmarks, isFetching:true})
-            yield put({type: SUCCESS_UPLOAD_FISHMARK_POSITIONS, isFetching:false})
+            if(fetchedFishmarks !== undefined) {
+                yield put({type: UPLOAD_FISHMARK_POSITIONS, fetchedFishmarks, isFetching:true})
+                yield put({type: SUCCESS_UPLOAD_FISHMARK_POSITIONS, isFetching:false})
+            }else {
+                yield put({type:FAILED_UPLOAD_FISHMARK_POSITIONS, error: result.error})
+                displayAlert('Fishmark Upload','Failed to upload fishmarks')
+            }
         }
 
     }catch(e) {
@@ -108,7 +120,9 @@ function* fetchFishPositions() {
 }
 
 function* setFishmarkPosition(action) {
-    console.log("Test setFishmarkPosition generator", action)
+
+
+    console.log("ACTION DATA", action.data)
 
     try {
         const myHeaders = new Headers();
@@ -127,23 +141,65 @@ function* setFishmarkPosition(action) {
         const response = yield call(saveFishmark, params)
         const result = yield response.json()
 
-        console.log("RESULT FISHMARK", result)
 
         if(result.success === false) {
             yield put({type:FAILED_SET_FISHMARK_POSITION, error:result.message})
+            displayAlert("Waypoint", result.message)
         }else {
-            yield put({type: SUCCESS_SET_FISHMARK_POSITION, fishmarks:action.data, message:result.message})
+            if(action.data !== undefined) {
+                console.log("ACTION DATA", action.data)
+                yield put({type: SUCCESS_SET_FISHMARK_POSITION, newPosition:action.data, message:result.message})
+            } else {
+                displayAlert("Fishmark Set", "Failed to set fishmark")
+            }
         }
-
 
 
     }catch (e) {
         yield put({type:FAILED_SET_FISHMARK_POSITION, error: e.message})
+        displayAlert("Waypoint", e.message)
     }
 }
 
 function* delFishmarkPosition(action) {
-    yield;
+
+    console.log("delFishmarkPosition", typeof(action.position.latitude))
+
+    try {
+        const myHeaders = new Headers();
+        const token = yield call(getToken,'token')
+
+        myHeaders.append('Content-Type', 'application/json')
+
+        let params = {
+            method: 'DELETE',
+            headers: myHeaders,
+            body: JSON.stringify({
+                token:JSON.parse(decodeURI(token)),
+                waypoint:action.position
+            })
+        }
+
+        const response = yield call(delFishmark,action.position.latitude, action.position.longitude, params)
+        const result = yield response.json()
+
+        console.log("Result delete", result)
+
+        if(result.success === false) {
+            yield put({type:FAILED_DELETE_WAYPOINT, error:result.message})
+            displayAlert("Waypoint", result.message)
+        }else {
+            if(action.position !== undefined) {
+                yield put({type: SUCCESS_DELETE_WAYPOINT, position:action.position, message:result.message})
+            } else {
+                displayAlert("Fishmark Set", "Failed to delete fishmark")
+            }
+        }
+
+    }catch (e) {
+        yield put({type:FAILED_DELETE_WAYPOINT, error:result.message})
+        displayAlert("Waypoint", result.message)
+    }
 }
 
 function* logoutUser(action) {
@@ -156,20 +212,26 @@ function* logoutUser(action) {
 
 function* loadWaypointsOnPush(action) {
 
-    let loadedWaypoints = yield select(state => state.fishmarks.loadedWaypoints)
-    const fishmarks = yield select(state => state.fishmarks.fishmarks)
-    const seed = yield select(state => state.fishmarks.seed)
+    try {
 
+        let loadedWaypoints = yield select(state => state.fishmarks.loadedWaypoints)
+        const fishmarks = yield select(state => state.fishmarks.fishmarks)
+        const seed = yield select(state => state.fishmarks.seed)
 
-    if(loadedWaypoints.length !== fishmarks.length) {
-        loadedWaypoints = fishmarks.filter((waypoint, index) => index <= seed).reverse()
-        yield put({type:SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, loadedWaypoints, refreshing:true})
-        yield put({type:FINISHED_UPDATE_WAYPOINTS_ON_PUSH, seed:seed+2, refreshing:false})
+        if(loadedWaypoints.length !== fishmarks.length) {
+            loadedWaypoints = fishmarks.filter((waypoint, index) => index <= seed).reverse()
+            yield put({type:SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, loadedWaypoints, refreshing:true})
+            yield put({type:FINISHED_UPDATE_WAYPOINTS_ON_PUSH, seed:seed+5, refreshing:false})
 
+        }
+        else {
+            displayAlert('Waypoints', 'No more waypoints to load')
+        }
+
+    }catch (e) {
+        yield put({type:FAILED_UPDATE_WAYPOINT_ON_PUSH, error:e.message})
     }
-    else {
-       displayAlert('Waypoints', 'No more waypoints to load')
-    }
+
 
 }
 
@@ -240,5 +302,6 @@ export default function* rootSaga() {
     yield takeEvery("VERIFY_TOKEN", verifyToken)
     yield takeEvery("LOGOUT", logoutUser)
     yield takeEvery("LOAD_WAYPOINTS_ON_PUSH", loadWaypointsOnPush)
+    yield takeEvery("DELETE_FISHMARK_POSITION", delFishmarkPosition)
 
 }
