@@ -12,8 +12,6 @@ class FishMarker extends Component {
 
     render() {
 
-        console.log("FISHMARKER", this.props.marker)
-
         const region = {
             latitude:this.props.marker.latitude,
             longitude: this.props.marker.longitude,

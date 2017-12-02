@@ -99,9 +99,6 @@ class MainScreen extends Component {
 
     render() {
 
-        console.log("User position", this.props.userLocation)
-
-
         const region = {
             latitude: 54.475408,
             longitude: 18.263086,
@@ -116,7 +113,6 @@ class MainScreen extends Component {
         if(this.props.positions === undefined)
             this.props.positions = []
 
-        console.log("UserPos", userPos)
 
         if(userPos || this.props.positions.length === 0) {
             initPosition = userPos
@@ -126,8 +122,6 @@ class MainScreen extends Component {
         } else {
            initPosition = this.props.positions[this.props.positions.length-1]
         }
-
-        console.log("POSITIONS MAINSRCEEEN", this.props.positions)
 
         return (
             <View style={styles.container}>
@@ -170,7 +164,6 @@ const styles = {
 };
 
 const mapStateToProps = state => {
-    console.log("STATE IN MAINSCREEN", state.fishmarks.fishmarks)
     return {
         positions: state.fishmarks.fishmarks,
         selectedPosition: state.fishmarks.region,

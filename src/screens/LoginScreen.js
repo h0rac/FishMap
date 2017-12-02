@@ -45,12 +45,10 @@ class LoginScreen extends React.Component {
     }
 
     _keyboardDidShow () {
-        console.log('Keyboard Shown');
         this.setState({keyboardShow:true})
     }
 
     _keyboardDidHide () {
-        console.log('Keyboard Hidden');
         this.setState({keyboardShow:false})
     }
 
@@ -73,7 +71,6 @@ class LoginScreen extends React.Component {
 
     handleSubmit = () => {
 
-        console.log("is email ?", this.validateEmail(this.state.email))
 
         if(this.validateEmail(this.state.email) && this.state.password) {
             const data = {
@@ -81,7 +78,6 @@ class LoginScreen extends React.Component {
                 password:this.state.password,
                 navigation: this.props.navigation
             }
-            console.log("login butt", this.state.disableLogin)
             this.props.dispatch(login(data))
 
 
@@ -258,7 +254,6 @@ const styles = StyleSheet.create ({
 
 const mapStateToProps = state => {
 
-    console.log("State IN LOGIN SCREEN", state)
     return {
         message: state.user.error,
         result: state.user.success

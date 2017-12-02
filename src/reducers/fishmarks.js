@@ -1,8 +1,8 @@
 import {
     SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION,
-    LOAD_POSITIONS, UPLOAD_FISHMARK_POSITIONS, FAILED_UPLOAD_FISHMARK_POSITIONS, SUCCESS_SET_FISHMARK_POSITION,
-    FAILED_SET_FISHMARK_POSITION,SUCCESS_UPLOAD_FISHMARK_POSITIONS, SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH,
-    FINISHED_UPDATE_WAYPOINTS_ON_PUSH, SUCCESS_DELETE_WAYPOINT, FAILED_DELETE_WAYPOINT
+    LOAD_FISHMARKS_POSITIONS_PENDING, SUCCESS_LOAD_FISHMARKS_POSITIONS, FAILED_LOAD_FISHMARKS_POSITIONS, SUCCESS_SET_FISHMARK_POSITION,
+    FAILED_SET_FISHMARK_POSITION, SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH,
+    INCREMENT_SEED, SUCCESS_DELETE_WAYPOINT, FAILED_DELETE_WAYPOINT
 } from '../constants/constants'
 
 const initialState= {
@@ -37,14 +37,14 @@ const reducer = (state=initialState, action) => {
         case FAILED_DELETE_WAYPOINT:
             return {...state, error:action.error}
 
-        case UPLOAD_FISHMARK_POSITIONS:
+        case SUCCESS_LOAD_FISHMARKS_POSITIONS:
 
             return {...state, fishmarks: action.fetchedFishmarks, isFetching:action.isFetching};
 
-        case SUCCESS_UPLOAD_FISHMARK_POSITIONS:
+        case LOAD_FISHMARKS_POSITIONS_PENDING:
             return {...state, isFetching:false}
 
-        case FAILED_UPLOAD_FISHMARK_POSITIONS:
+        case FAILED_LOAD_FISHMARKS_POSITIONS:
             return {...state, error: action.error, isFetching:false}
 
         case SUCCESS_SET_FISHMARK_POSITION:
@@ -56,7 +56,7 @@ const reducer = (state=initialState, action) => {
         case SUCCESS_UPDATE_WAYPOINTS_ON_PUSH:
             return {...state, loadedWaypoints:action.loadedWaypoints, refreshing:action.refreshing}
 
-        case FINISHED_UPDATE_WAYPOINTS_ON_PUSH:
+        case INCREMENT_SEED:
             return {...state, seed:action.seed, refreshing:action.refreshing}
 
         case FAILED_UPDATE_WAYPOINT_ON_PUSH:
