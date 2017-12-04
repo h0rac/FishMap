@@ -2,16 +2,23 @@ import React, {Component, PropTypes} from 'react';
 import FishMarker from '../components/FishMarker'
 import UserMarker from '../components/UserMarker'
 
-import {StyleSheet,View,Alert,Platform, Linking, AsyncStorage, ActivityIndicator} from 'react-native'
+import {StyleSheet,View,Alert,Platform, Linking, AsyncStorage, Text, ActivityIndicator} from 'react-native'
 import MapView from 'react-native-maps';
 
 import {setFishmark} from '../actions/fishmarks'
 import {deleteFishmarkPosition} from "../actions/fishmarks";
 import {connect} from 'react-redux'
 import Icon from 'react-native-vector-icons/Ionicons'
+import IconAwesome from 'react-native-vector-icons/FontAwesome'
+import {Badge} from 'react-native-elements'
 import SafariView from 'react-native-safari-view';
-import {loadFishPositions} from "../actions/fishmarks";
+import {loadFishPositions,IOsetFishmarksCandidateList} from "../actions/fishmarks";
 import {logout,checkAuthToken, getUserLocation} from '../actions/user'
+import  SocketIOClient from "socket.io-client";
+
+import {API_ENDPOINT} from "../constants/constants";
+
+import {displayAlert} from "../common/utils";
 
 class MainScreen extends Component {
 
@@ -22,12 +29,19 @@ class MainScreen extends Component {
         this._handleFishMarkPress = this._handleFishMarkPress.bind(this);
         this._handleLogout = this._handleLogout.bind(this);
         this._logoutUser = this._logoutUser.bind(this)
+        this.onReceiveFishmark = this.onReceiveFishmark.bind(this)
+        this.onRequestFishmark = this.onRequestFishmark.bind(this)
+        this.onReceiveError = this.onReceiveError.bind(this)
+
+    }
+
+    onReceiveError = (error) => {
+        console.log(error)
     }
 
      _logoutUser () {
         this.props.dispatch(logout())
            this.props.navigation.navigate('LoginScreen')
-
 
     }
 
@@ -45,6 +59,7 @@ class MainScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state;
+
         return {
             headerRight:
            <Icon
@@ -53,23 +68,54 @@ class MainScreen extends Component {
             color={"white"}
             style={{paddingRight:20}}
             onPress={() => params.handleLogout()}
-        />
+        />,
+            tabBarIcon:
+                <IconAwesome
+                    name="home"
+                    size={24}
+                    color={"white"}
+                    //style={{paddingLeft:20}}
+                />
         };
     };
 
 
     componentDidMount() {
         //this.props.dispatch(checkAuthToken(this.props.navigation))
-
         AsyncStorage.getItem('token').then(token => {
             if(!token) {
                 this.props.navigation.pop()
             }
+            else {
+                this.ioSocket =  SocketIOClient(`ws://${API_ENDPOINT}`, { jsonp: false , transports: ['websocket'] }, );
+                this.ioSocket.on('onReceiveFishmark', data => this.onReceiveFishmark(data));
+                this.ioSocket.on("onReceiveError", data => this.onReceiveError(data.error))
+
+
+                this.setState({intervalId: intervalId});
+                const intervalId = setInterval(()=> this.ioSocket.emit("onFishmarkUpdate", {token:JSON.parse(decodeURI(token))}), 10000)
+                this.props.dispatch(getUserLocation())
+                this.props.dispatch(loadFishPositions())
+                this.props.navigation.setParams({ handleLogout: this._handleLogout });
+            }
         })
-        this.props.dispatch(getUserLocation())
-        this.props.dispatch(loadFishPositions())
-        this.props.navigation.setParams({ handleLogout: this._handleLogout });
     }
+
+
+    onReceiveFishmark = (data) => {
+
+        data.waypoint ? this.props.dispatch(IOsetFishmarksCandidateList(data.waypoint)):null
+    }
+
+    onRequestFishmark = () => {
+
+    }
+
+    componentWillUnmount () {
+        clearInterval(this.state.intervalId);
+        this.ioSocket.disconnect()
+    }
+
 
 
     _handleFishMarkerSet(e) {
@@ -77,7 +123,7 @@ class MainScreen extends Component {
         //console.log(typeof (e.nativeEvent.coordinate.latitude))
         this.props.dispatch(setFishmark({...e.nativeEvent.coordinate,latitudeDelta: 0.0922,
             longitudeDelta: 0.0421,title:"Marker-"+e.nativeEvent.coordinate.latitude.toFixed(6),
-            key:this.props.positions.length, date:new Date().toDateString()}))
+            key:new Date().getTime(), date:new Date().toDateString()}))
     };
 
 
@@ -98,6 +144,8 @@ class MainScreen extends Component {
 
 
     render() {
+
+        console.log("IN MAIN CANDIDATE LIST", this.props.candidateList)
 
         const region = {
             latitude: 54.475408,
@@ -139,6 +187,9 @@ class MainScreen extends Component {
                     {this.props.userLocation.latitude ?
                         <UserMarker marker={userPos}/>:null }
                 </MapView>
+                <Text>
+                    {this.props.candidateList.length}
+                </Text>
             </View>
         )
     }
@@ -159,7 +210,7 @@ const styles = {
     },
 
     map: {
-        ...StyleSheet.absoluteFillObject
+        ...StyleSheet.absoluteFillObject,
     },
 };
 
@@ -169,7 +220,8 @@ const mapStateToProps = state => {
         selectedPosition: state.fishmarks.region,
         isSelected: state.fishmarks.selected,
         isFetching: state.fishmarks.isFetching,
-        userLocation: state.user.position
+        userLocation: state.user.position,
+        candidateList: state.fishmarks.candidateFishmarks
     }
 }
 

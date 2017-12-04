@@ -9,9 +9,10 @@ import React from 'react'
 import WayPointEditScreen from '../src/screens/WayPointEditScreen'
 import LoginScreen from '../src/screens/LoginScreen'
 import CreateAccountScreen from '../src/screens/CreateAccountScreen'
-
+import {Badge} from 'react-native-elements'
 
 const mainStack = TabNavigator({
+
     MainScreen: {screen: MainScreen,
         navigationOptions: ({navigation}) => ({
             headerStyle: {
@@ -29,9 +30,13 @@ const mainStack = TabNavigator({
         })
     },
     WayPointScreen: {screen:WayPointScreen,
+
     },
 }, {
   tabBarPosition: 'bottom',
+    tabBarOptions: {
+        showIcon:true
+    },
 });
 
 

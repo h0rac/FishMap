@@ -106,7 +106,6 @@ function* verifyToken(action) {
 
     if(token && JSON.parse(decodeURI(token))) {
         action.navigate.navigate('MainScreen')
-    }else {
     }
 
 }

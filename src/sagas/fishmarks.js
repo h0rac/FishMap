@@ -1,9 +1,12 @@
 import {
-    SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION, LOAD_FISHMARKS_POSITIONS_PENDING,
+    SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION,
+    LOAD_FISHMARKS_POSITIONS_PENDING,
     SUCCESS_LOAD_FISHMARKS_POSITIONS, FAILED_LOAD_FISHMARKS_POSITIONS, API_ENDPOINT, FAILED_SET_FISHMARK_POSITION,
-    SUCCESS_SET_FISHMARK_POSITION, SET_USER_DATA,LOAD_WAYPOINTS_ON_PUSH,
+    SUCCESS_SET_FISHMARK_POSITION, SET_USER_DATA, LOAD_WAYPOINTS_ON_PUSH,
     SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH, INCREMENT_SEED,
-    DELETE_WAYPOINT, FAILED_DELETE_WAYPOINT, SUCCESS_DELETE_WAYPOINT,
+    DELETE_WAYPOINT, FAILED_DELETE_WAYPOINT, SUCCESS_DELETE_WAYPOINT, IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST,
+    IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS,
+    IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED, SHARE_WAYPOINT, SHARE_WAYPOINT_FAILED, SHARE_WAYPOINT_SUCCESS
 } from '../constants/constants'
 
 import {LOAD_FISHMARKS_POSITIONS} from '../constants/constants'
@@ -16,6 +19,9 @@ const fetchFishmarks = params => fetch('http://'+API_ENDPOINT+'/api/v1/waypoints
 const saveFishmark = params => fetch('http://'+API_ENDPOINT+'/api/v1/waypoint', params)
 const delFishmark = (latitude,longitude,params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`,params)
 
+const shareWaypointToUser = (params) => fetch(`http://${API_ENDPOINT}/api/v1/share/waypoint`,params)
+
+const temp = []
 
 function* fetchFishPositions() {
 
@@ -146,7 +152,7 @@ function* loadWaypointsOnPush(action) {
 
         }
         else {
-            displayAlert('Waypoints', 'No more waypoints to load')
+            displayAlert('Waypoint', 'No more waypoints to load')
         }
 
     }catch (e) {
@@ -154,10 +160,80 @@ function* loadWaypointsOnPush(action) {
     }
 }
 
+function removeDuplicates(arr, prop) {
+    let new_arr = [];
+    let lookup  = {};
+
+    for (let i in arr) {
+        lookup[arr[i][prop]] = arr[i];
+    }
+
+    for (let i in lookup) {
+        new_arr.push(lookup[i]);
+    }
+
+    return new_arr;
+}
+
+function* IOCreateCandidateFishmarksList (action) {
+
+    try {
+        const currentCandidateFishmarks = yield select(state => state.fishmarks.candidateFishmarks)
+        const allFishmarks = yield select(state => state.fishmarks.fishmarks)
+
+        temp.push(action.waypoint)
+
+        yield put({type:IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS, candidateFishmarks:removeDuplicates(temp,'key')})
+
+        console.log("PROBA", currentCandidateFishmarks)
+
+
+    } catch(e) {
+        yield put({type:IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED, message:e.error})
+    }
+
+
+}
+
+function* shareWaypoint (action) {
+
+    console.log("SHARE", action.id)
+
+        const myHeaders = new Headers();
+        const token = yield call(getToken,'token')
+
+        myHeaders.append('Content-Type', 'application/json')
+
+        let params = {
+            method: 'POST',
+            headers: myHeaders,
+            body: JSON.stringify({
+                token:JSON.parse(decodeURI(token)),
+                wId:action.id,
+                email:'joanna@test.com'
+            })
+        }
+
+        const response = yield call(shareWaypointToUser, params)
+        const result = yield response.json()
+
+        if(result.success === false) {
+            yield put({type:SHARE_WAYPOINT_FAILED, error:result.message})
+            displayAlert("Waypoint", result.message)
+        }else {
+                yield put({type: SHARE_WAYPOINT_SUCCESS, message:result.message})
+
+        }
+}
+
+
 export const fishmarkSaga = [
 
     takeEvery("SET_FISHMARK_POSITION", setFishmarkPosition),
     takeEvery("LOAD_FISHMARKS_POSITIONS", fetchFishPositions),
     takeEvery("LOAD_WAYPOINTS_ON_PUSH", loadWaypointsOnPush),
     takeEvery("DELETE_FISHMARK_POSITION", delFishmarkPosition),
+    takeEvery("IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST", IOCreateCandidateFishmarksList),
+    takeEvery("SHARE_WAYPOINT", shareWaypoint)
+
     ]

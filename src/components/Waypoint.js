@@ -9,11 +9,12 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons'
 
 
-class Waypoints extends Component {
+class Waypoint extends Component {
 
     constructor(){
         super()
         this.moveToFishWaypoint = this.moveToFishWaypoint.bind(this)
+        this.handleShareWaypoint = this.handleShareWaypoint.bind(this)
     }
 
     moveToFishWaypoint =(screen) => {
@@ -25,13 +26,17 @@ class Waypoints extends Component {
         this.props.callback(region,true);
         this.props.navigation.navigate(screen)
 
-
     }
+
+    handleShareWaypoint = () => {
+        this.props.shareWaypointCallback(this.props.item._id)
+    }
+
 
 
     render() {
         return (
-            <TouchableHighlight onPress={()=>this.moveToFishWaypoint('MainScreen')} underlayColor={"aliceblue"}>
+            <TouchableHighlight onPress={()=>this.moveToFishWaypoint('MainScreen')} onLongPress={this.handleShareWaypoint} underlayColor={"aliceblue"}>
                 <View  style={styles.row}>
                     <View style={styles.iconContainer}>
                         <Icon name="md-boat" style={styles.icon}  color={"#2F95D6"} />
@@ -105,4 +110,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Waypoints
+export default Waypoint
