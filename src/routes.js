@@ -14,20 +14,7 @@ import {Badge} from 'react-native-elements'
 const mainStack = TabNavigator({
 
     MainScreen: {screen: MainScreen,
-        navigationOptions: ({navigation}) => ({
-            headerStyle: {
-                    backgroundColor: '#2F95D6',
-            },
-            title:'Fish Map',
-            headerTintColor: 'white',
-            headerLeft: <Icon
-                name="md-menu"
-                size={28}
-                color={"white"}
-                style={{paddingLeft:20}}
-                onPress={() => navigation.navigate('DrawerOpen')}
-            />
-        })
+
     },
     WayPointScreen: {screen:WayPointScreen,
 

@@ -15,7 +15,8 @@ const initialState= {
     message:null,
     refreshing:false,
     loadedWaypoints:[],
-    candidateFishmarks: [],
+    sharedFishmarks: [],
+    sharedFishmarksNumber:0,
     seed:5
 }
 
@@ -32,8 +33,7 @@ const reducer = (state=initialState, action) => {
             }
         case SUCCESS_DELETE_WAYPOINT:
             return {
-                ...state,fishmarks:[...state.fishmarks.filter(mark => mark.longitude != action.position.longitude
-                || mark.latitude != action.position.latitude)]
+                ...state,fishmarks:[...state.fishmarks.filter(mark => mark.key != action.position.key)]
             }
 
         case FAILED_DELETE_WAYPOINT:
@@ -67,7 +67,7 @@ const reducer = (state=initialState, action) => {
         case IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS:
             return {
 
-                ...state, candidateFishmarks:action.candidateFishmarks
+                ...state, sharedFishmarks:action.sharedFishmarks, sharedFishmarksNumber:action.sharedFishmarksNumber
             }
 
     default:

@@ -26,9 +26,9 @@ export const loadFishWaypointsOnPush = () =>({
     type: LOAD_WAYPOINTS_ON_PUSH
 })
 
-export const IOsetFishmarksCandidateList = (waypoint) => ({
+export const IOsetFishmarksCandidateList = (waypoints) => ({
     type: IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST,
-    waypoint
+    waypoints
 
 })
 

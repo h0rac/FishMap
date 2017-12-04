@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import FishMarker from '../components/FishMarker'
 import UserMarker from '../components/UserMarker'
 
-import {StyleSheet,View,Alert,Platform, Linking, AsyncStorage, Text, ActivityIndicator} from 'react-native'
+import {StyleSheet,View,Alert,Platform, Linking, AsyncStorage,Button ,Text, TouchableHighlight, ActivityIndicator} from 'react-native'
 import MapView from 'react-native-maps';
 
 import {setFishmark} from '../actions/fishmarks'
@@ -15,10 +15,13 @@ import SafariView from 'react-native-safari-view';
 import {loadFishPositions,IOsetFishmarksCandidateList} from "../actions/fishmarks";
 import {logout,checkAuthToken, getUserLocation} from '../actions/user'
 import  SocketIOClient from "socket.io-client";
+import IconBadge from 'react-native-icon-badge'
+import Test from '../components/Notificator'
 
 import {API_ENDPOINT} from "../constants/constants";
 
 import {displayAlert} from "../common/utils";
+
 
 class MainScreen extends Component {
 
@@ -60,7 +63,22 @@ class MainScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         const { params = {} } = navigation.state;
 
+
+
         return {
+
+            headerStyle: {
+                backgroundColor: '#2F95D6',
+            },
+            title:'Fish Map',
+            headerTintColor: 'white',
+            headerLeft: <Icon
+                name="md-menu"
+                size={28}
+                color={"white"}
+                style={{paddingLeft:20}}
+                onPress={() => navigation.navigate('DrawerOpen')}
+            />,
             headerRight:
            <Icon
             name="md-exit"
@@ -70,14 +88,17 @@ class MainScreen extends Component {
             onPress={() => params.handleLogout()}
         />,
             tabBarIcon:
-                <IconAwesome
-                    name="home"
-                    size={24}
-                    color={"white"}
-                    //style={{paddingLeft:20}}
-                />
+               <IconAwesome
+                        name="home"
+                        size={24}
+                        color={"white"}
+                        //style={{paddingLeft:20}}
+                    />
         };
     };
+
+
+
 
 
     componentDidMount() {
@@ -104,7 +125,7 @@ class MainScreen extends Component {
 
     onReceiveFishmark = (data) => {
 
-        data.waypoint ? this.props.dispatch(IOsetFishmarksCandidateList(data.waypoint)):null
+        data.waypoints ? this.props.dispatch(IOsetFishmarksCandidateList(data.waypoints)):null
     }
 
     onRequestFishmark = () => {
@@ -145,7 +166,7 @@ class MainScreen extends Component {
 
     render() {
 
-        console.log("IN MAIN CANDIDATE LIST", this.props.candidateList)
+        console.log("IN MAIN CANDIDATE LIST", this.props.sharedFishmarks)
 
         const region = {
             latitude: 54.475408,
@@ -187,9 +208,6 @@ class MainScreen extends Component {
                     {this.props.userLocation.latitude ?
                         <UserMarker marker={userPos}/>:null }
                 </MapView>
-                <Text>
-                    {this.props.candidateList.length}
-                </Text>
             </View>
         )
     }
@@ -203,10 +221,17 @@ const styles = {
         alignItems:"center",
 
     },
-    indicator: {
-        flex:2,
-        justifyContent: "center",
-        alignItems: "center",
+    notificator: {
+        flex:1,
+        flexDirection:'column',
+        alignItems:"flex-end",
+        marginRight:200,
+    },
+    button: {
+        alignItems: 'center',
+        backgroundColor: '#2F95D6',
+        height:40,
+        padding: 10,
     },
 
     map: {
@@ -221,7 +246,7 @@ const mapStateToProps = state => {
         isSelected: state.fishmarks.selected,
         isFetching: state.fishmarks.isFetching,
         userLocation: state.user.position,
-        candidateList: state.fishmarks.candidateFishmarks
+        sharedFishmarks: state.fishmarks.sharedFishmarks,
     }
 }
 

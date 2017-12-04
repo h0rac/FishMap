@@ -21,7 +21,7 @@ const delFishmark = (latitude,longitude,params) => fetch(`http://${API_ENDPOINT}
 
 const shareWaypointToUser = (params) => fetch(`http://${API_ENDPOINT}/api/v1/share/waypoint`,params)
 
-const temp = []
+let temp = []
 
 function* fetchFishPositions() {
 
@@ -178,14 +178,19 @@ function removeDuplicates(arr, prop) {
 function* IOCreateCandidateFishmarksList (action) {
 
     try {
-        const currentCandidateFishmarks = yield select(state => state.fishmarks.candidateFishmarks)
+        const currentCandidateFishmarks = yield select(state => state.fishmarks.sharedFishmarks)
         const allFishmarks = yield select(state => state.fishmarks.fishmarks)
 
-        temp.push(action.waypoint)
 
-        yield put({type:IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS, candidateFishmarks:removeDuplicates(temp,'key')})
+        temp = action.waypoints
 
-        console.log("PROBA", currentCandidateFishmarks)
+        console.log("RECEIVED WAYPOINTS", temp)
+
+        const filteredFishmarks = removeDuplicates(temp,'key')
+
+        yield put({type:IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS, sharedFishmarksNumber:filteredFishmarks.length, sharedFishmarks:filteredFishmarks})
+
+       console.log("PROBA", currentCandidateFishmarks)
 
 
     } catch(e) {

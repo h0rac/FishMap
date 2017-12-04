@@ -3,7 +3,7 @@ import {Text,View,FlatList,Image, TouchableHighlight, Platform, StyleSheet, Dime
 import Icon from 'react-native-vector-icons/FontAwesome'
 import {connect} from 'react-redux'
 import {moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypoint} from '../actions/fishmarks'
-import IconBadge from 'react-native-icon-badge'
+import Notificator from '../components/Notificator'
 
 import Waypoints from '../components/Waypoint'
 
@@ -20,28 +20,8 @@ class WayPointScreen extends Component {
             title: "Waypoints",
             headerTintColor: 'white',
             tabBarIcon:
-                <IconBadge
-                    MainElement={<Icon
-                        name="map-marker"
-                        size={24}
-                        color={"white"}
-                        //style={{paddingLeft:20}}
-                    />}
-                    BadgeElement={
-                        <Text style={{color: 'white'}}>{params.bagdeNum}</Text>
-                    }
-                    IconBadgeStyle={
-                        {
-                            top: 0,
-                            right: -5,
-                            minWidth: 15,
-                            height: 15,
-                            justifyContent: "space-around",
-                            backgroundColor: 'red'
-                        }
-                    }
-                    Hidden={true}
-                />
+                <Notificator/>
+
         }
 
 
@@ -55,7 +35,7 @@ class WayPointScreen extends Component {
 
     }
     componentDidMount () {
-        this.props.navigation.setParams({bagdeNum: this.props.candidateList.length})
+        this.props.navigation.setParams({bagdeNum: this.props.sharedFishmarks.length})
     }
 
 
@@ -79,11 +59,7 @@ class WayPointScreen extends Component {
 
     render() {
 
-        console.log("BEFOrE rENDeR WAYPOINTS IN WINDOW", this.props.positions.fishmarks)
-
-       console.log("FROM STORE LOADED WAYPOINTS", this.props.loadedWaypoints)
-
-        console.log("WTF", this.props.candidateList.length)
+       console.log("CANDIDATE LIST", this.props.sharedFishmarks)
 
        return( <View style={styles.container} onLayout = {this.onLayout.bind(this)}>
             <FlatList
@@ -121,13 +97,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
 
-    console.log("WAYPOINT SCREEN", state.fishmarks.candidateFishmarks)
+    console.log("WAYPOINT SCREEN", state.fishmarks.sharedFishmarks)
 
     return {
         positions: state.fishmarks,
         loadedWaypoints: state.fishmarks.loadedWaypoints,
         refreshing: state.fishmarks.refreshing,
-        candidateList: state.fishmarks.candidateFishmarks
+        sharedFishmarks: state.fishmarks.sharedFishmarks,
+        sharedFishmarksNumber: state.fishmarks.sharedFishmarksNumber
     }
 }
 
