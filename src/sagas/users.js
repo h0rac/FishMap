@@ -1,10 +1,11 @@
 import {
     API_ENDPOINT, FAILED_GET_USER_LOCATION, FAILED_SET_TOKEN, SUCCESS_GET_USER_LOCATION,
-    SUCCESS_SET_TOKEN,SUCCESS_REMOVE_TOKEN, FAILED_REMOVE_TOKEN, GET_USER_LOCATION
+    SUCCESS_SET_TOKEN,SUCCESS_REMOVE_TOKEN, FAILED_REMOVE_TOKEN, GET_USER_LOCATION, CHANGE_RECEIVE_STATUS
 } from "../constants/constants";
 import {call, put, takeEvery} from "redux-saga/effects";
 import {AsyncStorage, Dimensions} from "react-native";
 import {displayAlert, getToken, setToken, removeToken} from "../common/utils";
+import ioSocket from '../common/socket'
 
 
 const authenticateUser = params=> fetch('http://'+API_ENDPOINT+'/api/v1/login', params)
@@ -54,7 +55,9 @@ function* logoutUser(action) {
         yield call(removeToken, 'token')
         const test = yield call(getToken, 'token')
         if (!test) {
+            ioSocket.disconnect()
             yield put({type: SUCCESS_REMOVE_TOKEN, message: "Token removed"})
+
         }
     }catch(e) {
         yield put({type:FAILED_REMOVE_TOKEN, message:e.error})

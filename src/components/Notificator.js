@@ -39,7 +39,8 @@ class Notificator extends Component {
 const mapStateToProps = state => {
     return {
         sharedFishmarks: state.fishmarks.sharedFishmarks,
-        sharedFishmarksNumber: state.fishmarks.sharedFishmarksNumber
+        sharedFishmarksNumber: state.fishmarks.sharedFishmarksNumber,
+        selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,
     }
 }
 

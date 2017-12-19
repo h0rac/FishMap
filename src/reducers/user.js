@@ -1,7 +1,7 @@
 import {
-    SET_USER_DATA, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN, FAILED_GET_USER_LOCATION, SUCCESS_GET_USER_LOCATION,
-    VERIFY_TOKEN, SUCCESS_VERIFY_TOKEN
-} from '../constants/constants'
+  SET_USER_DATA, SUCCESS_SET_TOKEN, FAILED_SET_TOKEN, FAILED_GET_USER_LOCATION, SUCCESS_GET_USER_LOCATION,
+  VERIFY_TOKEN, SUCCESS_VERIFY_TOKEN, CHANGE_INTERVAL_TIME_SUCCESS, CHANGE_RECEIVE_STATUS
+} from '../constants/constants';
 import {setFishmark} from "../actions/fishmarks";
 
 const intialState = {
@@ -9,7 +9,9 @@ const intialState = {
     success:false,
     error:false,
     position:{},
-    message:null
+    message:null,
+    ioSocketInterval:10000,
+    receive:true,
 }
 
 const reducer = (state=intialState, action) => {
@@ -40,6 +42,12 @@ const reducer = (state=intialState, action) => {
             return {
                 ...state
             }
+
+      case CHANGE_RECEIVE_STATUS:
+           return {
+             ...state, receive:action.receive
+           }
+
         default:
             return state
     }

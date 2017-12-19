@@ -1,6 +1,8 @@
-import {SET_FISHMARK_POSITION, MOVE_TO_FISHMARK_POSITION,LOAD_FISHMARKS_POSITIONS,
-    DELETE_FISHMARK_POSITION, LOAD_WAYPOINTS_ON_PUSH,IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST, SHARE_WAYPOINT
-} from '../constants/constants'
+import {
+  SET_FISHMARK_POSITION, MOVE_TO_FISHMARK_POSITION, LOAD_FISHMARKS_POSITIONS,
+  DELETE_FISHMARK_POSITION, LOAD_WAYPOINTS_ON_PUSH, IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST, SHARE_WAYPOINT,
+  SHARE_WAYPOINT_CHECKED,SHARE_WAYPOINT_CHECKED_CLEAR, SHARE_WAYPOINT_UNCHECKED,SAVE_SHARED_WAYPOINTS
+} from '../constants/constants';
 
 export const setFishmark = (data) => ({
     type: SET_FISHMARK_POSITION,
@@ -35,4 +37,26 @@ export const IOsetFishmarksCandidateList = (waypoints) => ({
 export const shareWaypoint = id => ({
     type: SHARE_WAYPOINT,
     id
+})
+
+export const shareWaypointChecked = (checked, target) => ({
+    type:SHARE_WAYPOINT_CHECKED,
+    checked,
+    target
+})
+
+export const clearSharedCheckedWaypoints =(cleared) => ({
+  type:SHARE_WAYPOINT_CHECKED_CLEAR,
+  cleared
+})
+
+export const uncheckWaypointShared = (checked,target) => ({
+  type: SHARE_WAYPOINT_UNCHECKED,
+  checked,
+  target
+})
+
+export const saveSharedWaypoints =(waypoints) => ({
+  type:SAVE_SHARED_WAYPOINTS,
+  waypoints:waypoints
 })
