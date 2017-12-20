@@ -44,6 +44,7 @@ class Waypoint extends Component {
 	};
 
 	handleShareWaypoint = () => {
+		console.log("ITEM", this.props.item)
 		this.props.shareWaypointCallback(this.props.item._id);
 	};
 
@@ -90,7 +91,6 @@ class Waypoint extends Component {
 
 
 	render() {
-
 		return (
 			<FlipCard style={{ flex: 1 }}
 								velocity={3} // Velocity makes it move

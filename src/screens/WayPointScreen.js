@@ -105,12 +105,13 @@ class WayPointScreen extends Component {
 
 	_renderScreenSwitcher = () => {
 		const result =
-			<TouchableHighlight onPress={this._handleScreenSwitcher} underlayColor={null}>
 				<View style={styles.switcher}>
-					<Text
-						style={{ paddingBottom: 5 }}>{!this.state.showWaypoints ? '< Your waypoints' : 'Shared waypoints >'}</Text>
-				</View>
-			</TouchableHighlight>;
+			<TouchableHighlight onPress={this._handleScreenSwitcher} underlayColor={null}>
+					<View>
+					<Text>{!this.state.showWaypoints ? '< Your waypoints' : 'Shared waypoints >'}</Text>
+					</View>
+			</TouchableHighlight>
+	</View>
 		return result;
 	};
 
@@ -118,7 +119,7 @@ class WayPointScreen extends Component {
 	render() {
 
 		return (<View style={styles.container} onLayout={this.onLayout.bind(this)}>
-			{(this.props.sharedFishmarks && this.props.sharedFishmarks.length >= 1 && !this.state.showWaypoints) ?
+			{(this.props.sharedFishmarks && this.props.sharedFishmarks.length > 0  && !this.state.showWaypoints) ?
 				this._renderSharedFishmarks() : this._renderCurrentFishmarks()}
 			{this.props.sharedFishmarks.length > 0 ? this._renderScreenSwitcher() : null}
 		</View>);
@@ -145,10 +146,10 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	switcher: {
-		flex: 1,
 		justifyContent: 'flex-end',
 		flexDirection: 'column',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom:10
 	}
 });
 

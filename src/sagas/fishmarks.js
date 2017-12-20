@@ -1,16 +1,39 @@
 import {
-	SET_FISHMARK_POSITION, UPDATE_FISHMARK_DATA, MOVE_TO_FISHMARK_POSITION, DELETE_FISHMARK_POSITION,
+	SET_FISHMARK_POSITION,
+	UPDATE_FISHMARK_DATA,
+	MOVE_TO_FISHMARK_POSITION,
+	DELETE_FISHMARK_POSITION,
 	LOAD_FISHMARKS_POSITIONS_PENDING,
-	SUCCESS_LOAD_FISHMARKS_POSITIONS, FAILED_LOAD_FISHMARKS_POSITIONS, API_ENDPOINT, FAILED_SET_FISHMARK_POSITION,
-	SUCCESS_SET_FISHMARK_POSITION, SET_USER_DATA, LOAD_WAYPOINTS_ON_PUSH,
-	SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, FAILED_UPDATE_WAYPOINT_ON_PUSH, INCREMENT_SEED,
-	DELETE_WAYPOINT, FAILED_DELETE_WAYPOINT, SUCCESS_DELETE_WAYPOINT, IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST,
+	SUCCESS_LOAD_FISHMARKS_POSITIONS,
+	FAILED_LOAD_FISHMARKS_POSITIONS,
+	API_ENDPOINT,
+	FAILED_SET_FISHMARK_POSITION,
+	SUCCESS_SET_FISHMARK_POSITION,
+	SET_USER_DATA,
+	LOAD_WAYPOINTS_ON_PUSH,
+	SUCCESS_UPDATE_WAYPOINTS_ON_PUSH,
+	FAILED_UPDATE_WAYPOINT_ON_PUSH,
+	INCREMENT_SEED,
+	DELETE_WAYPOINT,
+	FAILED_DELETE_WAYPOINT,
+	SUCCESS_DELETE_WAYPOINT,
+	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST,
 	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS,
-	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED, SHARE_WAYPOINT, SHARE_WAYPOINT_FAILED, SHARE_WAYPOINT_SUCCESS,
+	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED,
+	SHARE_WAYPOINT,
+	SHARE_WAYPOINT_FAILED,
+	SHARE_WAYPOINT_SUCCESS,
 	SHARE_WAYPOINT_CHECKED,
-	SHARE_WAYPOINT_CHECKED_SUCCESS, SHARE_WAYPOINT_CHECKED_FAILED, SHARE_WAYPOINT_ALL_SELECTED,
-	SHARE_WAYPOINT_CHECKED_FALSE, SHARE_WAYPOINT_CHECKED_CLEAR,
-	SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS, CHANGE_INTERVAL_TIME, CHANGE_RECEIVE_STATUS, SAVE_SHARED_WAYPOINTS, UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
+	SHARE_WAYPOINT_CHECKED_SUCCESS,
+	SHARE_WAYPOINT_CHECKED_FAILED,
+	SHARE_WAYPOINT_ALL_SELECTED,
+	SHARE_WAYPOINT_CHECKED_FALSE,
+	SHARE_WAYPOINT_CHECKED_CLEAR,
+	SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS,
+	CHANGE_INTERVAL_TIME,
+	CHANGE_RECEIVE_STATUS,
+	SAVE_SHARED_WAYPOINTS,
+	UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED
 } from '../constants/constants';
 
@@ -25,9 +48,11 @@ import SocketIOClient from 'socket.io-client';
 const fetchFishmarks = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoints', params);
 const saveFishmark = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoint', params);
 const delFishmark = (latitude, longitude, params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`, params);
+const fetchFishmark = (latitude, longitude, params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`, params);
+
 
 const shareWaypointToUser = (params) => fetch(`http://${API_ENDPOINT}/api/v1/share/waypoint`, params);
-const saveFishmarks = params => fetch(`http://${API_ENDPOINT}/api/v1/save/waypoints`,params);
+const saveFishmarks = params => fetch(`http://${API_ENDPOINT}/api/v1/save/waypoints`, params);
 
 let temp = [];
 let selectedWaypoints = [];
@@ -79,6 +104,7 @@ function* setFishmarkPosition(action) {
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
+		myHeaders.append('x-api-key', JSON.parse(decodeURI(token)))
 
 		let params = {
 			method: 'POST',
@@ -97,13 +123,24 @@ function* setFishmarkPosition(action) {
 			displayAlert('Waypoint', result.message);
 		} else {
 			if (action.data !== undefined) {
-				yield put({ type: SUCCESS_SET_FISHMARK_POSITION, newPosition: action.data, message: result.message });
-			} else {
-				displayAlert('Fishmark Set', 'Failed to set fishmark');
+
+				let fetchParams = {
+					method: 'GET',
+					headers: myHeaders,
+			};
+				const fetchResponse = yield call(fetchFishmark, action.data.latitude, action.data.longitude, fetchParams);
+				const fetchResult = yield fetchResponse.json();
+
+				console.log("FETCH RESULT", fetchResult)
+
+				if (fetchResult.success === false) {
+					//yield put({ type: FAILED_GET_WAYPOINT, error: result.message });
+					displayAlert('Waypoint', fetchResult.message);
+				} else {
+						yield put({ type: SUCCESS_SET_FISHMARK_POSITION, newPosition: fetchResult.waypoint, message: fetchResult.message });
+				}
 			}
 		}
-
-
 	} catch (e) {
 		yield put({ type: FAILED_SET_FISHMARK_POSITION, error: e.message });
 		displayAlert('Waypoint', e.message);
@@ -231,24 +268,28 @@ function* shareWaypointChecked(action) {
 
 	try {
 		let number = yield select(state => state.fishmarks.sharedFishmarksNumber);
-		const selectedSharedFishmarks = yield select(state => state.fishmarks.selectedSharedFishmarks)
+		const selectedSharedFishmarks = yield select(state => state.fishmarks.selectedSharedFishmarks);
 
 		if (!action.checked) {
-			yield put({ type: CHANGE_RECEIVE_STATUS, receive: false })
+			yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
 
 			yield put({
 				type: SHARE_WAYPOINT_CHECKED_SUCCESS,
 				number: --number,
 				target: { ...action.target, checked: !action.checked },
 				displaySave: !action.checked,
-				selectedSharedFishmarks: removeDuplicates([...selectedSharedFishmarks, {...action.target, checked:!action.checked}], 'key')
-			})
-		}else {
+				selectedSharedFishmarks: removeDuplicates([...selectedSharedFishmarks, {
+					...action.target,
+					checked: !action.checked
+				}], 'key')
+			});
+		} else {
 
 			yield put({
-				type:SHARE_WAYPOINT_CHECKED_FALSE,
+				type: SHARE_WAYPOINT_CHECKED_FALSE,
 				number: ++number,
-				selectedSharedFishmark:{...action.target, checked:!action.checked}})
+				selectedSharedFishmark: { ...action.target, checked: !action.checked }
+			});
 		}
 
 	} catch (e) {
@@ -260,19 +301,19 @@ function* saveSharedWaypoints(action) {
 
 	try {
 		temp = action.waypoints.map(item => {
-			delete item.checked
-			return item
+			delete item.checked;
+			return item;
 		});
 
-		const allWaypoints = yield  select(state => state.fishmarks.fishmarks)
-		const sharedWaypoints = yield select(state => state.fishmarks.sharedFishmarks)
+		const allWaypoints = yield  select(state => state.fishmarks.fishmarks);
+		const sharedWaypoints = yield select(state => state.fishmarks.sharedFishmarks);
 
 
 		temp.forEach(waypoint => {
-			sharedWaypoints = sharedWaypoints.filter(item => item.key !== waypoint.key)
-		})
+			sharedWaypoints = sharedWaypoints.filter(item => item.key !== waypoint.key);
+		});
 
-		const updatedWaypoints = removeDuplicates(allWaypoints.concat(temp),'key')
+		const updatedWaypoints = removeDuplicates(allWaypoints.concat(temp), 'key');
 
 
 		const myHeaders = new Headers();
@@ -295,14 +336,17 @@ function* saveSharedWaypoints(action) {
 			yield put({ type: UPDATE_WAYPOINT_ON_SAVE_FAILED, error: result.message });
 			displayAlert('Waypoint', result.message);
 		} else {
-				yield put({type: UPDATE_WAYPOINT_ON_SAVE_SUCCESS, toSaveWaypoints: updatedWaypoints,
-					filteredSharedWaypoints:sharedWaypoints})
-				yield put({type:CHANGE_RECEIVE_STATUS, receive:true})
-			}
-		} catch(e) {
+			yield put({
+				type: UPDATE_WAYPOINT_ON_SAVE_SUCCESS, toSaveWaypoints: updatedWaypoints,
+				filteredSharedWaypoints: sharedWaypoints
+			});
+			yield put({ type: CHANGE_RECEIVE_STATUS, receive: true });
+		}
+	} catch (e) {
 		yield put({ type: UPDATE_WAYPOINT_ON_SAVE_FAILED, error: result.message });
 	}
 }
+
 export const fishmarkSaga = [
 
 	takeEvery('SET_FISHMARK_POSITION', setFishmarkPosition),
@@ -312,5 +356,5 @@ export const fishmarkSaga = [
 	takeEvery('IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST', IOCreateCandidateFishmarksList),
 	takeEvery('SHARE_WAYPOINT', shareWaypoint),
 	takeEvery('SHARE_WAYPOINT_CHECKED', shareWaypointChecked),
-	takeEvery('SAVE_SHARED_WAYPOINTS',saveSharedWaypoints)
+	takeEvery('SAVE_SHARED_WAYPOINTS', saveSharedWaypoints)
 ];
