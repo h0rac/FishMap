@@ -44,7 +44,6 @@ class Waypoint extends Component {
 	};
 
 	handleShareWaypoint = () => {
-		console.log("ITEM", this.props.item)
 		this.props.shareWaypointCallback(this.props.item._id);
 	};
 
@@ -76,7 +75,9 @@ class Waypoint extends Component {
 						<Icon name="arrow-circle-right" style={styles.icon}
 									onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}
 									onLongPress={!this.props.shared ? this.handleShareWaypoint : null}/>
-						: null}
+						: 	<Icon name="times-rectangle" style={styles.icon}
+										 onPress={() => console.log('Cancel clicked')}
+										 />}
 				</View>
 			</View>
 		);

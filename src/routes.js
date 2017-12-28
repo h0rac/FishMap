@@ -1,4 +1,4 @@
-import {StackNavigator, DrawerNavigator, TabNavigator} from 'react-navigation'
+import {StackNavigator, DrawerNavigator, TabNavigator, TabBarTop} from 'react-navigation'
 import MainScreen from '../src/screens/MainScreen'
 import ProfileScreen from '../src/screens/ProfileScreen'
 import SettingScreen from '../src/screens/SettingScreen'
@@ -11,6 +11,13 @@ import LoginScreen from '../src/screens/LoginScreen'
 import CreateAccountScreen from '../src/screens/CreateAccountScreen'
 import {Badge} from 'react-native-elements'
 
+
+const indicatorStyle = (props, alignSelf) => ({
+	borderBottomWidth:3,
+	borderBottomColor:"yellow",
+	alignSelf: 'flex-end',
+});
+
 const mainStack = TabNavigator({
 
     MainScreen: {screen: MainScreen,
@@ -20,6 +27,7 @@ const mainStack = TabNavigator({
 
     },
 }, {
+	tabBarComponent: (props)=> <TabBarTop {...props} indicatorStyle={indicatorStyle(props, 'flex-end')} />,
   tabBarPosition: 'bottom',
     tabBarOptions: {
         showIcon:true

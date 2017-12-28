@@ -9,8 +9,16 @@ import {
 import Notificator from '../components/Notificator';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import SaveSharedWaypoint from '../components/SaveSharedWaypoint';
-
+import { changeReceiveStatus } from '../actions/user';
 import Waypoint from '../components/Waypoint';
+
+
+const labelStyle =(props, alignSelf, marginTop)=> ({
+	fontSize: 14,
+	fontWeight: '500',
+	marginTop,
+	color: props.focused ? props.tintColor : "white",
+});
 
 class WayPointScreen extends Component {
 
@@ -22,7 +30,7 @@ class WayPointScreen extends Component {
 			headerStyle: {
 				backgroundColor: '#2F95D6'
 			},
-			title: 'Waypoints',
+			tabBarLabel: (props)=>(<Text style={labelStyle(props, 'flex-end', 15)}> Waypoints </Text>),
 			headerTintColor: 'white',
 			tabBarIcon:
 				<Notificator/>,

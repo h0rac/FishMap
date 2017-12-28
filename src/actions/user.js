@@ -1,4 +1,4 @@
-import {SET_USER_DATA, LOGOUT, LOGIN, VERIFY_TOKEN, GET_USER_LOCATION, CHANGE_INTERVAL_TIME} from '../constants/constants'
+import {SET_USER_DATA, LOGOUT, LOGIN, VERIFY_TOKEN, GET_USER_LOCATION, CHANGE_INTERVAL_TIME, CHANGE_RECEIVE_STATUS} from '../constants/constants'
 
 export const setUserData = (data) => ({
     type: SET_USER_DATA,
@@ -21,5 +21,11 @@ export const checkAuthToken = (navigate) => ({
 
 export const getUserLocation = () => ( {
     type: GET_USER_LOCATION
+})
+
+export const changeReceiveStatus = (status) => ({
+    type: CHANGE_RECEIVE_STATUS,
+    receive:status
+
 })
 

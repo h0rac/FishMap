@@ -21,7 +21,8 @@ import {
 	SHARE_WAYPOINT_CHECKED_FALSE,
 	SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS,
 	SHARE_WAYPOINT_CHECKED_CLEAR, UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
-	UPDATE_WAYPOINT_ON_SAVE_FAILED
+	UPDATE_WAYPOINT_ON_SAVE_FAILED,
+	CHANGE_DISPLAY_SAVE_STATUS
 
 } from '../constants/constants';
 
@@ -62,7 +63,8 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state, fishmarks: [...state.fishmarks.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude
-				)]
+				)], selectedSharedFishmarks: [...state.selectedSharedFishmarks.filter(mark => mark.latitude !== action.position.latitude
+					&& mark.longitude !== action.position.longitude)]
 			};
 
 		case FAILED_DELETE_WAYPOINT:
@@ -108,7 +110,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state, sharedFishmarksNumber: action.number,
 				sharedFishmarks: removeDuplicates([...state.sharedFishmarks, action.target], 'key'),
-				displaySave: action.displaySave, selectedSharedFishmarks:action.selectedSharedFishmarks
+				selectedSharedFishmarks:action.selectedSharedFishmarks
 			};
 
 		case SHARE_WAYPOINT_CHECKED_FALSE:
@@ -127,6 +129,10 @@ const reducer = (state = initialState, action) => {
 
 		case SHARE_WAYPOINT_CHECKED_FAILED:
 			return { ...state, message: action.message };
+
+
+		case CHANGE_DISPLAY_SAVE_STATUS:
+			return {...state, displaySave: action.displaySave}
 		default:
 			return state;
 	}

@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Text,View,Image, TouchableHighlight, Platform} from 'react-native'
+import {connect} from 'react-redux';
 
-class ProfileScreen extends Component {
+export class ProfileScreen extends Component {
 
     static navigationOptions = {
         title: "Profile",
@@ -12,4 +13,5 @@ class ProfileScreen extends Component {
         return <Text>Hello in Profile!</Text>;
     }
 }
-export default ProfileScreen
+
+export default connect()(ProfileScreen)

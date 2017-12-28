@@ -21,19 +21,22 @@ import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
-import { Badge } from 'react-native-elements';
-import SafariView from 'react-native-safari-view';
 import { loadFishPositions, IOsetFishmarksCandidateList } from '../actions/fishmarks';
-import { logout, checkAuthToken, getUserLocation } from '../actions/user';
-import SocketIOClient from 'socket.io-client';
-import IconBadge from 'react-native-icon-badge';
-import Test from '../components/Notificator';
+import { logout, getUserLocation } from '../actions/user';
 
-import { API_ENDPOINT } from '../constants/constants';
 
 import ioSocket from '../common/socket';
 
 import { displayAlert } from '../common/utils';
+
+
+const labelStyle =(props, alignSelf, marginTop)=> ({
+	fontSize: 14,
+	fontWeight: '500',
+	marginTop,
+	color: props.focused ? props.tintColor : "white",
+});
+
 
 
 class MainScreen extends Component {
@@ -46,6 +49,8 @@ class MainScreen extends Component {
 		this._handleLogout = this._handleLogout.bind(this);
 		this._logoutUser = this._logoutUser.bind(this);
 		this.onReceiveFishmark = this.onReceiveFishmark.bind(this);
+		this.setInitialFishmarkPosition = this.setInitialFishmarkPosition.bind(this)
+		this.setInitialUserPosition = this.setInitialUserPosition.bind(this)
 		this.onReceiveError = this.onReceiveError.bind(this);
 
 		this.state = {
@@ -85,8 +90,8 @@ class MainScreen extends Component {
 			headerStyle: {
 				backgroundColor: '#2F95D6'
 			},
-			title: 'Fish Map',
 			headerTintColor: 'white',
+			tabBarLabel: (props)=>(<Text style={labelStyle(props, 'flex-end', 15)}> Fish Map </Text>),
 			headerLeft: <Icon
 				name="md-menu"
 				size={28}
@@ -119,7 +124,6 @@ class MainScreen extends Component {
 
 
 	componentDidMount() {
-		//this.props.dispatch(checkAuthToken(this.props.navigation))
 		AsyncStorage.getItem('token').then(token => {
 			if (!token) {
 				clearInterval(this.state.intervalId && this.state.intervalId);
@@ -178,32 +182,39 @@ class MainScreen extends Component {
 		);
 	};
 
-
-	render() {
-
-		const region = {
-			latitude: 54.475408,
-			longitude: 18.263086,
-			latitudeDelta: 0.0922,
-			longitudeDelta: 0.0421
-		};
-
+	setInitialFishmarkPosition = () => {
 		let initPosition = null;
-
-		const userPos = this.props.userLocation.latitude ? this.props.userLocation : null;
 
 		if (this.props.positions === undefined)
 			this.props.positions = [];
 
-
-		if (userPos || this.props.positions.length === 0) {
-			initPosition = userPos;
-		}
 		if (this.props.isSelected === true) {
 			initPosition = this.props.selectedPosition;
 		} else {
-			initPosition = this.props.positions[this.props.positions.length - 1];
+			if(this.props.positions.length > 0) {
+				initPosition = this.props.positions[this.props.positions.length - 1];
+			}
+			else {
+				initPosition = this.props.positions
+			}
 		}
+		return initPosition
+	};
+
+	setInitialUserPosition = () => {
+		let initPosition;
+		const userPos = this.props.userLocation.latitude ? this.props.userLocation : null;
+		if (userPos || this.props.positions.length === 0) {
+			initPosition = userPos;
+		}
+		return initPosition
+	}
+
+
+	render() {
+
+		const initFishmarkPosition = this.setInitialFishmarkPosition();
+		const initUserPosition = this.setInitialUserPosition();
 
 		return (
 			<View style={styles.container}>
@@ -211,7 +222,7 @@ class MainScreen extends Component {
 					//onRegionChangeComplete={()=> this.props.dispatch(loadFishmarkPositions())}
 								 ref="map"
 								 style={styles.map}
-								 region={initPosition}>
+								 region={initFishmarkPosition}>
 
 					{this.props.positions.map((marker, index) =>
 						<FishMarker key={index} marker={marker}
@@ -219,7 +230,7 @@ class MainScreen extends Component {
 						/>
 					)}
 					{this.props.userLocation.latitude ?
-						<UserMarker marker={userPos}/> : null}
+						<UserMarker marker={initUserPosition}/> : null}
 				</MapView>
 			</View>
 		);

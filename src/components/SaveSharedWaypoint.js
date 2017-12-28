@@ -16,6 +16,7 @@ import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import {saveSharedWaypoints} from '../actions/fishmarks';
 
 import IconBadge from 'react-native-icon-badge';
+import { changeReceiveStatus } from '../actions/user';
 
 
 class SaveSharedWaypoint extends Component {
@@ -24,7 +25,25 @@ class SaveSharedWaypoint extends Component {
 	constructor () {
 		super()
 		this.saveToWaypoints = this.saveToWaypoints.bind(this)
+		this.displaySaveIcon = this.displaySaveIcon.bind(this)
+
 	}
+
+	displaySaveIcon = () => {
+		let checkedFishmarks = 0;
+		let displaySave = false;
+		this.props.selectedSharedFishmarks.forEach(fishmark => {
+			if (fishmark.checked === true) {
+				++checkedFishmarks;
+			}
+		});
+		if (checkedFishmarks > 0) {
+			displaySave = true;
+		}
+
+		return displaySave
+	}
+
 
 	saveToWaypoints = () => {
 		this.props.dispatch(saveSharedWaypoints(this.props.selectedSharedFishmarks))
@@ -32,7 +51,7 @@ class SaveSharedWaypoint extends Component {
 
 	render() {
 		return (
-			this.props.sharedFishmarks.length > 0 ?
+			this.props.sharedFishmarks.length > 0 && this.displaySaveIcon() ?
 				<IconAwesome
 					name="save"
 					size={24}
@@ -44,7 +63,6 @@ class SaveSharedWaypoint extends Component {
 }
 
 const mapStateToProps = state => {
-	console.log("SAVE STATUS", state.fishmarks.displaySave)
 	return {
 		displaySave: state.fishmarks.displaySave,
 		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,

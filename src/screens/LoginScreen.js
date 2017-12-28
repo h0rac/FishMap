@@ -11,21 +11,12 @@ import {
 	Dimensions,
 	Alert
 } from 'react-native';
-import SafariView from 'react-native-safari-view';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { setUserData, login, checkAuthToken } from '../actions/user';
 import { connect } from 'react-redux';
-import { FormLabel, FormInput, Button, FormValidationMessage } from 'react-native-elements';
-
-import { OAUTH_URL, API_ENDPOINT } from '../constants/constants';
-
 
 class LoginScreen extends React.Component {
-
-	static propTypes = {
-		navigation: PropTypes.object
-	};
 
 	static navigationOptions = {
 		header: null,
@@ -38,21 +29,23 @@ class LoginScreen extends React.Component {
 		this._keyboardDidHide = this._keyboardDidHide.bind(this);
 		this._DimensionHandler = this._DimensionHandler.bind(this);
 		this.validateEmail = this.validateEmail.bind(this);
+		this.checkScreenOrientation = this.checkScreenOrientation.bind(this)
 		this.state = {
-			disableLogin: true
+			disableLogin: true,
+			ios:false
 		};
 
 	}
 
 	componentWillMount() {
-		this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
-		this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
+		Keyboard.addListener('keyboardDidShow', this._keyboardDidShow);
+		Keyboard.addListener('keyboardDidHide', this._keyboardDidHide);
 		Dimensions.addEventListener('change', this._DimensionHandler);
 	}
 
 	componentWillUnmount() {
-		this.keyboardDidShowListener.remove();
-		this.keyboardDidHideListener.remove();
+		Keyboard.removeListener('keyboardDidShow')
+		Keyboard.removeListener('keyboardDidHide')
 		Dimensions.removeEventListener('change', this._DimensionHandler);
 	}
 
@@ -68,22 +61,20 @@ class LoginScreen extends React.Component {
 		this.setState({ window: dims });
 	}
 
-	componentDidMount() {
-		this.props.dispatch(checkAuthToken(this.props.navigation));
+	componentDidMount = () => {
 		if (Platform.OS === 'ios') {
 			this.setState({ ios: true });
 		}
+		this.props.dispatch(checkAuthToken(this.props.navigation));
 
 	}
 
 	validateEmail = (email) => {
-		var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 		return re.test(email);
 	};
 
 	handleSubmit = () => {
-
-
 		if (this.validateEmail(this.state.email) && this.state.password) {
 			const data = {
 				email: this.state.email,
@@ -99,22 +90,26 @@ class LoginScreen extends React.Component {
 	};
 
 
-	_handleInputValidation = () => {
+	_handleInputValidation =  () => {
 
-		if ((this.state.email || this.state.email !== '') && (this.state.password || this.state.password !== '')) {
+		if ((this.validateEmail(this.state.email)) && (this.state.password)) {
 			this.setState({ disableLogin: false });
 		}
+	};
 
+	checkScreenOrientation = () => {
+		let mode;
+		if (this.state.window) {
+			mode = this.state.window.screen.height > this.state.window.screen.width ? 'portrait' : 'landscape';
+		}
+		return mode
 	};
 
 
 	render() {
 
-		let mode = '';
-		if (this.state.window) {
-			const { width, height } = this.state.window;
-			mode = this.state.window.screen.height > this.state.window.screen.width ? 'portrait' : 'landscape';
-		}
+		let mode = this.checkScreenOrientation();
+
 		return (
 			<View style={styles.mainContainer}>
 				{mode && mode === 'portrait' && !this.state.keyboardShow ?
@@ -146,7 +141,7 @@ class LoginScreen extends React.Component {
 					<Icon.Button
 						name="sign-in"
 						backgroundColor={
-							(!this.validateEmail(this.state.email) || this.state.email === '') ||
+							(!this.validateEmail(this.state.email)) ||
 							(!this.state.password || this.state.password === '') ? 'gray' : 'steelblue'}
 						style={styles.buttonLogin}
 						disabled={this.state.disableLogin}
@@ -263,12 +258,5 @@ const styles = StyleSheet.create({
 
 });
 
-const mapStateToProps = state => {
 
-	return {
-		message: state.user.error,
-		result: state.user.success
-	};
-};
-
-export default connect(mapStateToProps)(LoginScreen);
+export default connect()(LoginScreen);

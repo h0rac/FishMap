@@ -16,8 +16,7 @@ export const LOAD_FISHMARKS_POSITIONS = "LOAD_FISHMARKS_POSITIONS"
 
 export const OAUTH_URL = "http://fishmap.test.pl:3000/auth/google"
 //export const OAUTH_URL = "https://yqxcjoicsc.localtunnel.me/auth/google"
-export const API_ENDPOINT = "192.168.0.115:3000"
-
+export const API_ENDPOINT = "192.168.2.11:3000"
 export const SET_USER_DATA = "SET_USER_DATA"
 
 export const LOGOUT = "LOGOUT"
@@ -67,3 +66,4 @@ export const SAVE_SHARED_WAYPOINTS = "SAVE_SHARED_WAYPOINTS"
 
 export const UPDATE_WAYPOINT_ON_SAVE_SUCCESS = "UPDATE_WAYPOINT_ON_SAVE_SUCCESS"
 export const UPDATE_WAYPOINT_ON_SAVE_FAILED = "UPDATE_WAYPOINT_ON_SAVE_FAILED"
+export const CHANGE_DISPLAY_SAVE_STATUS = "CHANGE_DISPLAY_SAVE_STATUS"

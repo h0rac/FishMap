@@ -34,7 +34,8 @@ import {
 	CHANGE_RECEIVE_STATUS,
 	SAVE_SHARED_WAYPOINTS,
 	UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
-	UPDATE_WAYPOINT_ON_SAVE_FAILED
+	UPDATE_WAYPOINT_ON_SAVE_FAILED,
+	CHANGE_DISPLAY_SAVE_STATUS
 } from '../constants/constants';
 
 import { LOAD_FISHMARKS_POSITIONS } from '../constants/constants';
@@ -104,7 +105,7 @@ function* setFishmarkPosition(action) {
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
-		myHeaders.append('x-api-key', JSON.parse(decodeURI(token)))
+		myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
 		let params = {
 			method: 'POST',
@@ -126,18 +127,22 @@ function* setFishmarkPosition(action) {
 
 				let fetchParams = {
 					method: 'GET',
-					headers: myHeaders,
-			};
+					headers: myHeaders
+				};
 				const fetchResponse = yield call(fetchFishmark, action.data.latitude, action.data.longitude, fetchParams);
 				const fetchResult = yield fetchResponse.json();
 
-				console.log("FETCH RESULT", fetchResult)
+				console.log('FETCH RESULT', fetchResult);
 
 				if (fetchResult.success === false) {
 					//yield put({ type: FAILED_GET_WAYPOINT, error: result.message });
 					displayAlert('Waypoint', fetchResult.message);
 				} else {
-						yield put({ type: SUCCESS_SET_FISHMARK_POSITION, newPosition: fetchResult.waypoint, message: fetchResult.message });
+					yield put({
+						type: SUCCESS_SET_FISHMARK_POSITION,
+						newPosition: fetchResult.waypoint,
+						message: fetchResult.message
+					});
 				}
 			}
 		}
@@ -248,7 +253,7 @@ function* shareWaypoint(action) {
 		body: JSON.stringify({
 			token: JSON.parse(decodeURI(token)),
 			wId: action.id,
-			email: 'Joanna@test.pl'
+			email: 'Joanna@test.com'
 		})
 	};
 
@@ -270,6 +275,7 @@ function* shareWaypointChecked(action) {
 		let number = yield select(state => state.fishmarks.sharedFishmarksNumber);
 		const selectedSharedFishmarks = yield select(state => state.fishmarks.selectedSharedFishmarks);
 
+
 		if (!action.checked) {
 			yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
 
@@ -277,7 +283,6 @@ function* shareWaypointChecked(action) {
 				type: SHARE_WAYPOINT_CHECKED_SUCCESS,
 				number: --number,
 				target: { ...action.target, checked: !action.checked },
-				displaySave: !action.checked,
 				selectedSharedFishmarks: removeDuplicates([...selectedSharedFishmarks, {
 					...action.target,
 					checked: !action.checked
@@ -290,6 +295,8 @@ function* shareWaypointChecked(action) {
 				number: ++number,
 				selectedSharedFishmark: { ...action.target, checked: !action.checked }
 			});
+			yield put({ type: CHANGE_RECEIVE_STATUS, receive: true });
+
 		}
 
 	} catch (e) {
