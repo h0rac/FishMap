@@ -22,10 +22,15 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import { loadFishPositions, IOsetFishmarksCandidateList } from '../actions/fishmarks';
-import { logout, getUserLocation } from '../actions/user';
+import {
+	logout, getUserLocation, changeDuration, emitWaypointReceive, setTimeoutId,
+	setIOSocket, checkAuthToken
+} from '../actions/user';
 
 
-import ioSocket from '../common/socket';
+import SocketIOClient from "socket.io-client";
+import {API_ENDPOINT} from "../constants/constants";
+
 
 import { displayAlert } from '../common/utils';
 
@@ -37,7 +42,7 @@ const labelStyle =(props, alignSelf, marginTop)=> ({
 	color: props.focused ? props.tintColor : "white",
 });
 
-
+let timeoutID;
 
 class MainScreen extends Component {
 
@@ -52,18 +57,31 @@ class MainScreen extends Component {
 		this.setInitialFishmarkPosition = this.setInitialFishmarkPosition.bind(this)
 		this.setInitialUserPosition = this.setInitialUserPosition.bind(this)
 		this.onReceiveError = this.onReceiveError.bind(this);
+		this.myFunction = this.myFunction.bind(this)
+
 
 		this.state = {
-			interval: 0
+			interval: 0,
+			intervalId:0,
+			test:null,
+
 		};
 
 	}
 
-	onReceiveError = (error) => {
-		console.log(error);
+	onReceiveError = (data) => {
+		  displayAlert('Authentication', data)
+			this.props.socketIO.emit('onForceDisconnect')
+		  this.props.navigation.navigate('LoginScreen')
+
 	};
 
 	_logoutUser() {
+		AsyncStorage.getItem('token').then(token => {
+			if (token) {
+				this.props.socketIO.emit('onForceDisconnect', {token: JSON.parse(decodeURI(token))})
+			}
+		})
 		this.props.dispatch(logout());
 		this.props.navigation.navigate('LoginScreen');
 
@@ -119,23 +137,32 @@ class MainScreen extends Component {
 
 
 	componentWillMount() {
-		this.setState({ interval: this.props.ioSocketInterval });
+		this.setState({ interval: this.props.duration });
 	}
+
+	myFunction (){
+		AsyncStorage.getItem('token').then(token => {
+			if (token) {
+				this.props.socketIO.emit('onFishmarkUpdate', { token: JSON.parse(decodeURI(token)), receive: this.props.receive })
+				const timeoutID = setTimeout(this.myFunction, this.props.duration);
+				this.props.dispatch(setTimeoutId(timeoutID))
+			}
+	})
+	}
+
 
 
 	componentDidMount() {
 		AsyncStorage.getItem('token').then(token => {
 			if (!token) {
-				clearInterval(this.state.intervalId && this.state.intervalId);
 				this.props.navigation.navigate('LoginScreen');
 			}
 			else {
-				ioSocket.on('onReceiveFishmark', data => this.onReceiveFishmark(data));
-				ioSocket.on('onReceiveError', data => this.onReceiveError(data.error));
-
-
-				const intervalId = setInterval(() => ioSocket.emit('onFishmarkUpdate', { token: JSON.parse(decodeURI(token)), receive:this.props.receive }), this.state.interval);
-				this.setState({ intervalId: intervalId });
+				this.props.dispatch(checkAuthToken(this.props.navigation, 'MainScreen'));
+				this.myFunction()
+				this.props.socketIO.on('onReceiveFishmark', data => this.onReceiveFishmark(data));
+				this.props.socketIO.on('onReceiveError', data => this.onReceiveError(data.error));
+				//const intervalId = setInterval(() => ioSocket.emit('onFishmarkUpdate', { token: JSON.parse(decodeURI(token)), receive:this.props.receive }), this.state.interval);
 				this.props.dispatch(getUserLocation());
 				this.props.dispatch(loadFishPositions());
 				this.props.navigation.setParams({ handleLogout: this._handleLogout });
@@ -145,20 +172,12 @@ class MainScreen extends Component {
 
 
 	onReceiveFishmark = (data) => {
-
-		console.log("DATA", data)
-
 		data.waypoints && !data.pause ? this.props.dispatch(IOsetFishmarksCandidateList(data.waypoints)) : null;
 	};
-
-	componentWillUnmount() {
-		clearInterval(this.state.intervalId);
-	}
 
 
 	_handleFishMarkerSet(e) {
 
-		//console.log(typeof (e.nativeEvent.coordinate.latitude))
 		this.props.dispatch(setFishmark({
 			...e.nativeEvent.coordinate, latitudeDelta: 0.0922,
 			longitudeDelta: 0.0421, title: 'Marker-' + e.nativeEvent.coordinate.latitude.toFixed(6),
@@ -176,7 +195,7 @@ class MainScreen extends Component {
 			[
 				{ text: 'Edit', onPress: () => this.props.navigation.navigate('WayPointEditScreen') },
 				{ text: 'Delete', onPress: () => this.props.dispatch(deleteFishmarkPosition(position)) },
-				{ text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' }
+				{ text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel' }
 			],
 			{ cancelable: true }
 		);
@@ -195,7 +214,10 @@ class MainScreen extends Component {
 				initPosition = this.props.positions[this.props.positions.length - 1];
 			}
 			else {
-				initPosition = this.props.positions
+				initPosition = 	{latitude: 54.475408,
+					longitude: 18.263086,
+					latitudeDelta: 0.0922,
+					longitudeDelta: 0.0421}
 			}
 		}
 		return initPosition
@@ -271,8 +293,10 @@ const mapStateToProps = state => {
 		isFetching: state.fishmarks.isFetching,
 		userLocation: state.user.position,
 		sharedFishmarks: state.fishmarks.sharedFishmarks,
-		ioSocketInterval: state.user.ioSocketInterval,
-		receive: state.user.receive
+		receive: state.user.receive,
+		duration:state.user.duration,
+		emitStatus: state.user.emitStatus,
+		socketIO: state.user.socketIO
 	};
 };
 

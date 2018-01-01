@@ -11,7 +11,6 @@ import { CheckBox } from 'react-native-elements';
 import FlipCard from 'react-native-flip-card-view';
 import { shareWaypointChecked, uncheckWaypointShared } from '../actions/fishmarks';
 import { connect } from 'react-redux';
-import ioSocket from '../common/socket';
 
 
 class Waypoint extends Component {

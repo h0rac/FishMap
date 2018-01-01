@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { setUserData, login, checkAuthToken } from '../actions/user';
+import { setUserData, login, checkAuthToken, setIOSocket } from '../actions/user';
 import { connect } from 'react-redux';
 
 class LoginScreen extends React.Component {
@@ -61,11 +61,11 @@ class LoginScreen extends React.Component {
 		this.setState({ window: dims });
 	}
 
-	componentDidMount = () => {
+	componentDidMount () {
 		if (Platform.OS === 'ios') {
 			this.setState({ ios: true });
 		}
-		this.props.dispatch(checkAuthToken(this.props.navigation));
+		this.props.dispatch(checkAuthToken(this.props.navigation, 'LoginScreen'));
 
 	}
 
@@ -82,7 +82,6 @@ class LoginScreen extends React.Component {
 				navigation: this.props.navigation
 			};
 			this.props.dispatch(login(data));
-
 
 		} else {
 			this.setState({ disableLogin: true });
@@ -172,7 +171,7 @@ class LoginScreen extends React.Component {
 }
 
 
-const styles = StyleSheet.create({
+const styles = {
 
 	mainContainer: {
 		flex: 1, //ratio 1:1 whole screen
@@ -256,7 +255,7 @@ const styles = StyleSheet.create({
 	}
 
 
-});
+};
 
 
 export default connect()(LoginScreen);

@@ -30,7 +30,7 @@ import {
 	SHARE_WAYPOINT_CHECKED_FALSE,
 	SHARE_WAYPOINT_CHECKED_CLEAR,
 	SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS,
-	CHANGE_INTERVAL_TIME,
+	CHANGE_DURATION,
 	CHANGE_RECEIVE_STATUS,
 	SAVE_SHARED_WAYPOINTS,
 	UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
@@ -43,8 +43,6 @@ import { LOAD_FISHMARKS_POSITIONS } from '../constants/constants';
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import { Alert } from 'react-native';
 import { displayAlert, getToken, setToken, removeToken, removeDuplicates } from '../common/utils';
-import ioSocket from '../common/socket';
-import SocketIOClient from 'socket.io-client';
 
 const fetchFishmarks = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoints', params);
 const saveFishmark = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoint', params);
@@ -274,7 +272,7 @@ function* shareWaypointChecked(action) {
 	try {
 		let number = yield select(state => state.fishmarks.sharedFishmarksNumber);
 		const selectedSharedFishmarks = yield select(state => state.fishmarks.selectedSharedFishmarks);
-
+		const emitStatus = yield select(state => state.user.emitStatus)
 
 		if (!action.checked) {
 			yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
@@ -295,8 +293,7 @@ function* shareWaypointChecked(action) {
 				number: ++number,
 				selectedSharedFishmark: { ...action.target, checked: !action.checked }
 			});
-			yield put({ type: CHANGE_RECEIVE_STATUS, receive: true });
-
+				yield put({ type: CHANGE_RECEIVE_STATUS, receive: true });
 		}
 
 	} catch (e) {

@@ -66,7 +66,7 @@ const mapStateToProps = state => {
 	return {
 		displaySave: state.fishmarks.displaySave,
 		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,
-		sharedFishmarks: state.fishmarks.sharedFishmarks
+		sharedFishmarks: state.fishmarks.sharedFishmarks,
 	};
 };
 
