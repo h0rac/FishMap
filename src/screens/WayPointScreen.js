@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, Image, TouchableHighlight, Platform, StyleSheet, Dimensions, Alert } from 'react-native';
+import { Text, View, FlatList, Image, TouchableOpacity, Platform, StyleSheet, Dimensions, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
@@ -13,11 +13,11 @@ import { changeReceiveStatus } from '../actions/user';
 import Waypoint from '../components/Waypoint';
 
 
-const labelStyle =(props, alignSelf, marginTop)=> ({
+const labelStyle = (props, alignSelf, marginTop) => ({
 	fontSize: 14,
 	fontWeight: '500',
 	marginTop,
-	color: props.focused ? props.tintColor : "white",
+	color: props.focused ? props.tintColor : 'white'
 });
 
 class WayPointScreen extends Component {
@@ -28,9 +28,10 @@ class WayPointScreen extends Component {
 
 		return {
 			headerStyle: {
-				backgroundColor: '#2F95D6'
+				backgroundColor: '#2F95D6',
 			},
-			tabBarLabel: (props)=>(<Text style={labelStyle(props, 'flex-end', 15)}> Waypoints </Text>),
+			title:'Waypoints',
+			tabBarLabel: (props) => (<Text style={labelStyle(props, 'flex-end', 15)}> Waypoints </Text>),
 			headerTintColor: 'white',
 			tabBarIcon:
 				<Notificator/>,
@@ -46,7 +47,6 @@ class WayPointScreen extends Component {
 		this._shareWaypoint = this._shareWaypoint.bind(this);
 		this._renderCurrentFishmarks = this._renderCurrentFishmarks.bind(this);
 		this._renderSharedFishmarks = this._renderSharedFishmarks.bind(this);
-		this._renderScreenSwitcher = this._renderScreenSwitcher.bind(this);
 		this._handleScreenSwitcher = this._handleScreenSwitcher.bind(this);
 		this._handleCheck = this._handleCheck.bind(this);
 
@@ -66,6 +66,10 @@ class WayPointScreen extends Component {
 
 	_handleMoveToFishmarkPostion = (region, selected) => {
 		this.props.dispatch(moveToFishmarkPosition(region, selected));
+		this.props.mapView.animateToCoordinate({
+			latitude: region.latitude,
+			longitude: region.longitude
+		}, 1500);
 
 	};
 
@@ -80,7 +84,7 @@ class WayPointScreen extends Component {
 
 	_renderCurrentFishmarks = () => {
 		const result = <FlatList
-			data={this.props.loadedWaypoints.length > 0 ? this.props.loadedWaypoints : this.props.positions.fishmarks.slice(0, 5).reverse()}
+			data={this.props.loadedWaypoints.length > 0 ? this.props.loadedWaypoints : this.props.positions.fishmarks.slice(0, 7).reverse()}
 			renderItem={({ item }) => <Waypoint navigation={this.props.navigation}
 																					item={item}
 																					callback={this._handleMoveToFishmarkPostion}
@@ -93,7 +97,7 @@ class WayPointScreen extends Component {
 	};
 
 	_handleCheck = (status, item) => {
-		this.props.dispatch(shareWaypointChecked(item.checked, item));
+		this.props.dispatch(shareWaypointChecked(item.checked, item, this.props.intervalAlive));
 
 	};
 
@@ -111,25 +115,20 @@ class WayPointScreen extends Component {
 		this.setState({ showWaypoints: !this.state.showWaypoints });
 	};
 
-	_renderScreenSwitcher = () => {
-		const result =
-				<View style={styles.switcher}>
-			<TouchableHighlight onPress={this._handleScreenSwitcher} underlayColor={null}>
-					<View>
-					<Text>{!this.state.showWaypoints ? '< Your waypoints' : 'Shared waypoints >'}</Text>
-					</View>
-			</TouchableHighlight>
-	</View>
-		return result;
-	};
-
 
 	render() {
 
 		return (<View style={styles.container} onLayout={this.onLayout.bind(this)}>
-			{(this.props.sharedFishmarks && this.props.sharedFishmarks.length > 0  && !this.state.showWaypoints) ?
-				this._renderSharedFishmarks() : this._renderCurrentFishmarks()}
-			{this.props.sharedFishmarks.length > 0 ? this._renderScreenSwitcher() : null}
+			<View style={styles.waypoints}>
+				{(this.props.sharedFishmarks && this.props.sharedFishmarks.length > 0 && !this.state.showWaypoints) ?
+					this._renderSharedFishmarks() : this._renderCurrentFishmarks()}
+			</View>
+			{this.props.sharedFishmarks.length > 0 ?
+			<TouchableOpacity style={styles.switcher} onPress={this._handleScreenSwitcher}>
+				 <View>
+						<Text style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Shared waypoints >'}</Text>
+					</View>
+			</TouchableOpacity>:null}
 		</View>);
 	}
 }
@@ -137,8 +136,17 @@ class WayPointScreen extends Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'mintcream'
+		backgroundColor: 'whitesmoke'
 	},
+
+	waypoints: {
+		flex: 0.9
+	},
+	switcherText: {
+		color: 'gray',
+		fontWeight: '300'
+	},
+
 	iconContainer: {
 		alignItems: 'center',
 		justifyContent: 'center',
@@ -154,10 +162,10 @@ const styles = StyleSheet.create({
 		textAlign: 'center'
 	},
 	switcher: {
-		justifyContent: 'flex-end',
-		flexDirection: 'column',
-		alignItems: 'center',
-		paddingBottom:10
+		justifyContent: 'center',
+		flexDirection: 'row',
+		flex: 0.1,
+		alignItems: 'center'
 	}
 });
 
@@ -172,7 +180,9 @@ const mapStateToProps = state => {
 		sharedFishmarksNumber: state.fishmarks.sharedFishmarksNumber,
 		allSelected: state.fishmarks.allSelected,
 		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,
-		received: state.user.receive
+		received: state.user.receive,
+		intervalAlive: state.user.intervalAlive,
+		mapView: state.fishmarks.mapView
 	};
 };
 

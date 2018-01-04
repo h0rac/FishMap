@@ -5,8 +5,11 @@ import {connect} from 'react-redux';
 export class ProfileScreen extends Component {
 
     static navigationOptions = {
-        title: "Profile",
-        headerTintColor: '#2F95D6',
+			headerStyle: {
+				backgroundColor: '#2F95D6'
+			},
+			title: 'Profile',
+			headerTintColor: 'white',
     }
 
     render() {

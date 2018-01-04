@@ -9,8 +9,8 @@ import {
 	GET_USER_LOCATION,
 	CHANGE_RECEIVE_STATUS,
 	EMIT_WAYPOINT_RECEIVE,
+	EMIT_WAYPOINT_RECEIVE_STOPPED,
 	EMIT_WAYPOINT_RECEIVE_STARTED,
-	EMIT_WAYPOINT_RECEIVE_STOP,
 	CHANGE_DURATION_SUCCESS
 
 } from '../constants/constants';
@@ -19,6 +19,7 @@ import { AsyncStorage, Dimensions } from 'react-native';
 import { displayAlert, getToken, setToken, removeToken } from '../common/utils';
 
 import SocketIOClient from "socket.io-client";
+import { setIOSocket } from '../actions/user';
 
 
 const authenticateUser = params => fetch('http://' + API_ENDPOINT + '/api/v1/login', params);
@@ -105,7 +106,7 @@ function* loginUser(action) {
 
 			const token = yield call(getToken, 'token');
 			if (token && JSON.parse(decodeURI(token))) {
-				this.ioSocket =  SocketIOClient(`ws://${API_ENDPOINT}`, { jsonp: false , transports: ['websocket'] }, );
+				this.ioSocket =  SocketIOClient(`ws://${API_ENDPOINT}`, { jsonp: false , transports: ['websocket'], pingTimeout:30000 } );
 				yield put({ type: SUCCESS_SET_TOKEN, message: result.message, socketIO: this.ioSocket });
 				action.data.navigation.navigate('MainScreen');
 			}
@@ -154,7 +155,7 @@ function* verifyToken(action) {
 		action.navigate.navigate('MainScreen');
 	} else {
 		if(socket) {
-			socket.emit('onForceDisconnect')
+			socket.emit('onErrorDisconnect')
 		}
 		if (action.screen !== 'LoginScreen') {
 			action.navigate.navigate('LoginScreen');
@@ -167,24 +168,21 @@ function* emitWaypointReceiver(action) {
 
 	if (action.emitStatus) {
 		yield put({
-			type: 'EMIT_WAYPOINT_RECEIVE_STARTED',
+			type: 'EMIT_WAYPOINT_RECEIVE_STOPPED',
 			emitStatus: true,
+			intervalAlive:false
 		});
 	} else {
 		if (!action.emitStatus) {
-			yield put({type: 'EMIT_WAYPOINT_RECEIVE_STOP', emitStatus: false})
+			yield put({type: 'EMIT_WAYPOINT_RECEIVE_STARTED', emitStatus: false, intervalAlive:true})
 		}
 	}
 }
 
 function *changeDurationInterval(action) {
-
-	const tempDuration = yield select(state => state.user.tempDuration)
-	const duration = tempDuration
-	//const timeoutID = yield select(state => state.user.timeoutId)
-	//clearTimeout(timeoutID)
-
-	yield put({type:CHANGE_DURATION_SUCCESS, duration:duration})
+	if(action.tempDuration) {
+		yield put({type:CHANGE_DURATION_SUCCESS, duration:action.tempDuration})
+	}
 }
 
 export const usersSaga = [

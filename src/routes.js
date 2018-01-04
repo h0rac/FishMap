@@ -11,6 +11,7 @@ import LoginScreen from '../src/screens/LoginScreen';
 import CreateAccountScreen from '../src/screens/CreateAccountScreen';
 import { Badge } from 'react-native-elements';
 import SideMenu from '../src/components/SideMenu'
+import { LanguageScreen } from './screens/LanguageScreen';
 
 const indicatorStyle = (props, alignSelf) => ({
 	borderBottomWidth: 3,
@@ -46,6 +47,10 @@ const NavigatorStack = StackNavigator({
 	},
 	CreateAccountScreen: {
 		screen: CreateAccountScreen
+
+	},
+	LanguageScreen: {
+		screen: LanguageScreen
 
 	},
 
@@ -96,7 +101,7 @@ const NavigatorStack = StackNavigator({
 
 
 }, {
-	mode: 'modal'
+
 });
 
 
@@ -107,13 +112,7 @@ const DrawerStack = DrawerNavigator({
 		screen: NavigatorStack,
 		navigationOptions: ({ navigation }) => ({
 			drawerLabel: 'Home',
-			headerTintColor: '#2F95D6',
-			drawerIcon: <Icon
-				name="md-arrow-back"
-				size={28}
-				color={'#2F95D6'}
-				onPress={() => navigation.navigate('MainScreen')}
-			/>
+
 		})
 	},
 	ProfileStack: {

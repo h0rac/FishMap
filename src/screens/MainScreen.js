@@ -12,19 +12,20 @@ import {
 	Button,
 	Text,
 	TouchableHighlight,
-	ActivityIndicator
+	ActivityIndicator,
+	TouchableOpacity
 } from 'react-native';
 import MapView from 'react-native-maps';
 
-import { setFishmark } from '../actions/fishmarks';
+import { setFishmark, setMapViewForAnimation } from '../actions/fishmarks';
 import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import { loadFishPositions, IOsetFishmarksCandidateList } from '../actions/fishmarks';
 import {
-	logout, getUserLocation, changeDuration, emitWaypointReceive, setTimeoutId,
-	setIOSocket, checkAuthToken
+	logout, getUserLocation, changeDuration, emitWaypointReceive, setIntervalID,
+	setIOSocket, checkAuthToken, setIntervalAlive
 } from '../actions/user';
 
 
@@ -43,7 +44,9 @@ const labelStyle =(props, alignSelf, marginTop)=> ({
 });
 
 let timeoutID;
+let intervalId
 
+let _mapView = MapView;
 class MainScreen extends Component {
 
 	constructor() {
@@ -54,16 +57,17 @@ class MainScreen extends Component {
 		this._handleLogout = this._handleLogout.bind(this);
 		this._logoutUser = this._logoutUser.bind(this);
 		this.onReceiveFishmark = this.onReceiveFishmark.bind(this);
-		this.setInitialFishmarkPosition = this.setInitialFishmarkPosition.bind(this)
 		this.setInitialUserPosition = this.setInitialUserPosition.bind(this)
 		this.onReceiveError = this.onReceiveError.bind(this);
-		this.myFunction = this.myFunction.bind(this)
+		//this.setTimeoutLoop = this.setTimeoutLoop.bind(this)
 
 
 		this.state = {
 			interval: 0,
 			intervalId:0,
 			test:null,
+			clear:null,
+			intervalAlive:true,
 
 		};
 
@@ -71,7 +75,7 @@ class MainScreen extends Component {
 
 	onReceiveError = (data) => {
 		  displayAlert('Authentication', data)
-			this.props.socketIO.emit('onForceDisconnect')
+			this.props.socketIO.emit('onErrorDisconnect')
 		  this.props.navigation.navigate('LoginScreen')
 
 	};
@@ -82,6 +86,8 @@ class MainScreen extends Component {
 				this.props.socketIO.emit('onForceDisconnect', {token: JSON.parse(decodeURI(token))})
 			}
 		})
+		clearInterval(this.props.timeoutID)
+		this.props.dispatch(setIntervalAlive(true))
 		this.props.dispatch(logout());
 		this.props.navigation.navigate('LoginScreen');
 
@@ -137,18 +143,25 @@ class MainScreen extends Component {
 
 
 	componentWillMount() {
-		this.setState({ interval: this.props.duration });
+		this.setState({ interval: this.props.duration , timeoutID:this.props.timeoutID,  intervalAlive:this.props.intervalAlive});
 	}
 
-	myFunction (){
+	/*
+	setTimeoutLoop (clear){
 		AsyncStorage.getItem('token').then(token => {
 			if (token) {
+				if(clear) {
+					displayAlert('clear', clear)
+					clearTimeout(timeoutID)
+					return
+				}
+
 				this.props.socketIO.emit('onFishmarkUpdate', { token: JSON.parse(decodeURI(token)), receive: this.props.receive })
-				const timeoutID = setTimeout(this.myFunction, this.props.duration);
-				this.props.dispatch(setTimeoutId(timeoutID))
+				timeoutID = setTimeout(this.setTimeoutLoop, this.props.duration);
 			}
 	})
 	}
+	*/
 
 
 
@@ -159,13 +172,20 @@ class MainScreen extends Component {
 			}
 			else {
 				this.props.dispatch(checkAuthToken(this.props.navigation, 'MainScreen'));
-				this.myFunction()
-				this.props.socketIO.on('onReceiveFishmark', data => this.onReceiveFishmark(data));
-				this.props.socketIO.on('onReceiveError', data => this.onReceiveError(data.error));
-				//const intervalId = setInterval(() => ioSocket.emit('onFishmarkUpdate', { token: JSON.parse(decodeURI(token)), receive:this.props.receive }), this.state.interval);
+				console.log("ALIVE", this.props.intervalAlive)
+				//this.setTimeoutLoop(this.state.clear);
+				if(this.props.intervalAlive) {
+					 intervalId = setInterval(() => this.props.socketIO.emit('onFishmarkUpdate', {
+						token: JSON.parse(decodeURI(token)),
+						receive: this.props.receive
+					}), this.state.interval);
+					this.props.dispatch(setIntervalID(intervalId))
+				}
 				this.props.dispatch(getUserLocation());
 				this.props.dispatch(loadFishPositions());
 				this.props.navigation.setParams({ handleLogout: this._handleLogout });
+				this.props.socketIO.on('onReceiveFishmark', data => this.onReceiveFishmark(data));
+				this.props.socketIO.on('onReceiveError', data => this.onReceiveError(data.error));
 			}
 		});
 	}
@@ -201,28 +221,6 @@ class MainScreen extends Component {
 		);
 	};
 
-	setInitialFishmarkPosition = () => {
-		let initPosition = null;
-
-		if (this.props.positions === undefined)
-			this.props.positions = [];
-
-		if (this.props.isSelected === true) {
-			initPosition = this.props.selectedPosition;
-		} else {
-			if(this.props.positions.length > 0) {
-				initPosition = this.props.positions[this.props.positions.length - 1];
-			}
-			else {
-				initPosition = 	{latitude: 54.475408,
-					longitude: 18.263086,
-					latitudeDelta: 0.0922,
-					longitudeDelta: 0.0421}
-			}
-		}
-		return initPosition
-	};
-
 	setInitialUserPosition = () => {
 		let initPosition;
 		const userPos = this.props.userLocation.latitude ? this.props.userLocation : null;
@@ -235,16 +233,18 @@ class MainScreen extends Component {
 
 	render() {
 
-		const initFishmarkPosition = this.setInitialFishmarkPosition();
 		const initUserPosition = this.setInitialUserPosition();
 
 		return (
 			<View style={styles.container}>
 				<MapView onLongPress={this._handleFishMarkerSet}
 					//onRegionChangeComplete={()=> this.props.dispatch(loadFishmarkPositions())}
-								 ref="map"
+								 ref = {(mapView) => { _mapView = mapView; this.props.dispatch(setMapViewForAnimation(_mapView)) }}
 								 style={styles.map}
-								 region={initFishmarkPosition}>
+								initialRegion={{latitude: 54.475408,
+					longitude: 18.263086,
+					latitudeDelta: 0.0922,
+					longitudeDelta: 0.0421}}>
 
 					{this.props.positions.map((marker, index) =>
 						<FishMarker key={index} marker={marker}
@@ -277,7 +277,7 @@ const styles = {
 		alignItems: 'center',
 		backgroundColor: '#2F95D6',
 		height: 40,
-		padding: 10
+		padding: 20
 	},
 
 	map: {
@@ -296,7 +296,9 @@ const mapStateToProps = state => {
 		receive: state.user.receive,
 		duration:state.user.duration,
 		emitStatus: state.user.emitStatus,
-		socketIO: state.user.socketIO
+		socketIO: state.user.socketIO,
+		timeoutID: state.user.timeoutID,
+		intervalAlive: state.user.intervalAlive
 	};
 };
 

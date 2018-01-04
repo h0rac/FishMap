@@ -16,7 +16,8 @@ import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import {saveSharedWaypoints} from '../actions/fishmarks';
 
 import IconBadge from 'react-native-icon-badge';
-import { changeReceiveStatus, changeDuration } from '../actions/user';
+import { changeReceiveStatus, changeDuration, setIntervalID } from '../actions/user';
+import { API_ENDPOINT } from '../constants/constants';
 
 
 
@@ -28,8 +29,9 @@ class SaveSettings extends React.Component {
 		this.saveSettings = this.saveSettings.bind(this)
 	}
 
-	saveSettings() {
-		this.props.dispatch(changeDuration())
+
+	saveSettings () {
+		this.props.dispatch(changeDuration(this.props.tempDuration))
 	}
 
 
@@ -39,7 +41,7 @@ class SaveSettings extends React.Component {
 			name="save"
 			size={28}
 			color="white"
-			onPress={() =>this.saveSettings() }
+			onPress={() => this.saveSettings() }
 			style={{ paddingRight: 20 }}
 		/>)
 	}
@@ -48,7 +50,8 @@ class SaveSettings extends React.Component {
 
 const mapStateToProps = state => {
 	return {
-		tempDuration: state.user.tempDuration
+		tempDuration: state.user.tempDuration,
+		socketIO: state.user.socketIO
 	}
 
 }

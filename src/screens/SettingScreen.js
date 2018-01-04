@@ -1,39 +1,39 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CheckBox } from 'react-native-elements';
+import { CheckBox, Divider } from 'react-native-elements';
 import {
 	StyleSheet,
 	Text,
 	View,
-	Slider,
-	Picker,
-	FlatList, Dimensions, Image, Button, TouchableHighlight, AsyncStorage
+	TouchableOpacity,
+	Switch,
+  AsyncStorage
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/Ionicons';
+import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
-import { setSelectedDuration, emitWaypointReceive } from '../actions/user';
-import SaveSettings from '../components/SaveSettings'
+import {
+	emitWaypointReceive,
+	setIntervalID,
+} from '../actions/user';
 
 
 class SettingScreen extends Component {
 
 
 	constructor() {
-		super()
+		super();
 
-		this.setEmit = this.setEmit.bind(this)
-		this.setDurationTime = this.setDurationTime.bind(this)
-		this.setDurationDisplay = this.setDurationDisplay.bind(this)
-		this.setPicker = this.setPicker.bind(this)
+		this.setEmit = this.setEmit.bind(this);
 
 		this.state = {
 			interval: 5000,
-			intervalId:null,
-			emitStatus:false,
-			durationSet:false,
-			pickerValue:0,
-		}
+			intervalId: null,
+			emitStatus: false,
+			durationSet: false,
+			color:'mintcream',
+			pickerValue: 0
+		};
 	}
 
 	static navigationOptions = ({ navigation }) => {
@@ -44,10 +44,8 @@ class SettingScreen extends Component {
 			headerStyle: {
 				backgroundColor: '#2F95D6'
 			},
-			title:'Settings',
+			title: 'Settings',
 			headerTintColor: 'white',
-			headerRight:
-				<SaveSettings/>
 		};
 	};
 	static propTypes = {
@@ -55,66 +53,24 @@ class SettingScreen extends Component {
 	};
 
 
-	setEmit () {
-		if(this.props.emitStatus) {
-			this.props.dispatch(emitWaypointReceive(false))
-		}
-		else {
-			this.props.dispatch(emitWaypointReceive(true))
+	setEmit() {
+		if (this.props.emitStatus) {
+			this.props.dispatch(emitWaypointReceive(false));
 			AsyncStorage.getItem('token').then(token => {
 				if (token) {
-					this.props.socketIO.emit('onForceDisconnect', {token: JSON.parse(decodeURI(token))})
+					const intervalId = setInterval(() => this.props.socketIO.emit('onFishmarkUpdate', {
+						token: JSON.parse(decodeURI(token)),
+						receive: this.props.receive
+					}), this.props.duration);
+					this.props.dispatch(setIntervalID(intervalId));
 				}
-			})
+			});
+		}
+		else {
+			clearInterval(this.props.timeoutID);
+			this.props.dispatch(emitWaypointReceive(true));
 
 		}
-	}
-
-
-	setDurationTime (itemValue) {
-		this.setState({pickerValue: itemValue})
-		this.props.dispatch(setSelectedDuration(itemValue))
-	}
-
-	setDurationDisplay(value) {
-		let display;
-		console.log(value)
-		if (value >= 60000 && value < 3600000) {
-			display = 'm'
-			value = Math.floor(value/1000/60)
-
-		} else if (value >= 3600000) {
-			display = 'h'
-			value = Math.floor(value / 1000 / 60 / 60)
-		} else {
-			display = 's'
-			value = value/1000
-		}
-
-		return ({value:value, display:display})
-	}
-
-	setPicker = () => {
-		const durationObject = {
-			'1 s':1000,
-			'10 s':10000,
-			'30 s':30000,
-			'1 m':60000,
-			'5 m':300000,
-			'10 m':600000,
-			'15 m':900000,
-			'30 m':1800000,
-			'1 h':3600000,
-			'5 h':18000000,
-			'10 h':36000000,
-			'15 h':54000000,
-			'1 day':86400000,
-			'2 days':172800000
-		};
-		const picker = Object.keys(durationObject).map((item,index) => {
-			return (<Picker.Item key={index} label={item} value={durationObject[item]} />)
-		})
-		return picker;
 	}
 
 
@@ -122,34 +78,99 @@ class SettingScreen extends Component {
 
 		return (
 			<View style={styles.container}>
-				<CheckBox
-					title='Enable Fishmark Receive'
-					checked={this.props.emitStatus}
-					onPress={() => this.setEmit()}
-					containerStyle={{ borderWidth: 0, borderColor: 'red' }}
-				/>
-				<Picker
-					selectedValue={this.props.tempDuration ? this.props.tempDuration: this.props.duration}
-					onValueChange={(itemValue, itemIndex) => this.setDurationTime(itemValue)}>
-					{this.setPicker().map(item => item)}
-				</Picker>
+				<View style={styles.section}>
+					<Text style={styles.sectionText}>GENERAL</Text>
+				</View>
+				<View style={styles.enableContainer}>
+					<View style={styles.enableTitle}>
+						<Text style={styles.enableText}>Enable waypoint updates</Text>
+					</View>
+					<View style={styles.enableSwitch}>
+						<Switch
+							value={!this.props.emitStatus}
+							onValueChange={() => this.setEmit()}
+						/>
+					</View>
+				</View>
+				<Divider style={{ height:0.5, backgroundColor: 'gray'}} />
+
+				<TouchableOpacity style={styles.itemContainer} onPress={()=>this.props.navigation.navigate('LanguageScreen')}>
+
+					<View style={styles.enableTitle}>
+						<Text style={styles.enableText}>Language settings</Text>
+					</View>
+					<View style={styles.enableSwitch}>
+						<IconAwesome
+							name={'angle-right'}
+							size={28}
+							color={'gray'}
+						/>
+					</View>
+				</TouchableOpacity>
 			</View>
 		);
 	}
 }
 
-
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: 'mintcream'
+		backgroundColor: 'whitesmoke',
+		flexDirection:'column'
 	},
-	iconContainer: {
-		alignItems: 'center',
-		justifyContent: 'center',
-		height: 50,
-		width: 50
+
+	enableContainer: {
+		flex: 0.1,
+		flexDirection:'row',
+		backgroundColor:'mintcream',
+		alignItems:'center',
+		paddingBottom:5,
+		paddingTop:5
 	},
+
+
+	itemContainer: {
+		flex: 0.1,
+		flexDirection:'row',
+		backgroundColor:'mintcream',
+		alignItems:'center',
+		paddingBottom:5,
+		paddingTop:5
+	},
+
+	section: {
+		backgroundColor: 'whitesmoke',
+		flex:0.05,
+		paddingLeft:20,
+		paddingTop:30,
+		flexDirection:'row',
+		alignItems:'center'
+	},
+
+	enableSwitch: {
+		flex: 1,
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		paddingRight:20
+
+	},
+
+	sectionText: {
+		color:'gray'
+
+	},
+
+	enableTitle: {
+		flex: 3,
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		paddingLeft:20
+	},
+
+	enableText: {
+		paddingTop:10
+	},
+
 	title: {
 		backgroundColor: 'black',
 		color: '#fff',
@@ -168,6 +189,7 @@ const mapStateToProps = state => {
 		emitStatus: state.user.emitStatus,
 		tempDuration: state.user.tempDuration,
 		socketIO: state.user.socketIO,
+		timeoutID: state.user.timeoutID
 	};
 };
 

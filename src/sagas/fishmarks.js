@@ -195,9 +195,12 @@ function* loadWaypointsOnPush(action) {
 		const fishmarks = yield select(state => state.fishmarks.fishmarks);
 		const seed = yield select(state => state.fishmarks.seed);
 
+		console.log("LOADED WAYPOINTS", loadedWaypoints)
+		console.log("FISHMARKS WAYPOINTS", fishmarks)
+
 		if (loadedWaypoints.length !== fishmarks.length) {
 			loadedWaypoints = fishmarks.filter((waypoint, index) => index <= seed).reverse();
-			yield put({ type: SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, loadedWaypoints, refreshing: true });
+			yield put({ type: SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, loadedWaypoints:loadedWaypoints, refreshing: true });
 			yield put({ type: INCREMENT_SEED, seed: seed + 5, refreshing: false });
 
 		}
@@ -272,11 +275,11 @@ function* shareWaypointChecked(action) {
 	try {
 		let number = yield select(state => state.fishmarks.sharedFishmarksNumber);
 		const selectedSharedFishmarks = yield select(state => state.fishmarks.selectedSharedFishmarks);
-		const emitStatus = yield select(state => state.user.emitStatus)
+
 
 		if (!action.checked) {
-			yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
-
+				yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
+			
 			yield put({
 				type: SHARE_WAYPOINT_CHECKED_SUCCESS,
 				number: --number,
@@ -293,6 +296,7 @@ function* shareWaypointChecked(action) {
 				number: ++number,
 				selectedSharedFishmark: { ...action.target, checked: !action.checked }
 			});
+			if(action.intervalAlive)
 				yield put({ type: CHANGE_RECEIVE_STATUS, receive: true });
 		}
 

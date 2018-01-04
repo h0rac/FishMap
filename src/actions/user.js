@@ -9,7 +9,8 @@ import {
 	EMIT_WAYPOINT_RECEIVE,
 	SET_TIMEOUT_ID,
 	SET_SELECTED_DURATION,
-	SET_IO_SOCKET
+	SET_IO_SOCKET,
+	SET_INTERVAL_ALIVE
 } from '../constants/constants';
 
 export const setUserData = (data) => ({
@@ -43,8 +44,9 @@ export const changeReceiveStatus = (status) => ({
 
 });
 
-export const changeDuration = () => ({
+export const changeDuration = (tempDuration) => ({
 	type: CHANGE_DURATION,
+	tempDuration:tempDuration
 
 });
 
@@ -54,9 +56,9 @@ export const emitWaypointReceive = (emitStatus) => ({
 
 });
 
-export const setTimeoutId = (id) => ({
+export const setIntervalID = (timeoutID) => ({
 	type:SET_TIMEOUT_ID,
-	id:id
+	timeoutID:timeoutID
 })
 
 export const setSelectedDuration = (duration) => ({
@@ -67,4 +69,9 @@ export const setSelectedDuration = (duration) => ({
 export const setIOSocket = (socket) => ({
 	type: SET_IO_SOCKET,
 	socket:socket
+})
+
+export const setIntervalAlive = (status) => ({
+	type:SET_INTERVAL_ALIVE,
+	status:status
 })

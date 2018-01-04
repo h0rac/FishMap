@@ -76,63 +76,6 @@ configure({ adapter: new Adapter() });
 			expect(tree.dive()).toMatchSnapshot();
 		});
 
-	it('should set initial fishmark position to be empty', () => {
-		const MainScreenComponent = tree.dive();
-		const setInitialFishmarkPosition = jest.spyOn(MainScreenComponent.instance(), 'setInitialFishmarkPosition');
-		const position = setInitialFishmarkPosition();
-		expect(position).toEqual({
-			latitude: 54.475408,
-			longitude: 18.263086,
-			latitudeDelta: 0.0922,
-			longitudeDelta: 0.0421
-		});
-	});
-
-	it('should set initial fishmark to last position', () => {
-		const MainScreenComponent = tree.dive();
-		MainScreenComponent.setProps({
-			positions: [{
-				latitude: 54.475408,
-				longitude: 18.263086,
-				latitudeDelta: 0.0922,
-				longitudeDelta: 0.0421
-			},
-				{
-					latitude: 54.66666,
-					longitude: 18.11111,
-					latitudeDelta: 0.0922,
-					longitudeDelta: 0.0421
-				}]
-		});
-		const setInitialFishmarkPosition = jest.spyOn(MainScreenComponent.instance(), 'setInitialFishmarkPosition');
-		const position = setInitialFishmarkPosition();
-		expect(position).toEqual({
-			latitude: 54.66666,
-			longitude: 18.11111,
-			latitudeDelta: 0.0922,
-			longitudeDelta: 0.0421
-		});
-	});
-
-	it('should set initial fishmark to selected position', () => {
-		const MainScreenComponent = tree.dive();
-		MainScreenComponent.setProps({
-			isSelected: true, selectedPosition: {
-				latitude: 54.475408,
-				longitude: 18.263086,
-				latitudeDelta: 0.0922,
-				longitudeDelta: 0.0421
-			}
-		});
-		const setInitialFishmarkPosition = jest.spyOn(MainScreenComponent.instance(), 'setInitialFishmarkPosition');
-		const position = setInitialFishmarkPosition();
-		expect(position).toEqual({
-			latitude: 54.475408,
-			longitude: 18.263086,
-			latitudeDelta: 0.0922,
-			longitudeDelta: 0.0421
-		});
-	});
 
 	it('should set user initial position', () => {
 		const MainScreenComponent = tree.dive();

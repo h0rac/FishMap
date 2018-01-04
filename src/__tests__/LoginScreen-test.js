@@ -12,6 +12,13 @@ configure({ adapter: new Adapter() });
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
+jest.mock('Platform', () => {
+		return {
+			Platform: { OS: 'ios' }
+		}
+	}
+)
+
 describe('Testing Login screen', () => {
 
 	let tree;
@@ -19,6 +26,7 @@ describe('Testing Login screen', () => {
 	let state;
 	let props;
 	let dispatch;
+
 	beforeEach(() => {
 		navigate = jest.fn();
 		state = {
@@ -87,16 +95,6 @@ describe('Testing Login screen', () => {
 		dispatch(checkAuthToken(navigate));
 		expect(dispatch).toHaveBeenCalledWith(checkAuthToken(navigate));
 
-	});
-
-
-	it('should check platform type', () => {
-		const LoginScreenComponent = tree.dive();
-		LoginScreenComponent.setState({ ios: false });
-		const componentDidMount = jest.spyOn(LoginScreenComponent.instance(), 'componentDidMount');
-		componentDidMount();
-		expect(Platform.OS).toEqual('ios');
-		expect(LoginScreenComponent.state().ios).toBe(true);
 	});
 
 

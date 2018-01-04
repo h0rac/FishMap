@@ -64,16 +64,10 @@ describe('Testing Main screen', () => {
 		expect(tree.dive()).toMatchSnapshot();
 	});
 
-	it('should render 1 checkbox', () => {
+	it('should render 1 Switch', () => {
 		const SettingScreenCompononent = tree.dive();
-		const checkbox = SettingScreenCompononent.find('CheckBox')
-		expect(checkbox.length).toBe(1)
-	})
-
-	it('should render 1 picker', () => {
-		const SettingScreenCompononent = tree.dive();
-		const sliders = SettingScreenCompononent.find('Picker')
-		expect(sliders.length).toBe(1)
+		const switches = SettingScreenCompononent.find('Switch')
+		expect(switches.length).toBe(1)
 	})
 
 

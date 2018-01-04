@@ -6,12 +6,12 @@ import {
 	Image, TouchableHighlight, TouchableOpacity
 } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { CheckBox } from 'react-native-elements';
+import IconBtn from 'react-native-vector-icons/FontAwesome';
 import FlipCard from 'react-native-flip-card-view';
 import { shareWaypointChecked, uncheckWaypointShared } from '../actions/fishmarks';
 import { connect } from 'react-redux';
-
+import {Icon} from 'react-native-elements'
+import CheckBox from 'react-native-check-box'
 
 class Waypoint extends Component {
 
@@ -49,34 +49,49 @@ class Waypoint extends Component {
 	_renderFront() {
 		return (
 			<View style={styles.row}>
-				<View style={styles.iconContainer}>
+				<View style={styles.iconLeft}>
 					{this.props.shared ?
 						<CheckBox
-							title=''
-							checked={this.props.item.checked}
-							onPress={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}
-							containerStyle={{ borderWidth: 0, borderColor: 'red' }}
-						/>
+							isChecked={this.props.item.checked}
+							onClick={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}
+							checkBoxColor={'green'}
+							/>
 						:
-						<Icon name="anchor" style={styles.icon} color={'#2F95D6'}/>}
+						<Icon
+							name='anchor'
+							type='font-awesome'
+							size={20}
+							color={'#2F95D6'}/>
+					}
 				</View>
-				<View style={styles.nameTitle}>
-					<Text style={styles.name}>{this.props.item.title} </Text>
-				</View>
+					<View style={styles.nameTitle}>
+						<Text style={styles.name}>{this.props.item.title} </Text>
+					</View>
 				<View style={styles.levelTitle}>
 					<Text style={styles.level}>{this.props.item.latitude}</Text>
 					<Text style={styles.scoreDate}>{this.props.item.longitude}</Text>
 
 				</View>
-				<View style={styles.scoreTitle}>
-					<Text style={styles.scoreText}>{this.props.item.date}</Text>
+				<View style={styles.rightIcon}>
 					{!this.props.shared ?
-						<Icon name="arrow-circle-right" style={styles.icon}
-									onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}
-									onLongPress={!this.props.shared ? this.handleShareWaypoint : null}/>
-						: 	<Icon name="times-rectangle" style={styles.icon}
-										 onPress={() => console.log('Cancel clicked')}
-										 />}
+						<Icon
+							name ='arrow-circle-right'
+							type ='font-awesome'
+							color={'green'}
+							size={20}
+							underlayColor={'mintcream'}
+							containerStyle={{backgroundColor:'mintcream'}}
+							onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}
+							onLongPress={()=> !this.props.shared ? this.handleShareWaypoint():null}
+						/>: 		<Icon
+							name ='times-rectangle'
+							type ='font-awesome'
+							color={'red'}
+							size={20}
+							onPress={()=>console.log('clicked delete')}
+						/>}
+
+
 				</View>
 			</View>
 		);
@@ -84,7 +99,7 @@ class Waypoint extends Component {
 
 	_renderBack() {
 		return (
-			<View style={{ backgroundColor: 'mintcream', flex: 1, height: 100 }}>
+			<View style={styles.rowBack}>
 				<Text>Hello back page</Text>
 			</View>);
 	}
@@ -106,12 +121,16 @@ class Waypoint extends Component {
 
 const styles = StyleSheet.create({
 
-	iconContainer: {
-		alignItems: 'center',
+	iconLeft: {
 		justifyContent: 'center',
-		flexDirection: 'row',
-		height: 50,
-		width: 50
+		paddingLeft:20,
+		alignItems:'flex-start'
+	},
+
+	nameTitleShared: {
+		flex: 2,
+		justifyContent: 'center',
+		alignItems: 'flex-end',
 	},
 
 	animatedContainer: {
@@ -127,14 +146,24 @@ const styles = StyleSheet.create({
 		borderColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		flexDirection: 'row',
-		marginLeft: 10,
-		marginRight: 10,
-		paddingTop: 20,
-		paddingBottom: 30
+		backgroundColor:'mintcream',
+		height:70
+
 	},
+
+	rowBack: {
+		borderColor: '#f1f1f1',
+		borderBottomWidth: 1,
+		flexDirection: 'row',
+		backgroundColor:'mintcream',
+		height:70
+
+	},
+
 	nameTitle: {
-		flex: 1,
-		justifyContent: 'center'
+		flex: 1.5,
+		justifyContent: 'center',
+		alignItems:'flex-end'
 	},
 	name: {
 		fontSize: 10,
@@ -144,13 +173,16 @@ const styles = StyleSheet.create({
 		fontSize: 10
 	},
 	levelTitle: {
-		flex: 1,
-		justifyContent: 'center'
+		flex: 1.5,
+		justifyContent: 'center',
+		alignItems:'flex-end'
 
 	},
-	scoreTitle: {
+	rightIcon: {
 		width: 80,
-		paddingLeft: 20
+		justifyContent:'center',
+		alignItems:'flex-end',
+		paddingRight:20
 	},
 	scoreDate: {
 		fontSize: 10,
@@ -167,7 +199,7 @@ const mapStateToProps = state => {
 
 	return {
 		allSelected: state.fishmarks.allSelected,
-		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks
+		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,
 
 	};
 };

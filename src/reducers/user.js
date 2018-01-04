@@ -10,11 +10,12 @@ import {
 	CHANGE_RECEIVE_STATUS,
 	CHANGE_DISPLAY_SAVE_STATUS,
 	CHANGE_DURATION,
-	EMIT_WAYPOINT_RECEIVE_STOP,
 	EMIT_WAYPOINT_RECEIVE_STARTED,
+	EMIT_WAYPOINT_RECEIVE_STOPPED,
 	SET_TIMEOUT_ID,
 	SET_SELECTED_DURATION, CHANGE_DURATION_SUCCESS,
-	SET_IO_SOCKET
+	SET_IO_SOCKET,
+	SET_INTERVAL_ALIVE,
 
 }
 	from '../constants/constants';
@@ -26,12 +27,13 @@ const intialState = {
 	error: false,
 	position: {},
 	message: null,
-	duration: 10000,
+	duration: 8000,
 	tempDuration:0,
 	receive: true,
 	emitStatus: false,
 	intervalId: 0,
-	timeoutId:0,
+	timeoutID:0,
+	intervalAlive:true,
 	socketIO:null,
 };
 
@@ -75,19 +77,19 @@ const reducer = (state = intialState, action) => {
 				...state, duration: action.duration
 			};
 
-		case EMIT_WAYPOINT_RECEIVE_STARTED:
+		case EMIT_WAYPOINT_RECEIVE_STOPPED:
 			return {
-				...state, emitStatus: action.emitStatus
+				...state, emitStatus: action.emitStatus, intervalAlive: action.intervalAlive
 			};
 
-		case EMIT_WAYPOINT_RECEIVE_STOP:
+		case EMIT_WAYPOINT_RECEIVE_STARTED:
 			return {
-				...state, emitStatus: action.emitStatus
+				...state, emitStatus: action.emitStatus, intervalAlive: action.intervalAlive
 			};
 
 		case SET_TIMEOUT_ID:
 			return {
-				...state, timeoutId: action.id
+				...state, timeoutID: action.timeoutID
 			};
 
 		case SET_SELECTED_DURATION:
@@ -98,6 +100,11 @@ const reducer = (state = intialState, action) => {
 		case SET_IO_SOCKET:
 			return {
 				...state, socketIO:action.socket
+			}
+
+		case SET_INTERVAL_ALIVE:
+			return {
+				...state, intervalAlive:action.status
 			}
 
 		default:

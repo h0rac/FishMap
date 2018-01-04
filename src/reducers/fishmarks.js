@@ -22,7 +22,8 @@ import {
 	SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS,
 	SHARE_WAYPOINT_CHECKED_CLEAR, UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED,
-	CHANGE_DISPLAY_SAVE_STATUS
+	CHANGE_DISPLAY_SAVE_STATUS,
+	SET_MAP_FOR_ANIMATION
 
 } from '../constants/constants';
 
@@ -42,10 +43,11 @@ const initialState = {
 	copiedSharedFishmarks: [],
 	selectedSharedFishmark: {},
 	sharedFishmarksNumber: 0,
-	seed: 5,
+	seed: 7,
 	allSelected: false,
 	displaySave: false,
-	cleared: false
+	cleared: false,
+	mapView:null,
 };
 
 
@@ -64,6 +66,7 @@ const reducer = (state = initialState, action) => {
 				...state, fishmarks: [...state.fishmarks.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude
 				)], selectedSharedFishmarks: [...state.selectedSharedFishmarks.filter(mark => mark.latitude !== action.position.latitude
+					&& mark.longitude !== action.position.longitude)], loadedWaypoints:[...state.loadedWaypoints.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude)]
 			};
 
@@ -133,6 +136,10 @@ const reducer = (state = initialState, action) => {
 
 		case CHANGE_DISPLAY_SAVE_STATUS:
 			return {...state, displaySave: action.displaySave}
+
+
+		case SET_MAP_FOR_ANIMATION:
+			return {...state, mapView:action.mapView}
 		default:
 			return state;
 	}
