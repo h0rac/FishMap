@@ -1,6 +1,6 @@
 import 'react-native';
 import React from 'react';
-import {ProfileScreen} from '../screens/ProfileScreen'
+import {ProfileScreen} from '../ProfileScreen'
 import renderer from 'react-test-renderer'
 
 

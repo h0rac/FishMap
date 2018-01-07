@@ -82,7 +82,6 @@ class Waypoint extends Component {
 							underlayColor={'mintcream'}
 							containerStyle={{backgroundColor:'mintcream'}}
 							onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}
-							onLongPress={()=> !this.props.shared ? this.handleShareWaypoint():null}
 						/>: 		<Icon
 							name ='times-rectangle'
 							type ='font-awesome'
@@ -100,7 +99,46 @@ class Waypoint extends Component {
 	_renderBack() {
 		return (
 			<View style={styles.rowBack}>
-				<Text>Hello back page</Text>
+				<View style={styles.iconLeft}>
+					{this.props.shared ?
+						<CheckBox
+							isChecked={this.props.item.checked}
+							onClick={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}
+							checkBoxColor={'green'}
+						/>
+						:
+						<Icon
+							name='anchor'
+							type='font-awesome'
+							size={20}
+							color={'#2F95D6'}/>
+					}
+				</View>
+				<View style={styles.nameTitle}>
+					<Text style={styles.name}>{this.props.item.title} </Text>
+				</View>
+				<View style={styles.levelTitle}>
+					<Text style={styles.level}>{this.props.item.latitude}</Text>
+					<Text style={styles.scoreDate}>{this.props.item.longitude}</Text>
+				</View>
+				<View style={styles.rightIcon}>
+					{!this.props.shared ?
+						<Icon
+							name ='share-alt'
+							type ='font-awesome'
+							color={'green'}
+							size={20}
+							underlayColor={'mintcream'}
+							containerStyle={{backgroundColor:'mintcream'}}
+							onPress={()=> !this.props.shared ? this.handleShareWaypoint():null}
+						/>: 		<Icon
+							name ='times-rectangle'
+							type ='font-awesome'
+							color={'red'}
+							size={20}
+							onPress={()=>console.log('clicked delete')}
+						/>}
+				</View>
 			</View>);
 	}
 

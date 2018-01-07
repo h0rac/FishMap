@@ -26,7 +26,7 @@ const authenticateUser = params => fetch('http://' + API_ENDPOINT + '/api/v1/log
 const checkTokenLife = params => fetch(`http://${API_ENDPOINT}/api/v1/verify`,params)
 
 
-const getPosition = (options) => {
+export const getPosition = (options) => {
 	return new Promise(function (resolve, reject) {
 		navigator.geolocation.getCurrentPosition(resolve, reject, options);
 	});
@@ -40,7 +40,7 @@ const LATITUDE_DETLTA = 0.0922;
 const LONGITUDE_DELTA = ASPECT_RATIO * LATITUDE_DETLTA;
 
 
-function* getUserPosition() {
+export function* getUserPosition() {
 
 	try {
 		//TODO enableHighAccuracy false in indoor, set to true when outdoor, false only for tests
@@ -53,6 +53,7 @@ function* getUserPosition() {
 			longitudeDelta: LONGITUDE_DELTA
 		};
 
+
 		if (userLocation) {
 			yield put({ type: SUCCESS_GET_USER_LOCATION, position: userPosition });
 		} else {
@@ -64,7 +65,7 @@ function* getUserPosition() {
 }
 
 
-function* logoutUser(action) {
+export function* logoutUser(action) {
 	try {
 
 		yield call(removeToken, 'token');
@@ -121,7 +122,6 @@ function* loginUser(action) {
 function* verifyToken(action) {
 	const token = yield call(getToken, 'token');
 	const socketIO = yield select(state => state.user.socketIO)
-	console.log("TOKEN", token)
 
 	const myHeaders = new Headers();
 
@@ -144,7 +144,6 @@ function* verifyToken(action) {
 	}
 	const result = yield response ?  response.json(): null
 
-	console.log("RESULT", result)
 
 	let socket = null;
 	if (result && result.success) {
@@ -164,22 +163,22 @@ function* verifyToken(action) {
 	}
 }
 
-function* emitWaypointReceiver(action) {
+export function* emitWaypointReceiver(action) {
 
 	if (action.emitStatus) {
 		yield put({
-			type: 'EMIT_WAYPOINT_RECEIVE_STOPPED',
+			type: EMIT_WAYPOINT_RECEIVE_STOPPED,
 			emitStatus: true,
 			intervalAlive:false
 		});
 	} else {
 		if (!action.emitStatus) {
-			yield put({type: 'EMIT_WAYPOINT_RECEIVE_STARTED', emitStatus: false, intervalAlive:true})
+			yield put({type: EMIT_WAYPOINT_RECEIVE_STARTED, emitStatus: false, intervalAlive:true})
 		}
 	}
 }
 
-function *changeDurationInterval(action) {
+export function *changeDurationInterval(action) {
 	if(action.tempDuration) {
 		yield put({type:CHANGE_DURATION_SUCCESS, duration:action.tempDuration})
 	}

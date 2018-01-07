@@ -12,7 +12,7 @@ import {
 	CHANGE_DURATION,
 	EMIT_WAYPOINT_RECEIVE_STARTED,
 	EMIT_WAYPOINT_RECEIVE_STOPPED,
-	SET_TIMEOUT_ID,
+	SET_INTERVAL_ID,
 	SET_SELECTED_DURATION, CHANGE_DURATION_SUCCESS,
 	SET_IO_SOCKET,
 	SET_INTERVAL_ALIVE,
@@ -31,7 +31,6 @@ const intialState = {
 	tempDuration:0,
 	receive: true,
 	emitStatus: false,
-	intervalId: 0,
 	timeoutID:0,
 	intervalAlive:true,
 	socketIO:null,
@@ -87,7 +86,7 @@ const reducer = (state = intialState, action) => {
 				...state, emitStatus: action.emitStatus, intervalAlive: action.intervalAlive
 			};
 
-		case SET_TIMEOUT_ID:
+		case SET_INTERVAL_ID:
 			return {
 				...state, timeoutID: action.timeoutID
 			};

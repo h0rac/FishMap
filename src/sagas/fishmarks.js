@@ -276,10 +276,12 @@ function* shareWaypointChecked(action) {
 		let number = yield select(state => state.fishmarks.sharedFishmarksNumber);
 		const selectedSharedFishmarks = yield select(state => state.fishmarks.selectedSharedFishmarks);
 
+		console.log("ACTION CHECKED", action.checked)
+		console.log("ACTION ALIVE", action.intervalAlive)
 
 		if (!action.checked) {
 				yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
-			
+
 			yield put({
 				type: SHARE_WAYPOINT_CHECKED_SUCCESS,
 				number: --number,

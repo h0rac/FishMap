@@ -81,12 +81,13 @@ class SettingScreen extends Component {
 				<View style={styles.section}>
 					<Text style={styles.sectionText}>GENERAL</Text>
 				</View>
-				<View style={styles.enableContainer}>
-					<View style={styles.enableTitle}>
+				<View style={styles.generalContainer}>
+					<View style={styles.generalText}>
 						<Text style={styles.enableText}>Enable waypoint updates</Text>
 					</View>
 					<View style={styles.enableSwitch}>
 						<Switch
+							key={'waypointSwitch'}
 							value={!this.props.emitStatus}
 							onValueChange={() => this.setEmit()}
 						/>
@@ -94,9 +95,9 @@ class SettingScreen extends Component {
 				</View>
 				<Divider style={{ height:0.5, backgroundColor: 'gray'}} />
 
-				<TouchableOpacity style={styles.itemContainer} onPress={()=>this.props.navigation.navigate('LanguageScreen')}>
+				<TouchableOpacity key='language' style={styles.generalContainer} onPress={()=>this.props.navigation.navigate('LanguageScreen')}>
 
-					<View style={styles.enableTitle}>
+					<View style={styles.generalText}>
 						<Text style={styles.enableText}>Language settings</Text>
 					</View>
 					<View style={styles.enableSwitch}>
@@ -119,13 +120,12 @@ const styles = StyleSheet.create({
 		flexDirection:'column'
 	},
 
-	enableContainer: {
+	generalContainer: {
 		flex: 0.1,
 		flexDirection:'row',
 		backgroundColor:'mintcream',
 		alignItems:'center',
-		paddingBottom:5,
-		paddingTop:5
+		height:70
 	},
 
 
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
 
 	},
 
-	enableTitle: {
+	generalText: {
 		flex: 3,
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
 	},
 
 	enableText: {
-		paddingTop:10
+		paddingTop:5
 	},
 
 	title: {

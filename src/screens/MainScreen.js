@@ -146,24 +146,6 @@ class MainScreen extends Component {
 		this.setState({ interval: this.props.duration , timeoutID:this.props.timeoutID,  intervalAlive:this.props.intervalAlive});
 	}
 
-	/*
-	setTimeoutLoop (clear){
-		AsyncStorage.getItem('token').then(token => {
-			if (token) {
-				if(clear) {
-					displayAlert('clear', clear)
-					clearTimeout(timeoutID)
-					return
-				}
-
-				this.props.socketIO.emit('onFishmarkUpdate', { token: JSON.parse(decodeURI(token)), receive: this.props.receive })
-				timeoutID = setTimeout(this.setTimeoutLoop, this.props.duration);
-			}
-	})
-	}
-	*/
-
-
 
 	componentDidMount() {
 		AsyncStorage.getItem('token').then(token => {
@@ -172,9 +154,8 @@ class MainScreen extends Component {
 			}
 			else {
 				this.props.dispatch(checkAuthToken(this.props.navigation, 'MainScreen'));
-				console.log("ALIVE", this.props.intervalAlive)
-				//this.setTimeoutLoop(this.state.clear);
 				if(this.props.intervalAlive) {
+					clearInterval(this.props.timeoutID)
 					 intervalId = setInterval(() => this.props.socketIO.emit('onFishmarkUpdate', {
 						token: JSON.parse(decodeURI(token)),
 						receive: this.props.receive

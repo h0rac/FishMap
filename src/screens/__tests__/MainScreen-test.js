@@ -1,6 +1,6 @@
 import { TextInput, Keyboard, Dimensions, Platform, Alert, AsyncStorage, StyleSheet } from 'react-native';
 import React from 'react';
-import MainScreen from '../screens/MainScreen';
+import MainScreen from '../MainScreen';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
@@ -20,7 +20,7 @@ jest.mock('AsyncStorage', () => {
 				resolve('"1234"');
 			});
 		})
-	}
+	};
 });
 
 
@@ -28,53 +28,53 @@ jest.useFakeTimers();
 
 configure({ adapter: new Adapter() });
 
-	const middlewares = [];
-	const mockStore = configureStore(middlewares);
+const middlewares = [];
+const mockStore = configureStore(middlewares);
 
-	jest.mock('react-native-vector-icons/Ionicons', () => ({}));
+jest.mock('react-native-vector-icons/Ionicons', () => ({}));
 
-	jest.mock('react-native-vector-icons/FontAwesome', () => ({}));
+jest.mock('react-native-vector-icons/FontAwesome', () => ({}));
 
 
-	describe('Testing Main screen', () => {
+describe('Testing Main screen', () => {
 
-		let tree;
-		let navigate;
-		let state;
-		let props;
-		let dispatch;
+	let tree;
+	let navigate;
+	let state;
+	let props;
+	let dispatch;
 
-		const event = {
-			nativeEvent: {
-				coordinate: {
-					latitude: 54.475408,
-					longitude: 18.263086,
-					latitudeDelta: 0.0922,
-					longitudeDelta: 0.0421
-				}
+	const event = {
+		nativeEvent: {
+			coordinate: {
+				latitude: 54.475408,
+				longitude: 18.263086,
+				latitudeDelta: 0.0922,
+				longitudeDelta: 0.0421
 			}
+		}
+	};
+
+	beforeEach(() => {
+		navigate = jest.fn();
+		state = {
+			fishmarks: { fishmarks: [] },
+			user: { position: {}, duration: 1000 }
+
 		};
+		const store = mockStore(state);
+		dispatch = jest.fn();
 
-		beforeEach(() => {
-			navigate = jest.fn();
-			state = {
-				fishmarks: { fishmarks: [] },
-				user: { position: {}, duration: 1000 }
+		props = store;
 
-			};
-			const store = mockStore(state);
-			dispatch = jest.fn();
+		tree = shallow(
+			<MainScreen {...props} store={store} navigation={{ navigate }}
+			/>, { lifecycleExperimental: true });
+	});
 
-			props = store
-
-			tree = shallow(
-				<MainScreen {...props} store={store} navigation={{ navigate }}
-				/>, { lifecycleExperimental: true });
-		});
-
-		it('renders correctly', () => {
-			expect(tree.dive()).toMatchSnapshot();
-		});
+	it('renders correctly', () => {
+		expect(tree.dive()).toMatchSnapshot();
+	});
 
 
 	it('should set user initial position', () => {
@@ -118,6 +118,7 @@ configure({ adapter: new Adapter() });
 		MapView.first().simulate('LongPress', event);
 	});
 
+
 	it('should invoke onReceive using IO Socket with pause true', () => {
 		const MainScreenComponent = tree.dive();
 		const onReceive = jest.spyOn(MainScreenComponent.instance(), 'onReceiveFishmark');
@@ -151,22 +152,22 @@ configure({ adapter: new Adapter() });
 	it('should have user token in AsyncStorage', () => {
 		const MainScreenComponent = tree.dive();
 		const componentDidMount = jest.spyOn(MainScreenComponent.instance(), 'componentDidMount');
-		componentDidMount()
+		componentDidMount();
 		expect(componentDidMount).toBeCalled();
 
-		spyOn(MainScreenComponent.instance(), "componentDidMount").and.returnValue(function() {
+		spyOn(MainScreenComponent.instance(), 'componentDidMount').and.returnValue(function () {
 			return AsyncStorage.getItem('token');
 		});
-		expect(MainScreenComponent.instance().state.interval).not.toBe(null)
+		expect(MainScreenComponent.instance().state.interval).not.toBe(null);
 	});
 
 	it('should not have token in AsyncStorage and redirect to LoginScreen', () => {
 		const MainScreenComponent = tree.dive();
 
-		spyOn(MainScreenComponent.instance(), "componentDidMount").and.returnValue(function() {
+		spyOn(MainScreenComponent.instance(), 'componentDidMount').and.returnValue(function () {
 			return AsyncStorage.getItem('fake');
 		});
-	})
+	});
 
 
 });

@@ -7,7 +7,7 @@ import {
 	CHANGE_DURATION,
 	CHANGE_RECEIVE_STATUS,
 	EMIT_WAYPOINT_RECEIVE,
-	SET_TIMEOUT_ID,
+	SET_INTERVAL_ID,
 	SET_SELECTED_DURATION,
 	SET_IO_SOCKET,
 	SET_INTERVAL_ALIVE
@@ -57,7 +57,7 @@ export const emitWaypointReceive = (emitStatus) => ({
 });
 
 export const setIntervalID = (timeoutID) => ({
-	type:SET_TIMEOUT_ID,
+	type:SET_INTERVAL_ID,
 	timeoutID:timeoutID
 })
 
