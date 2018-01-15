@@ -1,13 +1,18 @@
 import sagaHelper from 'redux-saga-testing';
-import { call, put } from 'redux-saga/effects';
+import { call, put, select } from 'redux-saga/effects';
 import {
 	FAILED_GET_USER_LOCATION, SUCCESS_GET_USER_LOCATION, EMIT_WAYPOINT_RECEIVE_STOPPED,
 	EMIT_WAYPOINT_RECEIVE_STARTED, CHANGE_DURATION_SUCCESS,SUCCESS_REMOVE_TOKEN
 } from '../../constants/constants';
 
 import {removeToken, getToken} from '../../common/utils';
+import "isomorphic-fetch"
+import MockedSocket from 'socket-io-mock';
 
-import { getUserPosition, getPosition, emitWaypointReceiver,changeDurationInterval, logoutUser } from '../users';
+import {
+	getUserPosition, getPosition, emitWaypointReceiver, changeDurationInterval, logoutUser,
+	verifyToken, selectSocket, checkTokenLife
+} from '../users';
 
 const userLocation = {
 	coords: {
@@ -22,6 +27,16 @@ const userPosition = {
 	latitudeDelta: 0.0922,
 	longitudeDelta: 0.0421
 };
+
+
+const api = url => fetch(url).then(response => {
+	if (response.ok) {
+		return response.json();
+	} else {
+		throw new Error(response.status); // for example
+	}
+});
+
 
 
 describe('When testing user Saga getUserPosition generator function', () => {
@@ -80,5 +95,48 @@ describe('When testing user Saga logoutOut function',() => {
 	it('should put action to success remove token', result => {
 		expect(result).toEqual(put({type:SUCCESS_REMOVE_TOKEN, message:'Token removed'}))
 	})
+
+})
+
+describe('When testing user Saga verifyToken function',() => {
+	const navigate = jest.fn();
+	const action = {
+		navigation:navigate,
+		screen:'LoginScreen',
+	};
+
+	const myHeaders = new Headers();
+
+	myHeaders.append('Content-Type', 'application/json');
+	let token;
+
+
+	let it = sagaHelper(verifyToken(action))
+
+
+	it('should call getToken function', result => {
+		expect(result).toEqual(call(getToken,'token'))
+		return  token = '1234'
+	})
+
+	let params = {
+		method: 'POST',
+		headers: myHeaders,
+		body: JSON.stringify({
+			token: JSON.parse(decodeURI('1234'))
+		})
+	};
+
+
+	it('should select IOSocket from user store', result => {
+		expect(result).toEqual(select(selectSocket))
+
+	})
+
+	it('should call checkTokenLife if token is not null', result => {
+		expect(result).toEqual(call(checkTokenLife, params))
+
+	})
+
 
 })

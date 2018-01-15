@@ -10,7 +10,8 @@ import {
 	SET_INTERVAL_ID,
 	SET_SELECTED_DURATION,
 	SET_IO_SOCKET,
-	SET_INTERVAL_ALIVE
+	SET_INTERVAL_ALIVE,
+	CREATE_ACCOUNT
 } from '../constants/constants';
 
 export const setUserData = (data) => ({
@@ -24,6 +25,11 @@ export const logout = () => ({
 
 export const login = (data) => ({
 	type: LOGIN,
+	data
+});
+
+export const createAccount = (data) => ({
+	type: CREATE_ACCOUNT,
 	data,
 
 });
@@ -46,32 +52,32 @@ export const changeReceiveStatus = (status) => ({
 
 export const changeDuration = (tempDuration) => ({
 	type: CHANGE_DURATION,
-	tempDuration:tempDuration
+	tempDuration: tempDuration
 
 });
 
 export const emitWaypointReceive = (emitStatus) => ({
-	type:EMIT_WAYPOINT_RECEIVE,
-	emitStatus: emitStatus,
+	type: EMIT_WAYPOINT_RECEIVE,
+	emitStatus: emitStatus
 
 });
 
 export const setIntervalID = (timeoutID) => ({
-	type:SET_INTERVAL_ID,
-	timeoutID:timeoutID
-})
+	type: SET_INTERVAL_ID,
+	timeoutID: timeoutID
+});
 
 export const setSelectedDuration = (duration) => ({
 	type: SET_SELECTED_DURATION,
 	duration: duration
-})
+});
 
 export const setIOSocket = (socket) => ({
 	type: SET_IO_SOCKET,
-	socket:socket
-})
+	socket: socket
+});
 
 export const setIntervalAlive = (status) => ({
-	type:SET_INTERVAL_ALIVE,
-	status:status
-})
+	type: SET_INTERVAL_ALIVE,
+	status: status
+});

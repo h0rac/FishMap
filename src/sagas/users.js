@@ -21,9 +21,11 @@ import { displayAlert, getToken, setToken, removeToken } from '../common/utils';
 import SocketIOClient from "socket.io-client";
 import { setIOSocket } from '../actions/user';
 
+export const selectSocket = state => state.user.socketIO
 
-const authenticateUser = params => fetch('http://' + API_ENDPOINT + '/api/v1/login', params);
-const checkTokenLife = params => fetch(`http://${API_ENDPOINT}/api/v1/verify`,params)
+
+export const authenticateUser = params => fetch(`http://${API_ENDPOINT}/api/v1/login`, params);
+export const checkTokenLife = params => fetch(`http://${API_ENDPOINT}/api/v1/verify`,params)
 
 
 export const getPosition = (options) => {
@@ -79,6 +81,10 @@ export function* logoutUser(action) {
 	}
 }
 
+export function* createUserAccount(action) {
+	console.log(action.data)
+}
+
 function* loginUser(action) {
 
 	try {
@@ -97,6 +103,7 @@ function* loginUser(action) {
 		const response = yield call(authenticateUser, params);
 		const result = yield response.json();
 
+		console.log("result", result)
 
 		if (result.success === false) {
 			yield put({ type: FAILED_SET_TOKEN, error: result.message });
@@ -119,9 +126,9 @@ function* loginUser(action) {
 	}
 }
 
-function* verifyToken(action) {
+export function* verifyToken(action) {
 	const token = yield call(getToken, 'token');
-	const socketIO = yield select(state => state.user.socketIO)
+	const socketIO = yield select(selectSocket)
 
 	const myHeaders = new Headers();
 
@@ -187,6 +194,7 @@ export function *changeDurationInterval(action) {
 export const usersSaga = [
 	takeEvery('GET_USER_LOCATION', getUserPosition),
 	takeEvery('LOGIN', loginUser),
+	takeEvery('CREATE_ACCOUNT', createUserAccount),
 	takeEvery('VERIFY_TOKEN', verifyToken),
 	takeEvery('LOGOUT', logoutUser),
 	takeEvery('EMIT_WAYPOINT_RECEIVE', emitWaypointReceiver),

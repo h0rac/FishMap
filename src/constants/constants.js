@@ -16,11 +16,13 @@ export const LOAD_FISHMARKS_POSITIONS = "LOAD_FISHMARKS_POSITIONS"
 
 export const OAUTH_URL = "http://fishmap.test.pl:3000/auth/google"
 //export const OAUTH_URL = "https://yqxcjoicsc.localtunnel.me/auth/google"
-export const API_ENDPOINT = "192.168.1.14:3000"
+//export const API_ENDPOINT = "192.168.0.115:3999" // Local DEV
+export const API_ENDPOINT = "31.186.87.151:3999"
 export const SET_USER_DATA = "SET_USER_DATA"
 
 export const LOGOUT = "LOGOUT"
 export const LOGIN = "LOGIN"
+export const CREATE_ACCOUNT = "CREATE_ACCOUNT"
 
 export const FAILED_SET_TOKEN = "FAILED_SET_TOKEN"
 export const SUCCESS_SET_TOKEN = "SUCCESS_SET_TOKEN"

@@ -15,9 +15,9 @@ const mockStore = configureStore(middlewares);
 jest.mock('Platform', () => {
 		return {
 			Platform: { OS: 'ios' }
-		}
+		};
 	}
-)
+);
 
 describe('Testing Login screen', () => {
 
@@ -30,14 +30,15 @@ describe('Testing Login screen', () => {
 	beforeEach(() => {
 		navigate = jest.fn();
 		state = {
-			window: { screen: { height: 375, width: 667 } }
+			window: { screen: { height: 375, width: 667 } },
+			email:'test@test.pl',
+			password:null
 		};
 		dispatch = jest.fn();
-		props = {
-			dispatch
-		};
+		const store = mockStore(state);
+		props=store
 		tree = shallow(
-			<LoginScreen {...props} store={mockStore()} navigation={{ navigate }} state={state}
+			<LoginScreen {...props} store={store} navigation={{ navigate }} state={state}
 			/>);
 	});
 
@@ -146,45 +147,18 @@ describe('Testing Login screen', () => {
 	});
 
 
-	it('Login button should be enabled when email and password is provided', () => {
-		const LoginScreenComponent = tree.dive();
-		const inputs = LoginScreenComponent.find('TextInput');
-		LoginScreenComponent.setState({ email: 'test@false.com', password: 'pass123' });
-		inputs.forEach(input => {
-			expect(input.simulate('Change'));
-		});
-		expect(LoginScreenComponent.state().disableLogin).toBe(false);
-	});
-
-	it('Login button should not be enabled when email and password are not provided', () => {
-		const LoginScreenComponent = tree.dive();
-		const inputs = LoginScreenComponent.find('TextInput');
-		LoginScreenComponent.setState({ email: '', password: '' });
-		inputs.forEach(input => {
-			expect(input.simulate('Change'));
-		});
-		expect(LoginScreenComponent.state().disableLogin).toBe(true);
-	});
-
-
-	it('Login button should not be enabled when email is not provided', () => {
-		const LoginScreenComponent = tree.dive();
-		const inputs = LoginScreenComponent.find('TextInput');
-		LoginScreenComponent.setState({ email: '', password: 'pass123' });
-		inputs.forEach(input => {
-			expect(input.simulate('Change'));
-		});
-		expect(LoginScreenComponent.state().disableLogin).toBe(true);
-	});
-
 	it('Login button should not be enabled when password is not provided', () => {
 		const LoginScreenComponent = tree.dive();
 		const inputs = LoginScreenComponent.find('TextInput');
 		LoginScreenComponent.setState({ email: 'test@false.com', password: '' });
 		inputs.forEach(input => {
-			expect(input.simulate('Change'));
+			expect(input.simulate('ChangeText'));
 		});
-		expect(LoginScreenComponent.state().disableLogin).toBe(true);
+		const buttons = LoginScreenComponent.find('IconButton');
+		buttons.forEach(button => {
+			if(button.getElement().props.name === 'sign-in')
+				expect(button.getElement().props.disabled).toBe(true)
+		});
 	});
 
 	it('Login button should not be enabled when email is invalid', () => {
@@ -192,9 +166,44 @@ describe('Testing Login screen', () => {
 		const inputs = LoginScreenComponent.find('TextInput');
 		LoginScreenComponent.setState({ email: 'test@false.c', password: 'pass123' });
 		inputs.forEach(input => {
-			expect(input.simulate('Change'));
+			expect(input.simulate('ChangeText'));
 		});
-		expect(LoginScreenComponent.state().disableLogin).toBe(true);
+		const buttons = LoginScreenComponent.find('IconButton');
+		buttons.forEach(button => {
+			if(button.getElement().props.name === 'sign-in')
+				expect(button.getElement().props.disabled).toBe(true)
+		});
+	});
+
+
+	it('Login button should be enabled when email and password are valid', () => {
+		const LoginScreenComponent = tree.dive();
+		const inputs = LoginScreenComponent.find('TextInput');
+		inputs.forEach(input => {
+			expect(input.simulate('ChangeText', 'test@false.com'));
+		});
+		const buttons = LoginScreenComponent.find('IconButton');
+		buttons.forEach(button => {
+			if(button.getElement().props.name === 'sign-in')
+			expect(button.getElement().props.disabled).toBe(false)
+		});
+
+		//expect(LoginScreenComponent.state().disableLogin).toBe(false)
+	});
+
+
+	it('Login button should not be enabled when email and password are invalid', () => {
+		const LoginScreenComponent = tree.dive();
+		const inputs = LoginScreenComponent.find('TextInput');
+		LoginScreenComponent.setState({ email: 'test@false.c', password: '' });
+		inputs.forEach(input => {
+			expect(input.simulate('ChangeText'));
+		});
+		const buttons = LoginScreenComponent.find('IconButton');
+		buttons.forEach(button => {
+			if(button.getElement().props.name === 'sign-in')
+				expect(button.getElement().props.disabled).toBe(true)
+		});
 	});
 
 });

@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { setUserData, login, checkAuthToken, setIOSocket } from '../actions/user';
 import { connect } from 'react-redux';
+import { displayAlert } from '../common/utils';
 
 class LoginScreen extends React.Component {
 
@@ -29,10 +30,13 @@ class LoginScreen extends React.Component {
 		this._keyboardDidHide = this._keyboardDidHide.bind(this);
 		this._DimensionHandler = this._DimensionHandler.bind(this);
 		this.validateEmail = this.validateEmail.bind(this);
-		this.checkScreenOrientation = this.checkScreenOrientation.bind(this)
+		this.checkScreenOrientation = this.checkScreenOrientation.bind(this);
+		this.handleNewCreateAccount = this.handleNewCreateAccount.bind(this)
 		this.state = {
 			disableLogin: true,
-			ios:false
+			ios: false,
+			email: null,
+			password: null
 		};
 
 	}
@@ -44,8 +48,8 @@ class LoginScreen extends React.Component {
 	}
 
 	componentWillUnmount() {
-		Keyboard.removeListener('keyboardDidShow')
-		Keyboard.removeListener('keyboardDidHide')
+		Keyboard.removeListener('keyboardDidShow');
+		Keyboard.removeListener('keyboardDidHide');
 		Dimensions.removeEventListener('change', this._DimensionHandler);
 	}
 
@@ -61,7 +65,7 @@ class LoginScreen extends React.Component {
 		this.setState({ window: dims });
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		if (Platform.OS === 'ios') {
 			this.setState({ ios: true });
 		}
@@ -89,25 +93,25 @@ class LoginScreen extends React.Component {
 	};
 
 
-	_handleInputValidation =  () => {
-
-		if ((this.validateEmail(this.state.email)) && (this.state.password)) {
-			this.setState({ disableLogin: false });
-		}
-	};
-
 	checkScreenOrientation = () => {
 		let mode;
 		if (this.state.window) {
 			mode = this.state.window.screen.height > this.state.window.screen.width ? 'portrait' : 'landscape';
 		}
-		return mode
+		return mode;
 	};
+
+	handleNewCreateAccount = () => {
+		this.props.navigation.navigate('CreateAccountScreen')
+		displayAlert('New Account', 'Hello. password require min 8 chars')
+	}
 
 
 	render() {
 
 		let mode = this.checkScreenOrientation();
+		const password = this.state.password;
+		const email = this.state.email;
 
 		return (
 			<View style={styles.mainContainer}>
@@ -120,7 +124,6 @@ class LoginScreen extends React.Component {
 				<View style={[styles.boxContainer, styles.boxInputs]}>
 					<TextInput style={!this.state.ios ? styles.input : styles.inputIOS}
 										 onChangeText={(email) => this.setState({ email: email })}
-										 onChange={this._handleInputValidation.bind(this)}
 										 placeholder={'your@email.com'}
 										 placeholderTextColor={'lightgray'}
 										 underlineColorAndroid='#2F95D6'
@@ -129,7 +132,6 @@ class LoginScreen extends React.Component {
 					<TextInput style={!this.state.ios ? styles.input : styles.inputIOS}
 										 secureTextEntry={true}
 										 selectionColor="white"
-										 onChange={this._handleInputValidation.bind(this)}
 										 placeholder={'password'}
 										 placeholderTextColor={'lightgray'}
 										 underlineColorAndroid='#2F95D6'
@@ -141,25 +143,25 @@ class LoginScreen extends React.Component {
 						name="sign-in"
 						backgroundColor={
 							(!this.validateEmail(this.state.email)) ||
-							(!this.state.password || this.state.password === '') ? 'gray' : 'steelblue'}
-						style={styles.buttonLogin}
-						disabled={this.state.disableLogin}
+							(!this.state.password) ? 'gray' : 'steelblue'}
+						disabled={!password || !this.validateEmail(email)}
 						onPress={this.handleSubmit}>
 						Login
 					</Icon.Button>
-					<TouchableHighlight>
-						<Text>
-							Forgot password ?
-						</Text>
-					</TouchableHighlight>
+					<View style={styles.forgotPassBox}>
+						<TouchableHighlight>
+							<Text>
+								Forgot password ?
+							</Text>
+						</TouchableHighlight>
+					</View>
 
 				</View>
 				<View style={[styles.boxContainer, styles.signUpBox]}>
 					<Icon.Button
 						name="user-o"
 						backgroundColor="green"
-						style={styles.buttonSignUp}
-						onPress={() => this.props.navigation.navigate('CreateAccountScreen')}
+						onPress={() => this.handleNewCreateAccount()}
 					>
 						Create new Account
 					</Icon.Button>
@@ -194,68 +196,63 @@ const styles = {
 
 	},
 
+	forgotPassBox: {
+		alignItems: 'center'
+	},
+
 	boxInputs: {
 		flex: 2,
 		flexDirection: 'column', //define axis Y
 		backgroundColor: 'white',
 		paddingBottom: 40,
 		paddingTop: 32,
-		alignItems: 'center'
+		paddingLeft: 20,
+		paddingRight: 20
+
 
 	},
 	loginBox: {
 		flex: 3,
 		flexDirection: 'column',
 		backgroundColor: 'white',
-		alignItems: 'center',
-		justifyContent: 'space-around'
+		justifyContent: 'space-around',
+		paddingLeft: 20,
+		paddingRight: 20
 
 	},
 
 	signUpBox: {
 		flex: 2,
 		//backgroundColor:"red",
-		alignItems: 'center',
 		justifyContent: 'space-around',
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		paddingLeft: 20,
+		paddingRight: 20
 	},
 
 	button: {
-		paddingVertical: 5,
-		width: 100
-
-	},
-
-	buttonLogin: {
-		width: 220
-	},
-
-	buttonLoginDisabled: {
-		width: 220
-	},
-
-	buttonSignUp: {
-		width: 220
+		paddingVertical: 5
 	},
 
 	labelForm: {
 		color: 'white'
 	},
 	input: {
-		color: 'black',
-		width: 220
+		color: 'black'
+
 	},
 
 	inputIOS: {
 		color: 'black',
-		width: 220,
 		borderBottomColor: '#2F95D6', // for IOS
 		borderBottomWidth: 1, //for IOS
 		height: 50
 	}
 
-
+};
+const mapStateToProps = state => {
+	return {};
 };
 
 
-export default connect()(LoginScreen);
+export default connect(mapStateToProps)(LoginScreen);
