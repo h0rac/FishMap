@@ -31,7 +31,7 @@ class LoginScreen extends React.Component {
 		this._DimensionHandler = this._DimensionHandler.bind(this);
 		this.validateEmail = this.validateEmail.bind(this);
 		this.checkScreenOrientation = this.checkScreenOrientation.bind(this);
-		this.handleNewCreateAccount = this.handleNewCreateAccount.bind(this)
+		this.handleNewCreateAccount = this.handleNewCreateAccount.bind(this);
 		this.state = {
 			disableLogin: true,
 			ios: false,
@@ -102,9 +102,8 @@ class LoginScreen extends React.Component {
 	};
 
 	handleNewCreateAccount = () => {
-		this.props.navigation.navigate('CreateAccountScreen')
-		displayAlert('New Account', 'Hello. password require min 8 chars')
-	}
+		this.props.navigation.navigate('CreateAccountScreen');
+	};
 
 
 	render() {
@@ -127,11 +126,9 @@ class LoginScreen extends React.Component {
 										 placeholder={'your@email.com'}
 										 placeholderTextColor={'lightgray'}
 										 underlineColorAndroid='#2F95D6'
-										 selectionColor="white"
 										 maxLength={40}/>
 					<TextInput style={!this.state.ios ? styles.input : styles.inputIOS}
 										 secureTextEntry={true}
-										 selectionColor="white"
 										 placeholder={'password'}
 										 placeholderTextColor={'lightgray'}
 										 underlineColorAndroid='#2F95D6'
@@ -238,12 +235,12 @@ const styles = {
 		color: 'white'
 	},
 	input: {
-		color: 'black'
+		color: 'gray'
 
 	},
 
 	inputIOS: {
-		color: 'black',
+		color: 'gray',
 		borderBottomColor: '#2F95D6', // for IOS
 		borderBottomWidth: 1, //for IOS
 		height: 50

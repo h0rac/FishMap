@@ -1,8 +1,9 @@
 import React from 'react';
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, ScrollView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { createAccount } from '../actions/user';
+import { createAccount, resendVerifyEmail } from '../actions/user';
+import { displayAlert } from '../common/utils';
 
 class CreateAccountScreen extends React.Component {
 
@@ -19,6 +20,8 @@ class CreateAccountScreen extends React.Component {
 		super();
 
 		this.validateEmail = this.validateEmail.bind(this);
+		this.resendVerificationEmail = this.resendVerificationEmail.bind(this)
+		this.validatePassword = this.validatePassword.bind(this)
 
 		this.state = {
 			email: null,
@@ -44,6 +47,27 @@ class CreateAccountScreen extends React.Component {
 		return re.test(email);
 	};
 
+	resendVerificationEmail = () => {
+		if (!this.state.email) {
+			displayAlert('Account', 'Please provide valid e-mail address')
+		} else {
+			const data = {
+				email: this.state.email,
+				navigation: this.props.navigation
+			}
+			this.props.dispatch(resendVerifyEmail(data))
+		}
+	}
+
+	validatePassword = (password, repeatPassword) => {
+		let inputStyle;
+		if(password) {
+			inputStyle =	password.length < 8 || password !== repeatPassword ? styles.inputError : styles.inputCorrect
+		} else {
+			inputStyle = styles.inputError
+		}
+		return inputStyle
+	}
 
 	render() {
 
@@ -51,33 +75,45 @@ class CreateAccountScreen extends React.Component {
 		const email = this.state.email
 		const repeatPassword = this.state.repeatPassword
 
+		const inputStyle = this.validatePassword(password, repeatPassword)
+
 		return (
 			<View style={styles.container}>
 				<View style={styles.inputContainer}>
+					<ScrollView>
 					<View style={styles.textInput}>
 						<Text style={styles.textEmail}>Login:</Text>
-						<TextInput style={styles.input}
+						<TextInput style={!this.validateEmail(email) ? styles.inputError : styles.inputCorrect}
 											 onChangeText={(email) => this.setState({ email: email })}
 											 placeholder={'your@email.com'}
 											 placeholderTextColor={'lightgray'}
-											 selectionColor="white"
+											 underlineColorAndroid='rgba(0,0,0,0)'
 											 maxLength={40}/>
 						<Text style={styles.textPassword}>Password:</Text>
-						<TextInput style={styles.input}
+						<TextInput style={inputStyle}
 											 secureTextEntry={true}
-											 selectionColor="white"
 											 placeholder={'password'}
+											 underlineColorAndroid='rgba(0,0,0,0)'
 											 placeholderTextColor={'lightgray'}
 											 onChangeText={(password) => this.setState({ password: password })}
 											 maxLength={40}/>
+						{password && password !== repeatPassword && password.length < 8 ?
+							<Text style={{color:'red', paddingTop:5}}>Password require minimum 8 characters</Text>:null}
 						<Text style={styles.textRepeatPassword}>Repeat password:</Text>
-						<TextInput style={styles.input}
+						<TextInput style={inputStyle}
 											 secureTextEntry={true}
-											 selectionColor="white"
 											 placeholder={'repeat password'}
+											 underlineColorAndroid='rgba(0,0,0,0)'
 											 placeholderTextColor={'lightgray'}
 											 onChangeText={(repeatPassword) => this.setState({ repeatPassword: repeatPassword })}
 											 maxLength={40}/>
+						{password && password !== repeatPassword ?
+							<Text style={{color:'red', paddingTop:5}}>Password repeat field must be the same as password</Text>:null}
+						<TouchableHighlight onPress={() => this.resendVerificationEmail() } underlayColor={null}>
+							<Text style={styles.resend}>
+								Resend verification e-mail
+							</Text>
+						</TouchableHighlight>
 						<View style={styles.createButton}>
 							<Icon.Button
 								name="sign-in"
@@ -90,6 +126,7 @@ class CreateAccountScreen extends React.Component {
 							</Icon.Button>
 						</View>
 					</View>
+					</ScrollView>
 				</View>
 			</View>);
 	}
@@ -107,19 +144,22 @@ const styles = {
 	inputContainer: {
 		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'flex-end',
+		alignItems: 'center',
 		backgroundColor: 'mintcream'
 	},
 
 	createButton: {
 		flex: 1,
-		paddingTop: 40
+		paddingTop: 40,
+		paddingBottom:40
 	},
 
 	textInput: {
 		flex: 2,
 		backgroundColor: 'mintcream',
-		padding: 20
+		paddingLeft:20,
+		paddingRight:20,
+		paddingTop:20
 
 	},
 
@@ -129,12 +169,20 @@ const styles = {
 		padding: 20
 	},
 
-	input: {
-		borderWidth: 1,
-		borderColor: 'gray',
-		backgroundColor: 'white',
+	inputCorrect: {
+		borderBottomWidth:1,
+		borderBottomColor: 'green',
 		color: 'gray',
-		padding: 6
+		paddingTop:6,
+		paddingBottom:6,
+	},
+
+	inputError: {
+		borderBottomWidth:1,
+		borderBottomColor: 'red',
+		color: 'gray',
+		paddingTop:6,
+		paddingBottom:6,
 	},
 
 	textEmail: {
@@ -146,6 +194,11 @@ const styles = {
 		paddingTop: 20,
 		paddingBottom: 5,
 		color: 'gray'
+	},
+
+	resend: {
+		paddingTop:20,
+		color:'#2F95D6',
 	},
 
 	textRepeatPassword: {

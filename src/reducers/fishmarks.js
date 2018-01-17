@@ -23,11 +23,13 @@ import {
 	SHARE_WAYPOINT_CHECKED_CLEAR, UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED,
 	CHANGE_DISPLAY_SAVE_STATUS,
-	SET_MAP_FOR_ANIMATION
+	SET_MAP_FOR_ANIMATION,
+	SHARE_MY_WAYPOINT,
 
 } from '../constants/constants';
 
 import { removeDuplicates } from '../common/utils';
+import { shareMyWaypoint } from '../actions/fishmarks';
 
 const initialState = {
 	fishmarks: [],
@@ -37,6 +39,7 @@ const initialState = {
 	isFetching: false,
 	message: null,
 	refreshing: false,
+	myFishmarkWaypoints:[],
 	loadedWaypoints: [],
 	sharedFishmarks: [],
 	selectedSharedFishmarks: [],
@@ -67,6 +70,7 @@ const reducer = (state = initialState, action) => {
 					&& mark.longitude !== action.position.longitude
 				)], selectedSharedFishmarks: [...state.selectedSharedFishmarks.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude)], loadedWaypoints:[...state.loadedWaypoints.filter(mark => mark.latitude !== action.position.latitude
+					&& mark.longitude !== action.position.longitude)], myFishmarkWaypoints:[...state.myFishmarkWaypoints.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude)]
 			};
 
@@ -142,6 +146,10 @@ const reducer = (state = initialState, action) => {
 			return {...state, mapView:action.mapView}
 		default:
 			return state;
+
+
+		case SHARE_MY_WAYPOINT:
+			return {...state, myFishmarkWaypoints: removeDuplicates([...state.myFishmarkWaypoints, action.data], 'key')}
 	}
 
 

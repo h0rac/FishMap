@@ -8,10 +8,28 @@ import {
 
 import IconBtn from 'react-native-vector-icons/FontAwesome';
 import FlipCard from 'react-native-flip-card-view';
-import { shareWaypointChecked, uncheckWaypointShared } from '../actions/fishmarks';
+import { deleteFishmarkPosition, shareWaypointChecked, uncheckWaypointShared } from '../actions/fishmarks';
 import { connect } from 'react-redux';
-import {Icon} from 'react-native-elements'
-import CheckBox from 'react-native-check-box'
+import { Icon } from 'react-native-elements';
+import CheckBox from 'react-native-check-box';
+
+import {
+	Menu,
+	MenuProvider,
+	MenuOptions,
+	MenuOption,
+	MenuTrigger
+
+} from 'react-native-popup-menu';
+
+
+const IconOption = (props) => (
+	<MenuOption {...props}>
+		<Icon name={props.iconName} size={14}/>
+		{props.children}
+	</MenuOption>
+);
+
 
 class Waypoint extends Component {
 
@@ -21,6 +39,8 @@ class Waypoint extends Component {
 		this.handleShareWaypoint = this.handleShareWaypoint.bind(this);
 		this._renderFront = this._renderFront.bind(this);
 		this._renderBack = this._renderBack.bind(this);
+		this.renderMenuItem = this.renderMenuItem.bind(this);
+		this.handleEdit = this.handleEdit.bind(this)
 
 		this.state = {
 			checked: null
@@ -43,8 +63,30 @@ class Waypoint extends Component {
 	};
 
 	handleShareWaypoint = () => {
-		this.props.shareWaypointCallback(this.props.item._id);
+
+		this.setState({ opened: false });
+		this.props.shareWaypointCallback(this.props.item);
 	};
+
+	renderMenuItem = (icon, name, color) => {
+		let disabled = false;
+		if(name === 'Share') {
+			if(this.props.myFishmarkWaypoints && this.props.myFishmarkWaypoints.includes(this.props.item))
+				disabled = true
+		}
+		return (
+			<View style={styles.menuItem}>
+				<Icon name={icon} size={14} type='font-awesome' color={disabled ? 'gray' : color}/>
+				<Text style={ disabled ? { paddingLeft: 10, color: "gray" }: { paddingLeft: 10 }}>{name}</Text>
+			</View>
+		);
+	};
+
+	handleEdit = () => {
+		this.setState({ opened: false });
+		this.props.navigation.navigate('WayPointEditScreen')
+	}
+
 
 	_renderFront() {
 		return (
@@ -55,7 +97,7 @@ class Waypoint extends Component {
 							isChecked={this.props.item.checked}
 							onClick={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}
 							checkBoxColor={'green'}
-							/>
+						/>
 						:
 						<Icon
 							name='anchor'
@@ -64,9 +106,9 @@ class Waypoint extends Component {
 							color={'#2F95D6'}/>
 					}
 				</View>
-					<View style={styles.nameTitle}>
-						<Text style={styles.name}>{this.props.item.title} </Text>
-					</View>
+				<View style={styles.nameTitle}>
+					<Text style={styles.name}>{this.props.item.title} </Text>
+				</View>
 				<View style={styles.levelTitle}>
 					<Text style={styles.level}>{this.props.item.latitude}</Text>
 					<Text style={styles.scoreDate}>{this.props.item.longitude}</Text>
@@ -75,19 +117,19 @@ class Waypoint extends Component {
 				<View style={styles.rightIcon}>
 					{!this.props.shared ?
 						<Icon
-							name ='arrow-circle-right'
-							type ='font-awesome'
+							name='arrow-circle-right'
+							type='font-awesome'
 							color={'green'}
 							size={20}
 							underlayColor={'mintcream'}
-							containerStyle={{backgroundColor:'mintcream'}}
+							containerStyle={{ backgroundColor: 'mintcream' }}
 							onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}
-						/>: 		<Icon
-							name ='times-rectangle'
-							type ='font-awesome'
+						/> : <Icon
+							name='times-rectangle'
+							type='font-awesome'
 							color={'red'}
 							size={20}
-							onPress={()=>console.log('clicked delete')}
+							onPress={() => console.log('clicked delete')}
 						/>}
 
 
@@ -95,6 +137,7 @@ class Waypoint extends Component {
 			</View>
 		);
 	}
+
 
 	_renderBack() {
 		return (
@@ -123,20 +166,43 @@ class Waypoint extends Component {
 				</View>
 				<View style={styles.rightIcon}>
 					{!this.props.shared ?
+
+						<Menu opened={this.state.opened}>
+							<MenuTrigger onPress={() => this.setState({ opened: true })}>
+								<Icon
+									name='more-vert'
+									color={'green'}
+									size={20}
+									underlayColor={'mintcream'}
+									containerStyle={{ backgroundColor: 'mintcream' }}
+
+								/>
+							</MenuTrigger>
+							<MenuOptions>
+								<MenuOption disabled={this.props.myFishmarkWaypoints && this.props.myFishmarkWaypoints.includes(this.props.item)} onSelect={() => this.handleShareWaypoint()}>
+									{this.renderMenuItem('share-alt', 'Share', 'green')}
+								</MenuOption>
+								<View style={styles.contextDivider}/>
+								<MenuOption onSelect={() => this.props.dispatch(deleteFishmarkPosition(this.props.item))}>
+									{this.renderMenuItem('close', 'Delete', 'red')}
+									<View style={styles.contextDivider}/>
+								</MenuOption>
+								<MenuOption onSelect={() => this.handleEdit()}>
+									{this.renderMenuItem('edit', 'Edit', '#2F95D6')}
+									<View style={styles.contextDivider}/>
+								</MenuOption>
+								<MenuOption onSelect={() => this.setState({ opened: false })}>
+									{this.renderMenuItem('sign-out', 'Close', '#2F95D6')}
+								</MenuOption>
+							</MenuOptions>
+						</Menu>
+						:
 						<Icon
-							name ='share-alt'
-							type ='font-awesome'
-							color={'green'}
-							size={20}
-							underlayColor={'mintcream'}
-							containerStyle={{backgroundColor:'mintcream'}}
-							onPress={()=> !this.props.shared ? this.handleShareWaypoint():null}
-						/>: 		<Icon
-							name ='times-rectangle'
-							type ='font-awesome'
+							name='times-rectangle'
+							type='font-awesome'
 							color={'red'}
 							size={20}
-							onPress={()=>console.log('clicked delete')}
+							onPress={() => console.log('clicked delete')}
 						/>}
 				</View>
 			</View>);
@@ -157,18 +223,26 @@ class Waypoint extends Component {
 }
 
 
-const styles = StyleSheet.create({
+const styles = {
 
 	iconLeft: {
 		justifyContent: 'center',
-		paddingLeft:20,
-		alignItems:'flex-start'
+		paddingLeft: 20,
+		alignItems: 'flex-start'
 	},
 
 	nameTitleShared: {
 		flex: 2,
 		justifyContent: 'center',
-		alignItems: 'flex-end',
+		alignItems: 'flex-end'
+	},
+
+	menuItem: {
+		flexDirection: 'row',
+		justifyContent: 'flex-start',
+		paddingLeft: 2,
+		paddingTop: 2,
+		paddingBottom: 2
 	},
 
 	animatedContainer: {
@@ -184,24 +258,29 @@ const styles = StyleSheet.create({
 		borderColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		flexDirection: 'row',
-		backgroundColor:'mintcream',
-		height:70
+		backgroundColor: 'mintcream',
+		height: 70
 
+	},
+
+	contextDivider: {
+		borderColor: '#f1f1f1',
+		borderBottomWidth: 1
 	},
 
 	rowBack: {
 		borderColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		flexDirection: 'row',
-		backgroundColor:'mintcream',
-		height:70
+		backgroundColor: 'mintcream',
+		height: 70
 
 	},
 
 	nameTitle: {
 		flex: 1.5,
 		justifyContent: 'center',
-		alignItems:'flex-end'
+		alignItems: 'flex-end'
 	},
 	name: {
 		fontSize: 10,
@@ -213,14 +292,14 @@ const styles = StyleSheet.create({
 	levelTitle: {
 		flex: 1.5,
 		justifyContent: 'center',
-		alignItems:'flex-end'
+		alignItems: 'flex-end'
 
 	},
 	rightIcon: {
 		width: 80,
-		justifyContent:'center',
-		alignItems:'flex-end',
-		paddingRight:20
+		justifyContent: 'center',
+		alignItems: 'flex-end',
+		paddingRight: 20
 	},
 	scoreDate: {
 		fontSize: 10,
@@ -230,7 +309,7 @@ const styles = StyleSheet.create({
 		fontSize: 10,
 		marginTop: 8
 	}
-});
+};
 
 const mapStateToProps = state => {
 
@@ -238,6 +317,7 @@ const mapStateToProps = state => {
 	return {
 		allSelected: state.fishmarks.allSelected,
 		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,
+		myFishmarkWaypoints: state.fishmarks.myFishmarkWaypoints
 
 	};
 };

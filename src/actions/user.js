@@ -11,7 +11,8 @@ import {
 	SET_SELECTED_DURATION,
 	SET_IO_SOCKET,
 	SET_INTERVAL_ALIVE,
-	CREATE_ACCOUNT
+	CREATE_ACCOUNT,
+	RESEND_VERIFICATION_EMAIL
 } from '../constants/constants';
 
 export const setUserData = (data) => ({
@@ -33,6 +34,11 @@ export const createAccount = (data) => ({
 	data,
 
 });
+
+export const resendVerifyEmail = (data) => ({
+	type: RESEND_VERIFICATION_EMAIL,
+	data
+})
 
 export const checkAuthToken = (navigate, screen) => ({
 	type: VERIFY_TOKEN,

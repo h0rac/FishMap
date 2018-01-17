@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import MapView from 'react-native-maps';
 
-import { setFishmark, setMapViewForAnimation } from '../actions/fishmarks';
+import { setFishmark, setMapViewForAnimation, shareMyWaypoint } from '../actions/fishmarks';
 import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -59,6 +59,7 @@ class MainScreen extends Component {
 		this.onReceiveFishmark = this.onReceiveFishmark.bind(this);
 		this.setInitialUserPosition = this.setInitialUserPosition.bind(this)
 		this.onReceiveError = this.onReceiveError.bind(this);
+		this.handleSharing = this.handleSharing.bind(this)
 		//this.setTimeoutLoop = this.setTimeoutLoop.bind(this)
 
 
@@ -186,6 +187,12 @@ class MainScreen extends Component {
 		}));
 	};
 
+	handleSharing = (position) => {
+		const toShare = this.props.positions.find(waypoint => waypoint.latitude === position.latitude && waypoint.longitude === waypoint.longitude)
+		this.props.dispatch(shareMyWaypoint(toShare))
+		this.props.navigation.navigate('SharingScreen')
+	}
+
 
 	_handleFishMarkPress = (e) => {
 		const position = e.nativeEvent.coordinate;
@@ -194,6 +201,7 @@ class MainScreen extends Component {
 			'Waypoint',
 			'What do you want to do with Waypoint ?',
 			[
+				{text: 'Share',  onPress: () => this.handleSharing(position) },
 				{ text: 'Edit', onPress: () => this.props.navigation.navigate('WayPointEditScreen') },
 				{ text: 'Delete', onPress: () => this.props.dispatch(deleteFishmarkPosition(position)) },
 				{ text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel' }

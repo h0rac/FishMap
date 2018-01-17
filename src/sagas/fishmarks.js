@@ -241,8 +241,6 @@ function* IOCreateCandidateFishmarksList(action) {
 
 function* shareWaypoint(action) {
 
-	console.log('SHARE', action.id);
-
 	const myHeaders = new Headers();
 	const token = yield call(getToken, 'token');
 
@@ -254,7 +252,7 @@ function* shareWaypoint(action) {
 		body: JSON.stringify({
 			token: JSON.parse(decodeURI(token)),
 			wId: action.id,
-			email: 'Joanna@test.com'
+			email: 'horac26@gmail.com'
 		})
 	};
 

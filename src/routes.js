@@ -3,6 +3,7 @@ import MainScreen from '../src/screens/MainScreen';
 import ProfileScreen from '../src/screens/ProfileScreen';
 import SettingScreen from '../src/screens/SettingScreen';
 import WayPointScreen from '../src/screens/WayPointScreen';
+import SharingScreen from '../src/screens/SharingScreen'
 import MarkerScreen from '../src/screens/MarkerScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
@@ -29,7 +30,11 @@ const mainStack = TabNavigator({
 	WayPointScreen: {
 		screen: WayPointScreen
 
-	}
+	},
+
+	SharingScreen: {
+		screen: SharingScreen,
+	},
 }, {
 	tabBarComponent: (props) => <TabBarTop {...props} indicatorStyle={indicatorStyle(props, 'flex-end')}/>,
 	tabBarPosition: 'bottom',
@@ -52,6 +57,9 @@ const NavigatorStack = StackNavigator({
 	LanguageScreen: {
 		screen: LanguageScreen
 
+	},
+	SharingScreen: {
+		screen:SharingScreen
 	},
 
 

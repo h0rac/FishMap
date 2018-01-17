@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, Image, TouchableOpacity, Platform, StyleSheet, Dimensions, Alert } from 'react-native';
+import { Text, View, FlatList, Image, TouchableOpacity, Platform, StyleSheet, Dimensions, Alert} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
 	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypoint, clearSharedCheckedWaypoints,
-	shareWaypointChecked, uncheckWaypointShared
+	shareWaypointChecked, uncheckWaypointShared, shareMyWaypoint
 } from '../actions/fishmarks';
 import Notificator from '../components/Notificator';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
@@ -78,7 +78,9 @@ class WayPointScreen extends Component {
 	};
 
 	_shareWaypoint = (data) => {
-		this.props.dispatch(shareWaypoint(data));
+		this.props.dispatch(shareMyWaypoint(data))
+		this.props.navigation.navigate('SharingScreen')
+		this.props.dispatch(shareWaypoint(data._id));
 	};
 
 
@@ -119,6 +121,7 @@ class WayPointScreen extends Component {
 	render() {
 
 		return (<View style={styles.container} onLayout={this.onLayout.bind(this)}>
+
 			<View style={styles.waypoints}>
 				{(this.props.sharedFishmarks && this.props.sharedFishmarks.length > 0 && !this.state.showWaypoints) ?
 					this._renderSharedFishmarks() : this._renderCurrentFishmarks()}
@@ -126,7 +129,7 @@ class WayPointScreen extends Component {
 			{this.props.sharedFishmarks.length > 0 ?
 			<TouchableOpacity style={styles.switcher} onPress={this._handleScreenSwitcher}>
 				 <View>
-						<Text style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Shared waypoints >'}</Text>
+						<Text style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Received waypoints >'}</Text>
 					</View>
 			</TouchableOpacity>:null}
 		</View>);
