@@ -58,7 +58,7 @@ class SideMenu extends Component {
 						</View>
 					</View>
 				</TouchableOpacity>
-				<Divider style={{ height: 0.5, backgroundColor: 'gray' }}/>
+				<Divider style={{ height: 0.5, backgroundColor: 'gray', marginBottom:4 }}/>
 			</View>
 		)
 	}
