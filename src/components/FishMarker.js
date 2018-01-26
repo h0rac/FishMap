@@ -1,15 +1,13 @@
-import React, {PropTypes, Component} from 'react'
+import React, {Component} from 'react'
 import MapView from 'react-native-maps';
-import {StyleSheet,View,Image} from 'react-native'
 
-import {setFishmark} from '../actions/fishmarks'
-import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
 class FishMarker extends Component {
 
-    static propTypes: {
-        marker: PropTypes.object.required,
-        index: PropTypes.int.required,
+    static propTypes = {
+        callbackPress: PropTypes.func,
+        callbackDelete: PropTypes.func
     };
 
     render() {
@@ -24,7 +22,7 @@ class FishMarker extends Component {
                             coordinate={region}
                             title={this.props.marker.title}
                             image={require('../assets/perch.png')}
-                            onPress={this.props.callback}
+                            onPress={this.props.callbackPress}
                             identifier={this.props.title}
                             >
             </MapView.Marker>
