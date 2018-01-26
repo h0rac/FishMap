@@ -20,7 +20,7 @@ import {
 	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST,
 	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS,
 	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED,
-	SHARE_WAYPOINT,
+	SHARE_WAYPOINT_TO_PEER,
 	SHARE_WAYPOINT_FAILED,
 	SHARE_WAYPOINT_SUCCESS,
 	SHARE_WAYPOINT_CHECKED,
@@ -35,7 +35,8 @@ import {
 	SAVE_SHARED_WAYPOINTS,
 	UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED,
-	CHANGE_DISPLAY_SAVE_STATUS
+	CHANGE_DISPLAY_SAVE_STATUS,
+
 } from '../constants/constants';
 
 import { LOAD_FISHMARKS_POSITIONS } from '../constants/constants';
@@ -241,31 +242,46 @@ function* IOCreateCandidateFishmarksList(action) {
 
 function* shareWaypoint(action) {
 
-	const myHeaders = new Headers();
-	const token = yield call(getToken, 'token');
+	try {
+		const myHeaders = new Headers();
+		const token = yield call(getToken, 'token');
 
-	myHeaders.append('Content-Type', 'application/json');
+		myHeaders.append('Content-Type', 'application/json');
 
-	let params = {
-		method: 'POST',
-		headers: myHeaders,
-		body: JSON.stringify({
-			token: JSON.parse(decodeURI(token)),
-			wId: action.id,
-			email: 'horac26@gmail.com'
-		})
-	};
 
-	const response = yield call(shareWaypointToUser, params);
-	const result = yield response.json();
+		console.log("ACTION SHARE", action.data)
 
-	if (result.success === false) {
-		yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
-		displayAlert('Waypoint', result.message);
-	} else {
-		yield put({ type: SHARE_WAYPOINT_SUCCESS, message: result.message });
+		let params = {
+			method: 'POST',
+			headers: myHeaders,
+			body: JSON.stringify({
+				token: JSON.parse(decodeURI(token)),
+				waypoints: action.data,
+				email: action.email
+			})
+		};
 
-	}
+		const response = yield call(shareWaypointToUser, params);
+		const result = yield response.json();
+
+
+		if (result && result.success === false) {
+			yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
+			const error = yield select(state => state.fishmarks.error)
+				displayAlert('Waypoint', error);
+
+		} else {
+			yield put({ type: SHARE_WAYPOINT_SUCCESS, message: result.message });
+			const message = yield select(state => state.fishmarks.message)
+			displayAlert('Waypoint', message);
+
+		}
+	} catch(e) {
+			yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
+			const error = yield select(state => state.fishmarks.error)
+			if(error)
+				displayAlert('Waypoint', error);
+		}
 }
 
 function* shareWaypointChecked(action) {
@@ -362,7 +378,7 @@ export const fishmarkSaga = [
 	takeEvery('LOAD_WAYPOINTS_ON_PUSH', loadWaypointsOnPush),
 	takeEvery('DELETE_FISHMARK_POSITION', delFishmarkPosition),
 	takeEvery('IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST', IOCreateCandidateFishmarksList),
-	takeEvery('SHARE_WAYPOINT', shareWaypoint),
+	takeEvery('SHARE_WAYPOINT_TO_PEER', shareWaypoint),
 	takeEvery('SHARE_WAYPOINT_CHECKED', shareWaypointChecked),
 	takeEvery('SAVE_SHARED_WAYPOINTS', saveSharedWaypoints)
 ];

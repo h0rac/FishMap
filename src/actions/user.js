@@ -12,7 +12,9 @@ import {
 	SET_IO_SOCKET,
 	SET_INTERVAL_ALIVE,
 	CREATE_ACCOUNT,
-	RESEND_VERIFICATION_EMAIL
+	RESEND_VERIFICATION_EMAIL,
+	SET_DST_EMAIL,
+
 } from '../constants/constants';
 
 export const setUserData = (data) => ({
@@ -87,3 +89,8 @@ export const setIntervalAlive = (status) => ({
 	type: SET_INTERVAL_ALIVE,
 	status: status
 });
+
+export const shareToEmail = (email) => ({
+	type: SET_DST_EMAIL,
+	email,
+})

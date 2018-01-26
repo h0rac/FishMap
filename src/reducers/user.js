@@ -16,6 +16,8 @@ import {
 	SET_SELECTED_DURATION, CHANGE_DURATION_SUCCESS,
 	SET_IO_SOCKET,
 	SET_INTERVAL_ALIVE,
+	SET_DST_EMAIL,
+	CLEAR_DATA
 
 }
 	from '../constants/constants';
@@ -33,6 +35,7 @@ const intialState = {
 	emitStatus: false,
 	timeoutID:0,
 	intervalAlive:true,
+	dstEmail: null,
 	socketIO:null,
 };
 
@@ -104,6 +107,11 @@ const reducer = (state = intialState, action) => {
 		case SET_INTERVAL_ALIVE:
 			return {
 				...state, intervalAlive:action.status
+			}
+
+		case SET_DST_EMAIL:
+			return {
+				...state, dstEmail: action.email
 			}
 
 		default:

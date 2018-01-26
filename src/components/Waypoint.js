@@ -23,14 +23,6 @@ import {
 } from 'react-native-popup-menu';
 
 
-const IconOption = (props) => (
-	<MenuOption {...props}>
-		<Icon name={props.iconName} size={14}/>
-		{props.children}
-	</MenuOption>
-);
-
-
 class Waypoint extends Component {
 
 	constructor() {

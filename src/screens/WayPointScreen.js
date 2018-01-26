@@ -3,7 +3,7 @@ import { Text, View, FlatList, Image, TouchableOpacity, Platform, StyleSheet, Di
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
-	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypoint, clearSharedCheckedWaypoints,
+	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypointToPeer, clearSharedCheckedWaypoints,
 	shareWaypointChecked, uncheckWaypointShared, shareMyWaypoint
 } from '../actions/fishmarks';
 import Notificator from '../components/Notificator';
@@ -34,7 +34,7 @@ class WayPointScreen extends Component {
 			tabBarLabel: (props) => (<Text style={labelStyle(props, 'flex-end', 15)}> Waypoints </Text>),
 			headerTintColor: 'white',
 			tabBarIcon:
-				<Notificator/>,
+				<Notificator type={'waypoint'}/>,
 			headerRight:
 				<SaveSharedWaypoint/>
 		};
@@ -79,8 +79,6 @@ class WayPointScreen extends Component {
 
 	_shareWaypoint = (data) => {
 		this.props.dispatch(shareMyWaypoint(data))
-		this.props.navigation.navigate('SharingScreen')
-		this.props.dispatch(shareWaypoint(data._id));
 	};
 
 

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { createAccount, resendVerifyEmail } from '../actions/user';
 import { displayAlert } from '../common/utils';
+import { Button } from 'react-native-elements';
 
 class CreateAccountScreen extends React.Component {
 
@@ -115,15 +116,16 @@ class CreateAccountScreen extends React.Component {
 							</Text>
 						</TouchableHighlight>
 						<View style={styles.createButton}>
-							<Icon.Button
-								name="sign-in"
+							<Button
+								rounded={true}
+								icon={{name:"sign-in", type:'font-awesome'}}
 								backgroundColor={
 									(!this.validateEmail(this.state.email)) ||
 									(!this.state.password || this.state.password.length < 8 || !this.state.repeatPassword || this.state.repeatPassword.length < 8 || this.state.password !== this.state.repeatPassword) ? 'gray' : 'green'}
 								disabled={password !== repeatPassword || !password || !this.validateEmail(email) || !repeatPassword || password.length < 8 || repeatPassword < 8}
-								onPress={this.handleCreate}>
-								Create Account
-							</Icon.Button>
+								onPress={this.handleCreate}
+								title={'Create Account'}>
+							</Button>
 						</View>
 					</View>
 					</ScrollView>

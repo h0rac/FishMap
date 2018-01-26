@@ -14,7 +14,8 @@ import {
 	CHANGE_DURATION_SUCCESS,
 	FAILED_CREATE_ACCOUNT,
 	RESEND_VERIFICATION_EMAIL,
-	FAILED_RESEND_VERIFICATION_EMAIL
+	FAILED_RESEND_VERIFICATION_EMAIL,
+	CLEAR_DATA
 
 } from '../constants/constants';
 import { call, put, takeEvery, select } from 'redux-saga/effects';
@@ -80,6 +81,7 @@ export function* logoutUser(action) {
 		const test = yield call(getToken, 'token');
 		if (!test) {
 			yield put({ type: SUCCESS_REMOVE_TOKEN, message: 'Token removed' });
+			yield put({type:CLEAR_DATA, message: 'cleared'})
 
 		}
 	} catch (e) {

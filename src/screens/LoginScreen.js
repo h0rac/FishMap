@@ -17,6 +17,8 @@ import { setUserData, login, checkAuthToken, setIOSocket } from '../actions/user
 import { connect } from 'react-redux';
 import { displayAlert } from '../common/utils';
 
+import { Button } from 'react-native-elements';
+
 class LoginScreen extends React.Component {
 
 	static navigationOptions = {
@@ -136,15 +138,16 @@ class LoginScreen extends React.Component {
 										 maxLength={40}/>
 				</View>
 				<View style={[styles.boxContainer, styles.loginBox]}>
-					<Icon.Button
-						name="sign-in"
+					<Button
+						rounded={true}
+						icon={{name:"sign-in", type:'font-awesome'}}
 						backgroundColor={
 							(!this.validateEmail(this.state.email)) ||
 							(!this.state.password) ? 'gray' : 'steelblue'}
 						disabled={!password || !this.validateEmail(email)}
+						title ={'Login'}
 						onPress={this.handleSubmit}>
-						Login
-					</Icon.Button>
+					</Button>
 					<View style={styles.forgotPassBox}>
 						<TouchableHighlight>
 							<Text>
@@ -155,13 +158,17 @@ class LoginScreen extends React.Component {
 
 				</View>
 				<View style={[styles.boxContainer, styles.signUpBox]}>
-					<Icon.Button
-						name="user-o"
+					<Button
+
+
+						asd
+						rounded={true}
+						icon={{name:"user-o", type:'font-awesome'}}
 						backgroundColor="green"
 						onPress={() => this.handleNewCreateAccount()}
+						title={'Create new Account'}
 					>
-						Create new Account
-					</Icon.Button>
+					</Button>
 
 				</View>
 			</View>

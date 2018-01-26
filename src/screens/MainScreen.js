@@ -135,7 +135,7 @@ class MainScreen extends Component {
 			tabBarIcon:
 				<IconAwesome
 					name="home"
-					size={24}
+					size={26}
 					color={'white'}
 					//style={{paddingLeft:20}}
 				/>
