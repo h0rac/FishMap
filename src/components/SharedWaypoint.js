@@ -53,7 +53,7 @@ class SharedWaypoint extends Component {
 				<View style={styles.nameTitle}>
 					<Text style={styles.name}>{this.props.item.title} </Text>
 				</View>
-				<View style={styles.levelTitle}>
+				<View style={styles.coords}>
 					<Text style={styles.level}>{this.props.item.latitude}</Text>
 					<Text style={styles.scoreDate}>{this.props.item.longitude}</Text>
 				</View>
@@ -152,7 +152,7 @@ const styles = {
 	level: {
 		fontSize: 10
 	},
-	levelTitle: {
+	coords: {
 		flex: 1.5,
 		justifyContent: 'center',
 		alignItems: 'flex-end'
