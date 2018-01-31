@@ -10,9 +10,9 @@ import IconBtn from 'react-native-vector-icons/FontAwesome';
 import FlipCard from 'react-native-flip-card-view';
 import { deleteFishmarkPosition, shareWaypointChecked, uncheckWaypointShared } from '../actions/fishmarks';
 import { connect } from 'react-redux';
-import { Icon } from 'react-native-elements';
+import { Icon, Button } from 'react-native-elements';
 import CheckBox from 'react-native-check-box';
-
+import Swipeout from 'react-native-swipeout';
 import {
 	Menu,
 	MenuProvider,
@@ -29,10 +29,8 @@ class Waypoint extends Component {
 		super();
 		this.moveToFishWaypoint = this.moveToFishWaypoint.bind(this);
 		this.handleShareWaypoint = this.handleShareWaypoint.bind(this);
-		this._renderFront = this._renderFront.bind(this);
-		this._renderBack = this._renderBack.bind(this);
 		this.renderMenuItem = this.renderMenuItem.bind(this);
-		this.handleEdit = this.handleEdit.bind(this)
+		this.handleEdit = this.handleEdit.bind(this);
 
 		this.state = {
 			checked: null
@@ -62,154 +60,126 @@ class Waypoint extends Component {
 
 	renderMenuItem = (icon, name, color) => {
 		let disabled = false;
-		if(name === 'Share') {
-			if(this.props.myFishmarkWaypoints && this.props.myFishmarkWaypoints.includes(this.props.item))
-				disabled = true
+		if (name === 'Share') {
+			if (this.props.myFishmarkWaypoints && this.props.myFishmarkWaypoints.includes(this.props.item))
+				disabled = true;
 		}
 		return (
 			<View style={styles.menuItem}>
 				<Icon name={icon} size={14} type='font-awesome' color={disabled ? 'gray' : color}/>
-				<Text style={ disabled ? { paddingLeft: 10, color: "gray" }: { paddingLeft: 10 }}>{name}</Text>
+				<Text style={disabled ? { paddingLeft: 10, color: 'gray' } : { paddingLeft: 10 }}>{name}</Text>
 			</View>
 		);
 	};
 
 	handleEdit = () => {
 		this.setState({ opened: false });
-		this.props.navigation.navigate('WayPointEditScreen')
-	}
-
-
-	_renderFront() {
-		return (
-			<View style={styles.row}>
-				<View style={styles.iconLeft}>
-					{this.props.shared ?
-						<CheckBox
-							isChecked={this.props.item.checked}
-							onClick={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}
-							checkBoxColor={'green'}
-						/>
-						:
-						<Icon
-							name='anchor'
-							type='font-awesome'
-							size={20}
-							color={'#2F95D6'}/>
-					}
-				</View>
-				<View style={styles.nameTitle}>
-					<Text style={styles.name}>{this.props.item.title} </Text>
-				</View>
-				<View style={styles.levelTitle}>
-					<Text style={styles.level}>{this.props.item.latitude}</Text>
-					<Text style={styles.scoreDate}>{this.props.item.longitude}</Text>
-
-				</View>
-				<View style={styles.rightIcon}>
-					{!this.props.shared ?
-						<Icon
-							name='arrow-circle-right'
-							type='font-awesome'
-							color={'green'}
-							size={20}
-							underlayColor={'mintcream'}
-							containerStyle={{ backgroundColor: 'mintcream' }}
-							onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}
-						/> : <Icon
-							name='times-rectangle'
-							type='font-awesome'
-							color={'red'}
-							size={20}
-							onPress={() => console.log('clicked delete')}
-						/>}
-
-
-				</View>
-			</View>
-		);
-	}
-
-
-	_renderBack() {
-		return (
-			<View style={styles.rowBack}>
-				<View style={styles.iconLeft}>
-					{this.props.shared ?
-						<CheckBox
-							isChecked={this.props.item.checked}
-							onClick={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}
-							checkBoxColor={'green'}
-						/>
-						:
-						<Icon
-							name='anchor'
-							type='font-awesome'
-							size={20}
-							color={'#2F95D6'}/>
-					}
-				</View>
-				<View style={styles.nameTitle}>
-					<Text style={styles.name}>{this.props.item.title} </Text>
-				</View>
-				<View style={styles.levelTitle}>
-					<Text style={styles.level}>{this.props.item.latitude}</Text>
-					<Text style={styles.scoreDate}>{this.props.item.longitude}</Text>
-				</View>
-				<View style={styles.rightIcon}>
-					{!this.props.shared ?
-
-						<Menu opened={this.state.opened}>
-							<MenuTrigger onPress={() => this.setState({ opened: true })}>
-								<Icon
-									name='more-vert'
-									color={'green'}
-									size={20}
-									underlayColor={'mintcream'}
-									containerStyle={{ backgroundColor: 'mintcream' }}
-
-								/>
-							</MenuTrigger>
-							<MenuOptions>
-								<MenuOption disabled={this.props.myFishmarkWaypoints && this.props.myFishmarkWaypoints.includes(this.props.item)} onSelect={() => this.handleShareWaypoint()}>
-									{this.renderMenuItem('share-alt', 'Share', 'green')}
-								</MenuOption>
-								<View style={styles.contextDivider}/>
-								<MenuOption onSelect={() => this.props.dispatch(deleteFishmarkPosition(this.props.item))}>
-									{this.renderMenuItem('close', 'Delete', 'red')}
-									<View style={styles.contextDivider}/>
-								</MenuOption>
-								<MenuOption onSelect={() => this.handleEdit()}>
-									{this.renderMenuItem('edit', 'Edit', '#2F95D6')}
-									<View style={styles.contextDivider}/>
-								</MenuOption>
-								<MenuOption onSelect={() => this.setState({ opened: false })}>
-									{this.renderMenuItem('sign-out', 'Close', '#2F95D6')}
-								</MenuOption>
-							</MenuOptions>
-						</Menu>
-						:
-						<Icon
-							name='times-rectangle'
-							type='font-awesome'
-							color={'red'}
-							size={20}
-							onPress={() => console.log('clicked delete')}
-						/>}
-				</View>
-			</View>);
-	}
+		this.props.navigation.navigate('WayPointEditScreen');
+	};
 
 
 	render() {
-		return (
-			<FlipCard style={{ flex: 1 }}
-								velocity={3} // Velocity makes it move
-								tension={5} // Slow
-								friction={5}
-								renderFront={this._renderFront()} renderBack={this._renderBack()}>
 
-			</FlipCard>
+		const leftButtons = [
+			{
+				backgroundColor: !this.props.shared ? '#2F95D6': !this.props.item.checked ? '#2F95D6' : '#23B523' ,
+				onPress: !this.props.shared ? () => this.setState({ opened: true }) : () => this.props.callbackHandleCheck(this.props.item.checked, this.props.item),
+				underlayColor:  !this.props.shared ? '#2684C1' : '#23B523',
+				component:
+					<View style={styles.iconLeft}>
+						{!this.props.shared ?
+
+							<Menu opened={this.state.opened}>
+								<MenuTrigger>
+									<Image
+										style={{ width: 26, height: 26 }}
+										disabled={true}
+										source={require('../assets/dots-horizontal.png')}
+									/>
+									<Text style={{color:'white'}}>More</Text>
+								</MenuTrigger>
+								<MenuOptions>
+									<MenuOption
+										disabled={this.props.myFishmarkWaypoints && this.props.myFishmarkWaypoints.includes(this.props.item)}
+										onSelect={() => this.handleShareWaypoint()}>
+										{this.renderMenuItem('share-alt', 'Share', 'green')}
+									</MenuOption>
+									<View style={styles.contextDivider}/>
+									<MenuOption onSelect={() => this.props.dispatch(deleteFishmarkPosition(this.props.item))}>
+										{this.renderMenuItem('close', 'Delete', 'red')}
+										<View style={styles.contextDivider}/>
+									</MenuOption>
+									<MenuOption onSelect={() => this.handleEdit()}>
+										{this.renderMenuItem('edit', 'Edit', '#2F95D6')}
+										<View style={styles.contextDivider}/>
+									</MenuOption>
+									<MenuOption onSelect={() => this.setState({ opened: false })}>
+										{this.renderMenuItem('sign-out', 'Close', '#2F95D6')}
+									</MenuOption>
+								</MenuOptions>
+							</Menu>
+							:
+							<View>
+							<Image
+								style={{ width: 26, height: 26 }}
+								disabled={this.props.item.checked}
+								source={!this.props.item.checked ? require('../assets/radiobox-blank.png') : require('../assets/radiobox-marked.png')}
+								onPress={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}/>
+								<Text style={{color:'white'}}>Save</Text>
+							</View>
+
+						}
+					</View>
+			}
+		];
+		const rightButtons = [
+			{
+				backgroundColor: !this.props.shared ? '#23B523' : '#e61b1b',
+				underlayColor: !this.props.shared ? '#1F9F1F' : '#e61b1b',
+				onPress: () => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null,
+				component:
+					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+						{!this.props.shared ?
+							<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+							<Image
+								style={{ width: 26, height: 26 }}
+								disabled={true}
+								source={require('../assets/arrow-right-bold-circle.png')}
+								onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}/>
+								<Text style={{color:'white'}}>Move to</Text>
+							</View>
+							:
+							<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+							<Image
+								style={{ width: 26, height: 26 }}
+								disabled={true}
+								source={require('../assets/delete.png')}
+								onPress={() => console.log("cancel press")}/>
+							<Text style={{color:'white'}}>Delete</Text>
+							</View>
+						}
+					</View>
+			}
+		];
+
+		const splitDate = this.props.item.date.split(' ')
+
+		return (
+			<Swipeout left={leftButtons} right={rightButtons} backgroundColor={'whitesmoke'} buttonWidth={60}>
+				<View style={styles.row}>
+					<View style={styles.nameTitle}>
+						<Text style={styles.name}>{this.props.item.title} </Text>
+					</View>
+					<View style={styles.coords}>
+						<Text style={styles.latitude}>{this.props.item.latitude}</Text>
+						<Text style={styles.longitude}>{this.props.item.longitude}</Text>
+					</View>
+					<View style={styles.date}>
+						<Text style={styles.year}>{splitDate[3]}</Text>
+						<Text style={styles.month}>{`${splitDate[0]} ${splitDate[1]} ${splitDate[2]}`}</Text>
+					</View>
+				</View>
+			</Swipeout>
 		);
 	}
 }
@@ -219,8 +189,8 @@ const styles = {
 
 	iconLeft: {
 		justifyContent: 'center',
-		paddingLeft: 20,
-		alignItems: 'flex-start'
+		flex: 1,
+		alignItems: 'center'
 	},
 
 	nameTitleShared: {
@@ -250,8 +220,9 @@ const styles = {
 		borderColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		flexDirection: 'row',
+		justifyContent:'space-between',
 		backgroundColor: 'mintcream',
-		height: 70
+		height: 80
 
 	},
 
@@ -270,37 +241,56 @@ const styles = {
 	},
 
 	nameTitle: {
-		flex: 1.5,
-		justifyContent: 'center',
-		alignItems: 'flex-end'
+		flex: 1,
+		alignItems: 'flex-start',
+		paddingLeft: 20,
+		justifyContent: 'center'
 	},
 	name: {
-		fontSize: 10,
+		fontSize: 11,
 		fontWeight: 'bold'
 	},
 	level: {
-		fontSize: 10
+		fontSize: 11
 	},
-	levelTitle: {
-		flex: 1.5,
-		justifyContent: 'center',
-		alignItems: 'flex-end'
+	coords: {
+		flex: 1,
+		alignItems: 'center',
+		paddingRight:20,
+		justifyContent:'center'
+	},
+
+	date: {
+		flex: 0.5,
+		alignItems: 'flex-end',
+		paddingRight:20,
+		justifyContent:'center'
 
 	},
+
 	rightIcon: {
-		width: 80,
 		justifyContent: 'center',
-		alignItems: 'flex-end',
-		paddingRight: 20
+		flex:1,
+		flexDirection:'row',
+		alignItems: 'center',
 	},
-	scoreDate: {
-		fontSize: 10,
-		marginBottom: 5
+	latitude: {
+		fontSize: 11,
 	},
-	scoreText: {
-		fontSize: 10,
-		marginTop: 8
+	longitude: {
+		fontSize: 11,
+		marginTop: 2,
+	},
+
+	year: {
+		fontSize: 11,
+		marginRight:12
+	},
+	month: {
+		fontSize: 11,
+		marginTop: 2,
 	}
+
 };
 
 const mapStateToProps = state => {

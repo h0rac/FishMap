@@ -53,7 +53,7 @@ class SaveSharedWaypoint extends Component {
 		return (
 			this.props.sharedFishmarks.length > 0 && this.displaySaveIcon() ?
 				<IconAwesome
-					name="save"
+					name="check"
 					size={24}
 					color={'white'}
 					onPress={this.saveToWaypoints}

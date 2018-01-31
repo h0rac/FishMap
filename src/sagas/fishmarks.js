@@ -147,6 +147,7 @@ function* setFishmarkPosition(action) {
 		}
 	} catch (e) {
 		yield put({ type: FAILED_SET_FISHMARK_POSITION, error: e.message });
+		console.log("RESULT", e)
 		displayAlert('Waypoint', e.message);
 	}
 }
