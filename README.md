@@ -22,3 +22,7 @@ Project for anglers to save waypoints of favorite fishing areas
 ![Screenshot](fishmap9.png)
 
 ![Screenshot](fishmap10.png)
+
+![Screenshot](fishmap11.png)
+
+![Screenshot](fishmap12png)
