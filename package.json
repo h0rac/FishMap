@@ -4,8 +4,20 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
-  },
+    "test": "jest",
+    "postinstall": "react-native-schemes-manager all"
+    },
+    "xcodeSchemes": {
+      "Debug": [
+        "Beta.Debug"
+      ],
+      "Release": [
+        "Beta.Release"
+      ],
+      "projectDirectory": "ios"
+    },
+    "projectDirectory": "ios"
+  ,
   "dependencies": {
     "react": "16.0.0",
     "react-native": "0.49",
@@ -16,6 +28,7 @@
     "react-native-maps": "^0.17.1",
     "react-native-popup-menu": "^0.12.2",
     "react-native-safari-view": "^2.1.0",
+    "react-native-schemes-manager": "^1.0.1",
     "react-native-vector-icons": "^4.5.0",
     "react-navigation": "^1.0.0-beta.19",
     "react-redux": "^5.0.6",
