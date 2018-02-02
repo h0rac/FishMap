@@ -1,8 +1,5 @@
 import {
-	SET_FISHMARK_POSITION,
-	UPDATE_FISHMARK_DATA,
 	MOVE_TO_FISHMARK_POSITION,
-	DELETE_FISHMARK_POSITION,
 	LOAD_FISHMARKS_POSITIONS_PENDING,
 	SUCCESS_LOAD_FISHMARKS_POSITIONS,
 	FAILED_LOAD_FISHMARKS_POSITIONS,
@@ -13,34 +10,31 @@ import {
 	INCREMENT_SEED,
 	SUCCESS_DELETE_WAYPOINT,
 	FAILED_DELETE_WAYPOINT,
-	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED,
 	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS,
 	SHARE_WAYPOINT_CHECKED_SUCCESS,
 	SHARE_WAYPOINT_CHECKED_FAILED,
-	SHARE_WAYPOINT_ALL_SELECTED,
 	SHARE_WAYPOINT_CHECKED_FALSE,
-	SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS,
 	SHARE_WAYPOINT_CHECKED_CLEAR, UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED,
 	CHANGE_DISPLAY_SAVE_STATUS,
 	SET_MAP_FOR_ANIMATION,
 	SHARE_MY_WAYPOINT,
-	REMOVE_SHARE_MY_WAYPOINT, CLEAR_DATA, SHARE_WAYPOINT_FAILED, SHARE_WAYPOINT_SUCCESS
+	REMOVE_SHARE_MY_WAYPOINT, CLEAR_DATA, SHARE_WAYPOINT_FAILED, SHARE_WAYPOINT_SUCCESS, SET_FISHMARK_POSITION_PENDING,
+	DELETE_FISHMARK_POSITION_PENDING
 
 } from '../constants/constants';
 
 import { removeDuplicates } from '../common/utils';
-import { shareMyWaypoint } from '../actions/fishmarks';
 
 const initialState = {
 	fishmarks: [],
 	region: {},
 	selected: false,
 	error: null,
-	isFetching: false,
+	isFetching: true,
 	message: null,
 	refreshing: false,
-	myFishmarkWaypoints:[],
+	myFishmarkWaypoints: [],
 	loadedWaypoints: [],
 	sharedFishmarks: [],
 	selectedSharedFishmarks: [],
@@ -51,7 +45,7 @@ const initialState = {
 	allSelected: false,
 	displaySave: false,
 	cleared: false,
-	mapView:null,
+	mapView: null
 };
 
 
@@ -67,13 +61,20 @@ const reducer = (state = initialState, action) => {
 			};
 		case SUCCESS_DELETE_WAYPOINT:
 			return {
-				...state, fishmarks: [...state.fishmarks.filter(mark => mark.latitude !== action.position.latitude
+				...state,
+				isFetching: action.isFetching,
+				fishmarks: [...state.fishmarks.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude
-				)], selectedSharedFishmarks: [...state.selectedSharedFishmarks.filter(mark => mark.latitude !== action.position.latitude
-					&& mark.longitude !== action.position.longitude)], loadedWaypoints:[...state.loadedWaypoints.filter(mark => mark.latitude !== action.position.latitude
-					&& mark.longitude !== action.position.longitude)], myFishmarkWaypoints:[...state.myFishmarkWaypoints.filter(mark => mark.latitude !== action.position.latitude
+				)],
+				selectedSharedFishmarks: [...state.selectedSharedFishmarks.filter(mark => mark.latitude !== action.position.latitude
+					&& mark.longitude !== action.position.longitude)],
+				loadedWaypoints: [...state.loadedWaypoints.filter(mark => mark.latitude !== action.position.latitude
+					&& mark.longitude !== action.position.longitude)],
+				myFishmarkWaypoints: [...state.myFishmarkWaypoints.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude)]
 			};
+		case DELETE_FISHMARK_POSITION_PENDING:
+			return { ...state, isFetching: action.isFetching };
 
 		case FAILED_DELETE_WAYPOINT:
 			return { ...state, error: action.error };
@@ -83,22 +84,30 @@ const reducer = (state = initialState, action) => {
 			return { ...state, fishmarks: action.fetchedFishmarks, isFetching: action.isFetching };
 
 		case LOAD_FISHMARKS_POSITIONS_PENDING:
-			return { ...state, isFetching: false };
+			return { ...state, isFetching: action.isFetching };
 
 		case FAILED_LOAD_FISHMARKS_POSITIONS:
-			return { ...state, error: action.error, isFetching: false };
+			return { ...state, error: action.error, isFetching: action.isFetching };
+
+		case SET_FISHMARK_POSITION_PENDING:
+			return { ...state, isFetching: action.isFetching };
 
 		case SUCCESS_SET_FISHMARK_POSITION:
-			return { ...state, fishmarks: [...state.fishmarks, action.newPosition], message: action.message };
+			return {
+				...state,
+				fishmarks: [...state.fishmarks, action.newPosition],
+				message: action.message,
+				isFetching: action.isFetching
+			};
 
 		case UPDATE_WAYPOINT_ON_SAVE_SUCCESS:
-			return {...state, fishmarks: action.toSaveWaypoints, sharedFishmarks:action.filteredSharedWaypoints}
+			return { ...state, fishmarks: action.toSaveWaypoints, sharedFishmarks: action.filteredSharedWaypoints };
 
 		case UPDATE_WAYPOINT_ON_SAVE_FAILED:
-			return {...state, message:action.message}
+			return { ...state, message: action.message };
 
 		case FAILED_SET_FISHMARK_POSITION:
-			return { ...state, error: action.error };
+			return { ...state, error: action.error, isFetching: action.isFetching };
 
 		case SUCCESS_UPDATE_WAYPOINTS_ON_PUSH:
 			return { ...state, loadedWaypoints: action.loadedWaypoints, refreshing: action.refreshing };
@@ -118,7 +127,7 @@ const reducer = (state = initialState, action) => {
 			return {
 				...state, sharedFishmarksNumber: action.number,
 				sharedFishmarks: removeDuplicates([...state.sharedFishmarks, action.target], 'key'),
-				selectedSharedFishmarks:action.selectedSharedFishmarks
+				selectedSharedFishmarks: action.selectedSharedFishmarks
 			};
 
 		case SHARE_WAYPOINT_CHECKED_FALSE:
@@ -126,10 +135,12 @@ const reducer = (state = initialState, action) => {
 				...state, sharedFishmarksNumber: action.number, selectedSharedFishmarks:
 					[...state.selectedSharedFishmarks.filter(item => item.key !== action.selectedSharedFishmark.key)],
 				sharedFishmarks: [...state.sharedFishmarks.map(fishmark => {
-					return {...fishmark,
-						checked:fishmark.key === action.selectedSharedFishmark.key ? action.selectedSharedFishmark.checked :
+					return {
+						...fishmark,
+						checked: fishmark.key === action.selectedSharedFishmark.key ? action.selectedSharedFishmark.checked :
 							fishmark.checked
-					}})]
+					};
+				})]
 			};
 
 		case SHARE_WAYPOINT_CHECKED_CLEAR:
@@ -140,31 +151,34 @@ const reducer = (state = initialState, action) => {
 
 
 		case CHANGE_DISPLAY_SAVE_STATUS:
-			return {...state, displaySave: action.displaySave}
+			return { ...state, displaySave: action.displaySave };
 
 
 		case SET_MAP_FOR_ANIMATION:
-			return {...state, mapView:action.mapView}
+			return { ...state, mapView: action.mapView };
 
 		case SHARE_MY_WAYPOINT:
-			return {...state, myFishmarkWaypoints: removeDuplicates([...state.myFishmarkWaypoints, action.data], 'key')}
+			return { ...state, myFishmarkWaypoints: removeDuplicates([...state.myFishmarkWaypoints, action.data], 'key') };
 
 		case REMOVE_SHARE_MY_WAYPOINT:
-			return {...state, myFishmarkWaypoints:[...state.myFishmarkWaypoints.filter(mark => mark.latitude !== action.data.latitude
-					&& mark.longitude !== action.data.longitude)]}
+			return {
+				...state,
+				myFishmarkWaypoints: [...state.myFishmarkWaypoints.filter(mark => mark.latitude !== action.data.latitude
+					&& mark.longitude !== action.data.longitude)]
+			};
 
 		case CLEAR_DATA:
 			return {
-				...state, myFishmarkWaypoints:[]
-			}
+				...state, myFishmarkWaypoints: []
+			};
 		case SHARE_WAYPOINT_FAILED:
 			return {
-				...state, error:action.error
-			}
+				...state, error: action.error
+			};
 		case SHARE_WAYPOINT_SUCCESS: {
 			return {
-				...state, message:action.message
-			}
+				...state, message: action.message
+			};
 		}
 
 		default:

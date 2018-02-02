@@ -77,8 +77,8 @@ class CreateAccountScreen extends React.Component {
 
 		return (
 			<ScrollView>
-			<View style={styles.container}>
-				<View style={styles.inputContainer}>
+				<View style={styles.container}>
+					<View style={styles.inputContainer}>
 
 						<View style={styles.textInput}>
 							<Text style={styles.textEmail}>Login:</Text>
@@ -128,8 +128,8 @@ class CreateAccountScreen extends React.Component {
 							</View>
 						</View>
 
+					</View>
 				</View>
-			</View>
 			</ScrollView>);
 	}
 }

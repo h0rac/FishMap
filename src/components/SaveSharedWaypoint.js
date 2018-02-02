@@ -1,31 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import {
-	StyleSheet,
-	View,
-	Alert,
-	Platform,
-	Linking,
-	AsyncStorage,
-	Button,
-	Text,
-	TouchableHighlight,
-	ActivityIndicator
-} from 'react-native';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
-import {saveSharedWaypoints} from '../actions/fishmarks';
-
-import IconBadge from 'react-native-icon-badge';
-import { changeReceiveStatus } from '../actions/user';
-
+import { saveSharedWaypoints } from '../actions/fishmarks';
 
 class SaveSharedWaypoint extends Component {
 
 
-	constructor () {
-		super()
-		this.saveToWaypoints = this.saveToWaypoints.bind(this)
-		this.displaySaveIcon = this.displaySaveIcon.bind(this)
+	constructor() {
+		super();
+		this.saveToWaypoints = this.saveToWaypoints.bind(this);
+		this.displaySaveIcon = this.displaySaveIcon.bind(this);
 
 	}
 
@@ -41,13 +25,13 @@ class SaveSharedWaypoint extends Component {
 			displaySave = true;
 		}
 
-		return displaySave
-	}
+		return displaySave;
+	};
 
 
 	saveToWaypoints = () => {
-		this.props.dispatch(saveSharedWaypoints(this.props.selectedSharedFishmarks))
-	}
+		this.props.dispatch(saveSharedWaypoints(this.props.selectedSharedFishmarks));
+	};
 
 	render() {
 		return (
@@ -67,7 +51,7 @@ const mapStateToProps = state => {
 		displaySave: state.fishmarks.displaySave,
 		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,
 		sharedFishmarks: state.fishmarks.sharedFishmarks,
-		intervalAlive: state.user.intervalAlive,
+		intervalAlive: state.user.intervalAlive
 	};
 };
 

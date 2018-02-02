@@ -1,4 +1,4 @@
-import { TextInput, Keyboard, Dimensions, Platform, Alert, AsyncStorage, StyleSheet } from 'react-native';
+import { Alert, AsyncStorage } from 'react-native';
 import React from 'react';
 import MainScreen from '../MainScreen';
 import { shallow, configure } from 'enzyme';

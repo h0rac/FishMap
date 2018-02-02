@@ -4,39 +4,34 @@ import {
 	FAILED_SET_TOKEN,
 	FAILED_GET_USER_LOCATION,
 	SUCCESS_GET_USER_LOCATION,
-	VERIFY_TOKEN,
 	SUCCESS_VERIFY_TOKEN,
-	CHANGE_INTERVAL_TIME_SUCCESS,
 	CHANGE_RECEIVE_STATUS,
-	CHANGE_DISPLAY_SAVE_STATUS,
-	CHANGE_DURATION,
 	EMIT_WAYPOINT_RECEIVE_STARTED,
 	EMIT_WAYPOINT_RECEIVE_STOPPED,
 	SET_INTERVAL_ID,
 	SET_SELECTED_DURATION, CHANGE_DURATION_SUCCESS,
 	SET_IO_SOCKET,
 	SET_INTERVAL_ALIVE,
-	SET_DST_EMAIL,
-	CLEAR_DATA
+	SET_DST_EMAIL
 
 }
 	from '../constants/constants';
-import { setFishmark } from '../actions/fishmarks';
 
 const intialState = {
 	user: {},
 	success: false,
 	error: false,
+	isFetching: true,
 	position: {},
 	message: null,
 	duration: 8000,
-	tempDuration:0,
+	tempDuration: 0,
 	receive: true,
 	emitStatus: false,
-	timeoutID:0,
-	intervalAlive:true,
+	timeoutID: 0,
+	intervalAlive: true,
 	dstEmail: null,
-	socketIO:null,
+	socketIO: null
 };
 
 const reducer = (state = intialState, action) => {
@@ -48,7 +43,7 @@ const reducer = (state = intialState, action) => {
 
 		case SUCCESS_SET_TOKEN:
 			return {
-				...state, success: action.success, socketIO:action.socketIO
+				...state, success: action.success, socketIO: action.socketIO
 			};
 		case FAILED_SET_TOKEN:
 			return {
@@ -57,7 +52,7 @@ const reducer = (state = intialState, action) => {
 
 		case SUCCESS_GET_USER_LOCATION:
 			return {
-				...state, position: action.position
+				...state, position: action.position, isFetching: action.isFetching
 			};
 
 		case FAILED_GET_USER_LOCATION:
@@ -97,22 +92,22 @@ const reducer = (state = intialState, action) => {
 		case SET_SELECTED_DURATION:
 			return {
 				...state, tempDuration: action.duration
-			}
+			};
 
 		case SET_IO_SOCKET:
 			return {
-				...state, socketIO:action.socket
-			}
+				...state, socketIO: action.socket
+			};
 
 		case SET_INTERVAL_ALIVE:
 			return {
-				...state, intervalAlive:action.status
-			}
+				...state, intervalAlive: action.status
+			};
 
 		case SET_DST_EMAIL:
 			return {
 				...state, dstEmail: action.email
-			}
+			};
 
 		default:
 			return state;

@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, Image, TouchableOpacity, Platform, StyleSheet, Dimensions, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text, View, FlatList, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { connect } from 'react-redux';
 import {
-	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypointToPeer, clearSharedCheckedWaypoints,
-	shareWaypointChecked, uncheckWaypointShared, shareMyWaypoint
+	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypointChecked, shareMyWaypoint
 } from '../actions/fishmarks';
 import Notificator from '../components/Notificator';
-import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import SaveSharedWaypoint from '../components/SaveSharedWaypoint';
-import { changeReceiveStatus } from '../actions/user';
 import Waypoint from '../components/Waypoint';
 
 
@@ -28,9 +24,9 @@ class WayPointScreen extends Component {
 
 		return {
 			headerStyle: {
-				backgroundColor: '#2F95D6',
+				backgroundColor: '#2F95D6'
 			},
-			title:'Waypoints',
+			title: 'Waypoints',
 			tabBarLabel: (props) => (<Text style={labelStyle(props, 'flex-end', 15)}> Waypoints </Text>),
 			headerTintColor: 'white',
 			tabBarIcon:
@@ -43,12 +39,12 @@ class WayPointScreen extends Component {
 	constructor() {
 		super();
 		this._handleMoveToFishmarkPostion = this._handleMoveToFishmarkPostion.bind(this);
-		this._handlePushToRefresh = this._handlePushToRefresh.bind(this);
-		this._shareWaypoint = this._shareWaypoint.bind(this);
-		this._renderCurrentFishmarks = this._renderCurrentFishmarks.bind(this);
-		this._renderSharedFishmarks = this._renderSharedFishmarks.bind(this);
-		this._handleScreenSwitcher = this._handleScreenSwitcher.bind(this);
-		this._handleCheck = this._handleCheck.bind(this);
+		this.handlePushToRefresh = this.handlePushToRefresh.bind(this);
+		this.shareWaypoint = this.shareWaypoint.bind(this);
+		this.renderCurrentFishmarks = this.renderCurrentFishmarks.bind(this);
+		this.renderSharedFishmarks = this.renderSharedFishmarks.bind(this);
+		this.handleScreenSwitcher = this.handleScreenSwitcher.bind(this);
+		this.handleCheck = this.handleCheck.bind(this);
 
 		this.state = {
 			showWaypoints: false,
@@ -73,45 +69,45 @@ class WayPointScreen extends Component {
 
 	};
 
-	_handlePushToRefresh = () => {
+	handlePushToRefresh = () => {
 		this.props.dispatch(loadFishWaypointsOnPush());
 	};
 
-	_shareWaypoint = (data) => {
-		this.props.dispatch(shareMyWaypoint(data))
+	shareWaypoint = (data) => {
+		this.props.dispatch(shareMyWaypoint(data));
 	};
 
 
-	_renderCurrentFishmarks = () => {
+	renderCurrentFishmarks = () => {
 		const result = <FlatList
 			data={this.props.loadedWaypoints.length > 0 ? this.props.loadedWaypoints : this.props.positions.fishmarks.slice(0, 7).reverse()}
 			renderItem={({ item }) => <Waypoint navigation={this.props.navigation}
-																					item={item}
-																					callback={this._handleMoveToFishmarkPostion}
-																					shareWaypointCallback={this._shareWaypoint} shared={false}/>}
+			                                    item={item}
+			                                    callback={this._handleMoveToFishmarkPostion}
+			                                    shareWaypointCallback={this.shareWaypoint} shared={false}/>}
 			keyExtractor={item => item.key}
-			onRefresh={this._handlePushToRefresh}
+			onRefresh={this.handlePushToRefresh}
 			refreshing={this.props.refreshing}
 		/>;
 		return result;
 	};
 
-	_handleCheck = (status, item) => {
+	handleCheck = (status, item) => {
 		this.props.dispatch(shareWaypointChecked(item.checked, item, this.props.intervalAlive));
 
 	};
 
-	_renderSharedFishmarks = () => {
+	renderSharedFishmarks = () => {
 		const result = <FlatList
 			data={this.props.sharedFishmarks}
-			renderItem={({ item }) => <Waypoint item={item} callbackHandleCheck={this._handleCheck}
-																					shared={true}/>}
+			renderItem={({ item }) => <Waypoint item={item} callbackHandleCheck={this.handleCheck}
+			                                    shared={true}/>}
 			keyExtractor={item => item.key}
 		/>;
 		return result;
 	};
 
-	_handleScreenSwitcher = () => {
+	handleScreenSwitcher = () => {
 		this.setState({ showWaypoints: !this.state.showWaypoints });
 	};
 
@@ -122,14 +118,15 @@ class WayPointScreen extends Component {
 
 			<View style={styles.waypoints}>
 				{(this.props.sharedFishmarks && this.props.sharedFishmarks.length > 0 && !this.state.showWaypoints) ?
-					this._renderSharedFishmarks() : this._renderCurrentFishmarks()}
+					this.renderSharedFishmarks() : this.renderCurrentFishmarks()}
 			</View>
 			{this.props.sharedFishmarks.length > 0 ?
-			<TouchableOpacity style={styles.switcher} onPress={this._handleScreenSwitcher}>
-				 <View>
-						<Text style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Received waypoints >'}</Text>
+				<TouchableOpacity style={styles.switcher} onPress={this.handleScreenSwitcher}>
+					<View>
+						<Text
+							style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Received waypoints >'}</Text>
 					</View>
-			</TouchableOpacity>:null}
+				</TouchableOpacity> : null}
 		</View>);
 	}
 }

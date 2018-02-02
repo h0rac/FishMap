@@ -1,16 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
-	StyleSheet,
-	View,
-	Alert,
-	Platform,
-	Linking,
-	AsyncStorage,
-	Button,
 	Text,
-	TouchableHighlight,
-	ActivityIndicator
 } from 'react-native';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -24,7 +15,7 @@ class Notificator extends Component {
 		return (
 			<IconBadge
 				MainElement={<IconAwesome
-					name= {this.props.type === 'waypoint' ? "map-marker" : "share-alt"}
+					name={this.props.type === 'waypoint' ? 'map-marker' : 'share-alt'}
 					size={26}
 					color={'white'}
 					//style={{paddingLeft:20}}
@@ -38,16 +29,16 @@ class Notificator extends Component {
 						{
 							top: -3,
 							left: 11,
-							minWidth:20,
-							height:20,
+							minWidth: 20,
+							height: 20,
 							justifyContent: 'space-around',
 							backgroundColor: 'red'
 						}
-						: 	{
+						: {
 							top: -3,
 							left: 20,
-							minWidth:20,
-							height:20,
+							minWidth: 20,
+							height: 20,
 							justifyContent: 'space-around',
 							backgroundColor: 'yellow'
 						}

@@ -158,9 +158,6 @@ class LoginScreen extends React.Component {
 				</View>
 				<View style={[styles.boxContainer, styles.signUpBox]}>
 					<Button
-
-
-						asd
 						rounded={true}
 						icon={{name:"user-o", type:'font-awesome'}}
 						backgroundColor="green"

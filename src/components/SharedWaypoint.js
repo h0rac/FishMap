@@ -18,7 +18,7 @@ class SharedWaypoint extends Component {
 		this.state = {
 			checked: null
 		};
-		this.renderMenuItem = this.renderMenuItem.bind(this)
+		this.renderMenuItem = this.renderMenuItem.bind(this);
 	}
 
 	renderMenuItem = (icon, name, color) => {
@@ -35,39 +35,39 @@ class SharedWaypoint extends Component {
 		const rightButtons = [
 			{
 				backgroundColor: '#e61b1b',
-				underlayColor:  '#e61b1b',
-				onPress: () => this.props.dispatch(removeShareMyWaypoint(this.props.item)) ,
+				underlayColor: '#e61b1b',
+				onPress: () => this.props.dispatch(removeShareMyWaypoint(this.props.item)),
 				component:
 					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-							<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-								<Image
-									style={{ width: 26, height: 26 }}
-									disabled={true}
-									source={require('../assets/close-circle.png')}
-									onPress={() => this.props.dispatch(removeShareMyWaypoint(this.props.item))}/>
-								<Text style={{color:'white'}}>Remove</Text>
-							</View>
+						<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+							<Image
+								style={{ width: 26, height: 26 }}
+								disabled={true}
+								source={require('../assets/close-circle.png')}
+								onPress={() => this.props.dispatch(removeShareMyWaypoint(this.props.item))}/>
+							<Text style={{ color: 'white' }}>Remove</Text>
+						</View>
 					</View>
 			}
 		];
-		const splitDate = this.props.item.date.split(' ')
-		return(
+		const splitDate = this.props.item.date.split(' ');
+		return (
 			<Swipeout right={rightButtons} backgroundColor={'whitesmoke'} buttonWidth={60}>
-			<View style={styles.row}>
-				<View style={styles.nameTitle}>
-					<Text style={styles.name}>{this.props.item.title} </Text>
+				<View style={styles.row}>
+					<View style={styles.nameTitle}>
+						<Text style={styles.name}>{this.props.item.title} </Text>
+					</View>
+					<View style={styles.coords}>
+						<Text style={styles.latitude}>{this.props.item.latitude}</Text>
+						<Text style={styles.longitude}>{this.props.item.longitude}</Text>
+					</View>
+					<View style={styles.date}>
+						<Text style={styles.year}>{splitDate[3]}</Text>
+						<Text style={styles.month}>{`${splitDate[0]} ${splitDate[1]} ${splitDate[2]}`}</Text>
+					</View>
 				</View>
-				<View style={styles.coords}>
-					<Text style={styles.latitude}>{this.props.item.latitude}</Text>
-					<Text style={styles.longitude}>{this.props.item.longitude}</Text>
-				</View>
-				<View style={styles.date}>
-					<Text style={styles.year}>{splitDate[3]}</Text>
-					<Text style={styles.month}>{`${splitDate[0]} ${splitDate[1]} ${splitDate[2]}`}</Text>
-				</View>
-			</View>
 			</Swipeout>
-		)
+		);
 
 	}
 }
@@ -107,7 +107,7 @@ const styles = {
 		borderColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		flexDirection: 'row',
-		justifyContent:'space-between',
+		justifyContent: 'space-between',
 		backgroundColor: 'mintcream',
 		height: 80
 
@@ -143,48 +143,46 @@ const styles = {
 	coords: {
 		flex: 1,
 		alignItems: 'center',
-		paddingRight:20,
-		justifyContent:'center'
+		paddingRight: 20,
+		justifyContent: 'center'
 	},
 
 	date: {
 		flex: 0.5,
 		alignItems: 'flex-end',
-		paddingRight:20,
-		justifyContent:'center'
+		paddingRight: 20,
+		justifyContent: 'center'
 
 	},
 
 	rightIcon: {
 		justifyContent: 'center',
-		flex:1,
-		flexDirection:'row',
-		alignItems: 'center',
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	latitude: {
-		fontSize: 11,
+		fontSize: 11
 	},
 	longitude: {
 		fontSize: 11,
-		marginTop: 2,
+		marginTop: 2
 	},
 
 	year: {
 		fontSize: 11,
-		marginRight:12
+		marginRight: 12
 	},
 	month: {
 		fontSize: 11,
-		marginTop: 2,
+		marginTop: 2
 	}
 
 };
 const mapStateToProps = state => {
 
 
-	return {
-
-	};
+	return {};
 };
 
 export default connect(mapStateToProps)(SharedWaypoint);

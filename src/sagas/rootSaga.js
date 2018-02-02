@@ -1,4 +1,4 @@
-import {takeEvery,select,put, call, all} from 'redux-saga/effects'
+import {all} from 'redux-saga/effects'
 
 import {fishmarkSaga} from "./fishmarks";
 import {usersSaga} from "./users";

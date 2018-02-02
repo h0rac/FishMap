@@ -1,7 +1,5 @@
 import {
 	SET_FISHMARK_POSITION,
-	UPDATE_FISHMARK_DATA,
-	MOVE_TO_FISHMARK_POSITION,
 	DELETE_FISHMARK_POSITION,
 	LOAD_FISHMARKS_POSITIONS_PENDING,
 	SUCCESS_LOAD_FISHMARKS_POSITIONS,
@@ -9,12 +7,10 @@ import {
 	API_ENDPOINT,
 	FAILED_SET_FISHMARK_POSITION,
 	SUCCESS_SET_FISHMARK_POSITION,
-	SET_USER_DATA,
 	LOAD_WAYPOINTS_ON_PUSH,
 	SUCCESS_UPDATE_WAYPOINTS_ON_PUSH,
 	FAILED_UPDATE_WAYPOINT_ON_PUSH,
 	INCREMENT_SEED,
-	DELETE_WAYPOINT,
 	FAILED_DELETE_WAYPOINT,
 	SUCCESS_DELETE_WAYPOINT,
 	IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST,
@@ -26,24 +22,20 @@ import {
 	SHARE_WAYPOINT_CHECKED,
 	SHARE_WAYPOINT_CHECKED_SUCCESS,
 	SHARE_WAYPOINT_CHECKED_FAILED,
-	SHARE_WAYPOINT_ALL_SELECTED,
 	SHARE_WAYPOINT_CHECKED_FALSE,
-	SHARE_WAYPOINT_CHECKED_CLEAR,
-	SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS,
-	CHANGE_DURATION,
 	CHANGE_RECEIVE_STATUS,
 	SAVE_SHARED_WAYPOINTS,
 	UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED,
-	CHANGE_DISPLAY_SAVE_STATUS,
+	SET_FISHMARK_POSITION_PENDING,
+	DELETE_FISHMARK_POSITION_PENDING
 
 } from '../constants/constants';
 
 import { LOAD_FISHMARKS_POSITIONS } from '../constants/constants';
 
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
-import { Alert } from 'react-native';
-import { displayAlert, getToken, setToken, removeToken, removeDuplicates } from '../common/utils';
+import { displayAlert, getToken, removeDuplicates } from '../common/utils';
 
 const fetchFishmarks = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoints', params);
 const saveFishmark = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoint', params);
@@ -55,8 +47,6 @@ const shareWaypointToUser = (params) => fetch(`http://${API_ENDPOINT}/api/v1/sha
 const saveFishmarks = params => fetch(`http://${API_ENDPOINT}/api/v1/save/waypoints`, params);
 
 let temp = [];
-let selectedWaypoints = [];
-let filteredSharedWaypoints = [];
 
 function* fetchFishPositions() {
 
@@ -72,7 +62,6 @@ function* fetchFishPositions() {
 			headers: myHeaders
 		};
 
-
 		yield put({ type: LOAD_FISHMARKS_POSITIONS_PENDING, isFetching: true });
 		const response = yield call(fetchFishmarks, params);
 		const result = yield response.json();
@@ -86,13 +75,13 @@ function* fetchFishPositions() {
 			if (fetchedFishmarks !== undefined) {
 				yield put({ type: SUCCESS_LOAD_FISHMARKS_POSITIONS, fetchedFishmarks, isFetching: false });
 			} else {
-				yield put({ type: FAILED_LOAD_FISHMARKS_POSITIONS, error: result.error });
+				yield put({ type: FAILED_LOAD_FISHMARKS_POSITIONS, error: result.error, isFetching: false });
 				displayAlert('Fishmark Upload', 'Failed to upload fishmarks');
 			}
 		}
 
 	} catch (e) {
-		yield put({ type: FAILED_LOAD_FISHMARKS_POSITIONS, error: e.message });
+		yield put({ type: FAILED_LOAD_FISHMARKS_POSITIONS, error: e.message, isFetching: false });
 	}
 
 }
@@ -114,12 +103,14 @@ function* setFishmarkPosition(action) {
 				waypoint: action.data
 			})
 		};
+
+		yield put({ type: SET_FISHMARK_POSITION_PENDING, isFetching: true });
 		const response = yield call(saveFishmark, params);
 		const result = yield response.json();
 
 
 		if (result.success === false) {
-			yield put({ type: FAILED_SET_FISHMARK_POSITION, error: result.message });
+			yield put({ type: FAILED_SET_FISHMARK_POSITION, error: result.message, isFetching: false });
 			displayAlert('Waypoint', result.message);
 		} else {
 			if (action.data !== undefined) {
@@ -131,8 +122,6 @@ function* setFishmarkPosition(action) {
 				const fetchResponse = yield call(fetchFishmark, action.data.latitude, action.data.longitude, fetchParams);
 				const fetchResult = yield fetchResponse.json();
 
-				console.log('FETCH RESULT', fetchResult);
-
 				if (fetchResult.success === false) {
 					//yield put({ type: FAILED_GET_WAYPOINT, error: result.message });
 					displayAlert('Waypoint', fetchResult.message);
@@ -140,14 +129,14 @@ function* setFishmarkPosition(action) {
 					yield put({
 						type: SUCCESS_SET_FISHMARK_POSITION,
 						newPosition: fetchResult.waypoint,
-						message: fetchResult.message
+						message: fetchResult.message,
+						isFetching: false
 					});
 				}
 			}
 		}
 	} catch (e) {
-		yield put({ type: FAILED_SET_FISHMARK_POSITION, error: e.message });
-		console.log("RESULT", e)
+		yield put({ type: FAILED_SET_FISHMARK_POSITION, error: e.message, isFetching: false });
 		displayAlert('Waypoint', e.message);
 	}
 }
@@ -169,22 +158,28 @@ export function* delFishmarkPosition(action) {
 			})
 		};
 
+		yield put({ type: DELETE_FISHMARK_POSITION_PENDING, isFetching: true });
 		const response = yield call(delFishmark, action.position.latitude, action.position.longitude, params);
 		const result = yield response.json();
 
 		if (result.success === false) {
-			yield put({ type: FAILED_DELETE_WAYPOINT, error: result.message });
+			yield put({ type: FAILED_DELETE_WAYPOINT, error: result.message, isFetching: false });
 			displayAlert('Waypoint', result.message);
 		} else {
 			if (action.position !== undefined) {
-				yield put({ type: SUCCESS_DELETE_WAYPOINT, position: action.position, message: result.message });
+				yield put({
+					type: SUCCESS_DELETE_WAYPOINT,
+					position: action.position,
+					message: result.message,
+					isFetching: false
+				});
 			} else {
 				displayAlert('Fishmark Set', 'Failed to delete fishmark');
 			}
 		}
 
 	} catch (e) {
-		yield put({ type: FAILED_DELETE_WAYPOINT, error: result.message });
+		yield put({ type: FAILED_DELETE_WAYPOINT, error: result.message, isFetching: false });
 		displayAlert('Waypoint', result.message);
 	}
 }
@@ -197,12 +192,9 @@ function* loadWaypointsOnPush(action) {
 		const fishmarks = yield select(state => state.fishmarks.fishmarks);
 		const seed = yield select(state => state.fishmarks.seed);
 
-		console.log("LOADED WAYPOINTS", loadedWaypoints)
-		console.log("FISHMARKS WAYPOINTS", fishmarks)
-
 		if (loadedWaypoints.length !== fishmarks.length) {
 			loadedWaypoints = fishmarks.filter((waypoint, index) => index <= seed).reverse();
-			yield put({ type: SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, loadedWaypoints:loadedWaypoints, refreshing: true });
+			yield put({ type: SUCCESS_UPDATE_WAYPOINTS_ON_PUSH, loadedWaypoints: loadedWaypoints, refreshing: true });
 			yield put({ type: INCREMENT_SEED, seed: seed + 5, refreshing: false });
 
 		}
@@ -226,8 +218,6 @@ function* IOCreateCandidateFishmarksList(action) {
 
 		const filteredFishmarks = removeDuplicates(temp, 'key');
 
-		console.log('filtered', filteredFishmarks);
-
 		yield put({
 			type: IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS,
 			sharedFishmarksNumber: filteredFishmarks.length,
@@ -237,8 +227,6 @@ function* IOCreateCandidateFishmarksList(action) {
 	} catch (e) {
 		yield put({ type: IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED, message: e.error });
 	}
-
-
 }
 
 function* shareWaypoint(action) {
@@ -248,9 +236,6 @@ function* shareWaypoint(action) {
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
-
-
-		console.log("ACTION SHARE", action.data)
 
 		let params = {
 			method: 'POST',
@@ -268,21 +253,21 @@ function* shareWaypoint(action) {
 
 		if (result && result.success === false) {
 			yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
-			const error = yield select(state => state.fishmarks.error)
-				displayAlert('Waypoint', error);
+			const error = yield select(state => state.fishmarks.error);
+			displayAlert('Waypoint', error);
 
 		} else {
 			yield put({ type: SHARE_WAYPOINT_SUCCESS, message: result.message });
-			const message = yield select(state => state.fishmarks.message)
+			const message = yield select(state => state.fishmarks.message);
 			displayAlert('Waypoint', message);
 
 		}
-	} catch(e) {
-			yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
-			const error = yield select(state => state.fishmarks.error)
-			if(error)
-				displayAlert('Waypoint', error);
-		}
+	} catch (e) {
+		yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
+		const error = yield select(state => state.fishmarks.error);
+		if (error)
+			displayAlert('Waypoint', error);
+	}
 }
 
 function* shareWaypointChecked(action) {
@@ -291,11 +276,8 @@ function* shareWaypointChecked(action) {
 		let number = yield select(state => state.fishmarks.sharedFishmarksNumber);
 		const selectedSharedFishmarks = yield select(state => state.fishmarks.selectedSharedFishmarks);
 
-		console.log("ACTION CHECKED", action.checked)
-		console.log("ACTION ALIVE", action.intervalAlive)
-
 		if (!action.checked) {
-				yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
+			yield put({ type: CHANGE_RECEIVE_STATUS, receive: false });
 
 			yield put({
 				type: SHARE_WAYPOINT_CHECKED_SUCCESS,
@@ -313,7 +295,7 @@ function* shareWaypointChecked(action) {
 				number: ++number,
 				selectedSharedFishmark: { ...action.target, checked: !action.checked }
 			});
-			if(action.intervalAlive)
+			if (action.intervalAlive)
 				yield put({ type: CHANGE_RECEIVE_STATUS, receive: true });
 		}
 
@@ -354,6 +336,7 @@ function* saveSharedWaypoints(action) {
 				waypoints: updatedWaypoints
 			})
 		};
+
 		const response = yield call(saveFishmarks, params);
 		const result = yield response.json();
 

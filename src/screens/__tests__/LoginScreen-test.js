@@ -1,7 +1,6 @@
-import { TextInput, Keyboard, Dimensions, Platform } from 'react-native';
+import { TextInput,Platform } from 'react-native';
 import React from 'react';
 import LoginScreen from '../LoginScreen';
-import TestUtils from 'react-dom/test-utils';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';

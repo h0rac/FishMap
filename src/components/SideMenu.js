@@ -13,26 +13,26 @@ class SideMenu extends Component {
 		this.renderItems = this.renderItems.bind(this);
 
 		this.state = {
-			items : [
-				{leftIcon:'home', rightIcon:'angle-right',screen:'mainStack', title:'Home'},
-				{leftIcon:'gear', rightIcon:'angle-right',screen:'SettingScreen', title:'Settings'},
-				{leftIcon:'user-circle', rightIcon:'angle-right',screen:'ProfileScreen', title: 'Profile'},
-				{leftIcon:'info-circle', rightIcon:'angle-right',screen:'InfoScreen', title: 'Info'},
+			items: [
+				{ leftIcon: 'home', rightIcon: 'angle-right', screen: 'mainStack', title: 'Home' },
+				{ leftIcon: 'gear', rightIcon: 'angle-right', screen: 'SettingScreen', title: 'Settings' },
+				{ leftIcon: 'user-circle', rightIcon: 'angle-right', screen: 'ProfileScreen', title: 'Profile' },
+				{ leftIcon: 'info-circle', rightIcon: 'angle-right', screen: 'InfoScreen', title: 'Info' }
 			],
-			routes:[]
-		}
+			routes: []
+		};
 	}
 
 
 	navigateToScreen = (route) => () => {
 
-		const navigateAction =  NavigationActions.navigate({
+		const navigateAction = NavigationActions.navigate({
 			routeName: route
 		});
 		this.props.navigation.dispatch(navigateAction);
 	};
 
-	renderItems () {
+	renderItems() {
 
 		return this.state.items.map((item, index) =>
 			<View key={index}>
@@ -58,25 +58,25 @@ class SideMenu extends Component {
 						</View>
 					</View>
 				</TouchableOpacity>
-				<Divider style={{ height: 0.5, backgroundColor: 'gray', marginBottom:4 }}/>
+				<Divider style={{ height: 0.5, backgroundColor: 'gray', marginBottom: 4 }}/>
 			</View>
-		)
+		);
 	}
 
 	render() {
-		const date = this.state.date
+		const date = this.state.date;
 		return (
 			<View style={styles.container}>
 				<ScrollView>
-							<View style={styles.avatar}>
-								<Avatar
-									large
-									rounded
-									source={{ uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' }}
-									onPress={() => console.log('Works!')}
-									activeOpacity={0.7}
-								/>
-							</View>
+					<View style={styles.avatar}>
+						<Avatar
+							large
+							rounded
+							source={{ uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' }}
+							onPress={() => console.log('Works!')}
+							activeOpacity={0.7}
+						/>
+					</View>
 					{this.renderItems()}
 
 				</ScrollView>
@@ -111,7 +111,7 @@ styles = {
 		flex: 1,
 		flexDirection: 'row',
 		padding: 10,
-		paddingLeft:20
+		paddingLeft: 20
 	},
 
 	navItemStyle: {
@@ -142,12 +142,12 @@ styles = {
 	footerContainer: {
 		padding: 10,
 		backgroundColor: '#2F95D6',
-		flex:0.,
+		flex: 0.
 	},
 	footerText: {
-		color:'white',
-		fontSize:12,
-		paddingLeft:20
+		color: 'white',
+		fontSize: 12,
+		paddingLeft: 20
 	}
 };
 
