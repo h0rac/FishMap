@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, ScrollView, FlatList } from 'react-native';
+import { Text, View, ScrollView, FlatList, Dimensions, Keyboard } from 'react-native';
 import PropTypes from 'prop-types';
 import SharedWaypoint from '../components/SharedWaypoint'
 import { connect } from 'react-redux';
@@ -27,11 +27,24 @@ class SharingScreen extends React.Component {
 		super()
 
 		this.state = {
-			myShare:true,
-			email:null,
+			myShare: true,
+			email: null,
 		}
 		this.validateEmail = this.validateEmail.bind(this)
-	}
+		this._DimensionHandler = this._DimensionHandler.bind(this);
+		}
+
+		componentWillMount() {
+			Dimensions.addEventListener('change', this._DimensionHandler);
+		}
+
+		componentWillUnmount() {
+			Dimensions.removeEventListener('change', this._DimensionHandler);
+		}
+
+		_DimensionHandler(dims) {
+			this.setState({ window: dims });
+		}
 
 	validateEmail = (email) => {
 		const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -74,6 +87,7 @@ class SharingScreen extends React.Component {
 							keyExtractor={item => item.key}
 						/>
 					</View>
+				<ScrollView>
 					<View style={styles.email}>
 						<FormLabel>e-mail</FormLabel>
 						<FormInput onChangeText={(email) => this.setState({email:email})}/>
@@ -90,6 +104,7 @@ class SharingScreen extends React.Component {
 							</Button>
 						</View>
 					</View>
+				</ScrollView>
 			</View>)
 	}
 }
@@ -111,7 +126,7 @@ const styles = {
 	},
 
 	waypoints: {
-		flex:3,
+		flex:2,
 		backgroundColor:'white',
 		flexDirection:'column'
 	},

@@ -24,7 +24,6 @@
 		140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		2550D05A5B974D4094A2901C /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F0A861CA64AB4AD989D40635 /* libRNVectorIcons.a */; };
-		2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2D02E4C21E0B4AEC006451C7 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157351DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
@@ -49,8 +48,9 @@
 		9F32CC7E74294A9CB4097A61 /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CF545A1B97974CBDB9AAA4A4 /* EvilIcons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		B24A015DD03B4803BC330C78 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B6649F3239C242A9912D4A02 /* Ionicons.ttf */; };
-		B96F3B3C202292A1000E90EF /* assets in Resources */ = {isa = PBXBuildFile; fileRef = B96F3B17202292A1000E90EF /* assets */; };
-		B96F3B4020229760000E90EF /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = B96F3B3F20229760000E90EF /* main.jsbundle */; };
+		B9AF7F5E2023B33D00B19E3D /* main.jsbundle.meta in Resources */ = {isa = PBXBuildFile; fileRef = B9AF7F5D2023B33D00B19E3D /* main.jsbundle.meta */; };
+		B9AF7F652023B4E800B19E3D /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = B9AF7F642023B4E800B19E3D /* main.jsbundle */; };
+		B9AF7F672023B4FD00B19E3D /* assets in Resources */ = {isa = PBXBuildFile; fileRef = B9AF7F662023B4FD00B19E3D /* assets */; };
 		E3651DACFB8A415CAB33DF0F /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2299C0181A414B40BC669125 /* libSafariViewManager.a */; };
 		F2B5E399955F4307AE5C0C38 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E75A1CEB98E49318BE5791E /* MaterialIcons.ttf */; };
 /* End PBXBuildFile section */
@@ -330,13 +330,11 @@
 		00C302BB1ABCB91800DB3ED1 /* RCTImage.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImage.xcodeproj; path = "../node_modules/react-native/Libraries/Image/RCTImage.xcodeproj"; sourceTree = "<group>"; };
 		00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTNetwork.xcodeproj; path = "../node_modules/react-native/Libraries/Network/RCTNetwork.xcodeproj"; sourceTree = "<group>"; };
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
-		00E356EE1AD99517003FC87E /* FishMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FishMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* FishMapTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FishMapTests.m; sourceTree = "<group>"; };
 		0C66CB766E524E0FBEBE7D12 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* FishMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FishMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = FishMap/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = FishMap/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -345,8 +343,6 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = FishMap/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		2299C0181A414B40BC669125 /* libSafariViewManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSafariViewManager.a; sourceTree = "<group>"; };
-		2D02E47B1E0B4A5D006451C7 /* FishMap-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FishMap-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2D02E4901E0B4A5D006451C7 /* FishMap-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FishMap-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E75A1CEB98E49318BE5791E /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		3EFE81ECB241447BB78AF344 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
 		4C8B0F815CF64CF6A1A9B520 /* libAirMaps.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAirMaps.a; sourceTree = "<group>"; };
@@ -358,8 +354,13 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B503523B57804F46847A9F8E /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		B6649F3239C242A9912D4A02 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		B96F3B17202292A1000E90EF /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
-		B96F3B3F20229760000E90EF /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		B9AF7F5D2023B33D00B19E3D /* main.jsbundle.meta */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.jsbundle.meta; sourceTree = "<group>"; };
+		B9AF7F642023B4E800B19E3D /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		B9AF7F662023B4FD00B19E3D /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
+		B9BE75B22023C236009E174A /* FishMap Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "FishMap Beta.app"; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Beta.Release-iphoneos/FishMap Beta.app"; sourceTree = "<absolute>"; };
+		B9BE75B32023C236009E174A /* FishMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FishMapTests.xctest; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Beta.Release-iphoneos/FishMapTests.xctest"; sourceTree = "<absolute>"; };
+		B9BE75B42023C236009E174A /* FishMap-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "FishMap-tvOS.app"; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Debug-appletvos/FishMap-tvOS.app"; sourceTree = "<absolute>"; };
+		B9BE75B52023C236009E174A /* FishMap-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "FishMap-tvOSTests.xctest"; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Debug-appletvos/FishMap-tvOSTests.xctest"; sourceTree = "<absolute>"; };
 		C262755E09074FE9BE955861 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C9141C8EE7EA4DC09EAD9F99 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		CF545A1B97974CBDB9AAA4A4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -509,8 +510,9 @@
 		13B07FAE1A68108700A75B9A /* FishMap */ = {
 			isa = PBXGroup;
 			children = (
-				B96F3B3F20229760000E90EF /* main.jsbundle */,
-				B96F3B17202292A1000E90EF /* assets */,
+				B9AF7F662023B4FD00B19E3D /* assets */,
+				B9AF7F642023B4E800B19E3D /* main.jsbundle */,
+				B9AF7F5D2023B33D00B19E3D /* main.jsbundle.meta */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -592,10 +594,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				B9BE760D2023C425009E174A /* Products */,
 				13B07FAE1A68108700A75B9A /* FishMap */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* FishMapTests */,
-				83CBBA001A601CBA00E9B192 /* Products */,
 				8B8233FC7545495BAE5005E8 /* Resources */,
 				B9FE3D8E1FB3DFDB008D74F7 /* Recovered References */,
 			);
@@ -603,17 +605,6 @@
 			sourceTree = "<group>";
 			tabWidth = 2;
 			usesTabs = 0;
-		};
-		83CBBA001A601CBA00E9B192 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				13B07F961A680F5B00A75B9A /* FishMap.app */,
-				00E356EE1AD99517003FC87E /* FishMapTests.xctest */,
-				2D02E47B1E0B4A5D006451C7 /* FishMap-tvOS.app */,
-				2D02E4901E0B4A5D006451C7 /* FishMap-tvOSTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
 		};
 		8B8233FC7545495BAE5005E8 /* Resources */ = {
 			isa = PBXGroup;
@@ -640,6 +631,13 @@
 				B9FE3D951FB3DFDF008D74F7 /* libRCTBlob-tvOS.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B9BE760D2023C425009E174A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Products;
 			sourceTree = "<group>";
 		};
 		B9FE3D8E1FB3DFDB008D74F7 /* Recovered References */ = {
@@ -694,7 +692,7 @@
 			);
 			name = FishMapTests;
 			productName = FishMapTests;
-			productReference = 00E356EE1AD99517003FC87E /* FishMapTests.xctest */;
+			productReference = B9BE75B32023C236009E174A /* FishMapTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		13B07F861A680F5B00A75B9A /* FishMap */ = {
@@ -712,7 +710,7 @@
 			);
 			name = FishMap;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* FishMap.app */;
+			productReference = B9BE75B22023C236009E174A /* FishMap Beta.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* FishMap-tvOS */ = {
@@ -730,7 +728,7 @@
 			);
 			name = "FishMap-tvOS";
 			productName = "FishMap-tvOS";
-			productReference = 2D02E47B1E0B4A5D006451C7 /* FishMap-tvOS.app */;
+			productReference = B9BE75B42023C236009E174A /* FishMap-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E48F1E0B4A5D006451C7 /* FishMap-tvOSTests */ = {
@@ -748,7 +746,7 @@
 			);
 			name = "FishMap-tvOSTests";
 			productName = "FishMap-tvOSTests";
-			productReference = 2D02E4901E0B4A5D006451C7 /* FishMap-tvOSTests.xctest */;
+			productReference = B9BE75B52023C236009E174A /* FishMap-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -789,7 +787,7 @@
 				Base,
 			);
 			mainGroup = 83CBB9F61A601CBA00E9B192;
-			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
+			productRefGroup = 83CBB9F61A601CBA00E9B192;
 			projectDirPath = "";
 			projectReferences = (
 				{
@@ -1131,18 +1129,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				B9AF7F5E2023B33D00B19E3D /* main.jsbundle.meta in Resources */,
+				B9AF7F672023B4FD00B19E3D /* assets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				7590D018B8C84EFBA68D5CF3 /* Entypo.ttf in Resources */,
 				9F32CC7E74294A9CB4097A61 /* EvilIcons.ttf in Resources */,
 				87610687643F446C8B51EAF3 /* Feather.ttf in Resources */,
 				4045620A6CEE448D8D1DA06C /* FontAwesome.ttf in Resources */,
+				B9AF7F652023B4E800B19E3D /* main.jsbundle in Resources */,
 				69536C3B5ADC4B09ABEABFE1 /* Foundation.ttf in Resources */,
 				B24A015DD03B4803BC330C78 /* Ionicons.ttf in Resources */,
 				7BEAA7409CFF44A3AAF28EC4 /* MaterialCommunityIcons.ttf in Resources */,
-				B96F3B3C202292A1000E90EF /* assets in Resources */,
 				F2B5E399955F4307AE5C0C38 /* MaterialIcons.ttf in Resources */,
 				3073E97A2B7F4E16863CB9C9 /* Octicons.ttf in Resources */,
-				B96F3B4020229760000E90EF /* main.jsbundle in Resources */,
 				6B079F7E3F81405791958983 /* SimpleLineIcons.ttf in Resources */,
 				83A01F85376A4E4D8EE868C7 /* Zocial.ttf in Resources */,
 			);
@@ -1168,7 +1167,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputPaths = (
@@ -1178,7 +1177,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\"+(Beta.Debug|Debug)\"\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh";
+			shellScript = "if [ \"${CONFIGURATION}\" == \"Debug\" ]; then\nexport SKIP_BUNDLING=true\nfi\n";
 		};
 		2D02E4CB1E0B4B27006451C7 /* Bundle React Native Code And Images */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1192,7 +1191,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\nexport DEVELOPMENT_BUILD_CONFIGURATIONS=\"+(Beta.Debug|Debug)\"\n../node_modules/react-native-schemes-manager/lib/react-native-xcode.sh";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1219,7 +1218,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */,
-				2D02E4BC1E0B4A80006451C7 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1275,7 +1273,7 @@
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 				);
 				INFOPLIST_FILE = FishMapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1305,7 +1303,7 @@
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 				);
 				INFOPLIST_FILE = FishMapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1682,7 +1680,7 @@
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 				);
 				INFOPLIST_FILE = FishMapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1845,7 +1843,7 @@
 					"$(SRCROOT)/../node_modules/react-native-safari-view",
 				);
 				INFOPLIST_FILE = FishMapTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1939,7 +1937,7 @@
 				B942D53B20229DF70090865D /* Beta.Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Beta.Debug;
 		};
 		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "FishMap" */ = {
 			isa = XCConfigurationList;
@@ -1950,7 +1948,7 @@
 				B942D53A20229DF70090865D /* Beta.Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Beta.Debug;
 		};
 		2D02E4BA1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "FishMap-tvOS" */ = {
 			isa = XCConfigurationList;
@@ -1961,7 +1959,7 @@
 				B942D53C20229DF70090865D /* Beta.Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Beta.Debug;
 		};
 		2D02E4BB1E0B4A5E006451C7 /* Build configuration list for PBXNativeTarget "FishMap-tvOSTests" */ = {
 			isa = XCConfigurationList;
@@ -1972,7 +1970,7 @@
 				B942D53D20229DF70090865D /* Beta.Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Beta.Debug;
 		};
 		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "FishMap" */ = {
 			isa = XCConfigurationList;
@@ -1983,7 +1981,7 @@
 				B942D53920229DF70090865D /* Beta.Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Beta.Debug;
 		};
 /* End XCConfigurationList section */
 	};

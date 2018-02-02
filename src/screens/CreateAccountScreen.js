@@ -1,7 +1,6 @@
 import React from 'react';
 import { Text, View, TextInput, ScrollView, TouchableHighlight } from 'react-native';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { createAccount, resendVerifyEmail } from '../actions/user';
 import { displayAlert } from '../common/utils';
 import { Button } from 'react-native-elements';
@@ -21,14 +20,14 @@ class CreateAccountScreen extends React.Component {
 		super();
 
 		this.validateEmail = this.validateEmail.bind(this);
-		this.resendVerificationEmail = this.resendVerificationEmail.bind(this)
-		this.validatePassword = this.validatePassword.bind(this)
+		this.resendVerificationEmail = this.resendVerificationEmail.bind(this);
+		this.validatePassword = this.validatePassword.bind(this);
 
 		this.state = {
 			email: null,
 			password: null,
 			repeatPassword: null,
-			disableCreate:true,
+			disableCreate: true
 		};
 
 	}
@@ -39,9 +38,8 @@ class CreateAccountScreen extends React.Component {
 			password: this.state.password,
 			navigation: this.props.navigation
 		};
-		this.props.dispatch(createAccount(data))
-	}
-
+		this.props.dispatch(createAccount(data));
+	};
 
 	validateEmail = (email) => {
 		const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -50,87 +48,89 @@ class CreateAccountScreen extends React.Component {
 
 	resendVerificationEmail = () => {
 		if (!this.state.email) {
-			displayAlert('Account', 'Please provide valid e-mail address')
+			displayAlert('Account', 'Please provide valid e-mail address');
 		} else {
 			const data = {
 				email: this.state.email,
 				navigation: this.props.navigation
-			}
-			this.props.dispatch(resendVerifyEmail(data))
+			};
+			this.props.dispatch(resendVerifyEmail(data));
 		}
-	}
+	};
 
 	validatePassword = (password, repeatPassword) => {
 		let inputStyle;
-		if(password) {
-			inputStyle =	password.length < 8 || password !== repeatPassword ? styles.inputError : styles.inputCorrect
+		if (password) {
+			inputStyle = password.length < 8 || password !== repeatPassword ? styles.inputError : styles.inputCorrect;
 		} else {
-			inputStyle = styles.inputError
+			inputStyle = styles.inputError;
 		}
-		return inputStyle
-	}
+		return inputStyle;
+	};
 
 	render() {
 
-		const password = this.state.password
-		const email = this.state.email
-		const repeatPassword = this.state.repeatPassword
-
-		const inputStyle = this.validatePassword(password, repeatPassword)
+		const password = this.state.password;
+		const email = this.state.email;
+		const repeatPassword = this.state.repeatPassword;
+		const inputStyle = this.validatePassword(password, repeatPassword);
 
 		return (
+			<ScrollView>
 			<View style={styles.container}>
 				<View style={styles.inputContainer}>
-					<ScrollView>
-					<View style={styles.textInput}>
-						<Text style={styles.textEmail}>Login:</Text>
-						<TextInput style={!this.validateEmail(email) ? styles.inputError : styles.inputCorrect}
-											 onChangeText={(email) => this.setState({ email: email })}
-											 placeholder={'your@email.com'}
-											 placeholderTextColor={'lightgray'}
-											 underlineColorAndroid='rgba(0,0,0,0)'
-											 maxLength={40}/>
-						<Text style={styles.textPassword}>Password:</Text>
-						<TextInput style={inputStyle}
-											 secureTextEntry={true}
-											 placeholder={'password'}
-											 underlineColorAndroid='rgba(0,0,0,0)'
-											 placeholderTextColor={'lightgray'}
-											 onChangeText={(password) => this.setState({ password: password })}
-											 maxLength={40}/>
-						{password && password !== repeatPassword && password.length < 8 ?
-							<Text style={{color:'red', paddingTop:5}}>Password require minimum 8 characters</Text>:null}
-						<Text style={styles.textRepeatPassword}>Repeat password:</Text>
-						<TextInput style={inputStyle}
-											 secureTextEntry={true}
-											 placeholder={'repeat password'}
-											 underlineColorAndroid='rgba(0,0,0,0)'
-											 placeholderTextColor={'lightgray'}
-											 onChangeText={(repeatPassword) => this.setState({ repeatPassword: repeatPassword })}
-											 maxLength={40}/>
-						{password && password !== repeatPassword ?
-							<Text style={{color:'red', paddingTop:5}}>Password repeat field must be the same as password</Text>:null}
-						<TouchableHighlight onPress={() => this.resendVerificationEmail() } underlayColor={null}>
-							<Text style={styles.resend}>
-								Resend verification e-mail
-							</Text>
-						</TouchableHighlight>
-						<View style={styles.createButton}>
-							<Button
-								rounded={true}
-								icon={{name:"sign-in", type:'font-awesome'}}
-								backgroundColor={
-									(!this.validateEmail(this.state.email)) ||
-									(!this.state.password || this.state.password.length < 8 || !this.state.repeatPassword || this.state.repeatPassword.length < 8 || this.state.password !== this.state.repeatPassword) ? 'gray' : 'green'}
-								disabled={password !== repeatPassword || !password || !this.validateEmail(email) || !repeatPassword || password.length < 8 || repeatPassword < 8}
-								onPress={this.handleCreate}
-								title={'Create Account'}>
-							</Button>
+
+						<View style={styles.textInput}>
+							<Text style={styles.textEmail}>Login:</Text>
+							<TextInput style={!this.validateEmail(email) ? styles.inputError : styles.inputCorrect}
+							           onChangeText={(email) => this.setState({ email: email })}
+							           placeholder={'your@email.com'}
+							           placeholderTextColor={'lightgray'}
+							           underlineColorAndroid='rgba(0,0,0,0)'
+							           maxLength={40}/>
+							<Text style={styles.textPassword}>Password:</Text>
+							<TextInput style={inputStyle}
+							           secureTextEntry={true}
+							           placeholder={'password'}
+							           underlineColorAndroid='rgba(0,0,0,0)'
+							           placeholderTextColor={'lightgray'}
+							           onChangeText={(password) => this.setState({ password: password })}
+							           maxLength={40}/>
+							{password && password !== repeatPassword && password.length < 8 ?
+								<Text style={{ color: 'red', paddingTop: 5 }}>Password require minimum 8 characters</Text> : null}
+							<Text style={styles.textRepeatPassword}>Repeat password:</Text>
+							<TextInput style={inputStyle}
+							           secureTextEntry={true}
+							           placeholder={'repeat password'}
+							           underlineColorAndroid='rgba(0,0,0,0)'
+							           placeholderTextColor={'lightgray'}
+							           onChangeText={(repeatPassword) => this.setState({ repeatPassword: repeatPassword })}
+							           maxLength={40}/>
+							{password && password !== repeatPassword ?
+								<Text style={{ color: 'red', paddingTop: 5 }}>Password repeat field must be the same as
+									password</Text> : null}
+							<TouchableHighlight onPress={() => this.resendVerificationEmail()} underlayColor={null}>
+								<Text style={styles.resend}>
+									Resend verification e-mail
+								</Text>
+							</TouchableHighlight>
+							<View style={styles.createButton}>
+								<Button
+									rounded={true}
+									icon={{ name: 'sign-in', type: 'font-awesome' }}
+									backgroundColor={
+										(!this.validateEmail(this.state.email)) ||
+										(!this.state.password || this.state.password.length < 8 || !this.state.repeatPassword || this.state.repeatPassword.length < 8 || this.state.password !== this.state.repeatPassword) ? 'gray' : 'green'}
+									disabled={password !== repeatPassword || !password || !this.validateEmail(email) || !repeatPassword || password.length < 8 || repeatPassword < 8}
+									onPress={this.handleCreate}
+									title={'Create Account'}>
+								</Button>
+							</View>
 						</View>
-					</View>
-					</ScrollView>
+
 				</View>
-			</View>);
+			</View>
+			</ScrollView>);
 	}
 }
 
@@ -153,15 +153,15 @@ const styles = {
 	createButton: {
 		flex: 1,
 		paddingTop: 40,
-		paddingBottom:40
+		paddingBottom: 40
 	},
 
 	textInput: {
 		flex: 2,
 		backgroundColor: 'mintcream',
-		paddingLeft:20,
-		paddingRight:20,
-		paddingTop:20
+		paddingLeft: 20,
+		paddingRight: 20,
+		paddingTop: 20
 
 	},
 
@@ -172,19 +172,19 @@ const styles = {
 	},
 
 	inputCorrect: {
-		borderBottomWidth:1,
+		borderBottomWidth: 1,
 		borderBottomColor: 'green',
 		color: 'gray',
-		paddingTop:6,
-		paddingBottom:6,
+		paddingTop: 6,
+		paddingBottom: 6
 	},
 
 	inputError: {
-		borderBottomWidth:1,
+		borderBottomWidth: 1,
 		borderBottomColor: 'red',
 		color: 'gray',
-		paddingTop:6,
-		paddingBottom:6,
+		paddingTop: 6,
+		paddingBottom: 6
 	},
 
 	textEmail: {
@@ -199,8 +199,8 @@ const styles = {
 	},
 
 	resend: {
-		paddingTop:20,
-		color:'#2F95D6',
+		paddingTop: 20,
+		color: '#2F95D6'
 	},
 
 	textRepeatPassword: {

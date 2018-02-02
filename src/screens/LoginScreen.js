@@ -107,7 +107,6 @@ class LoginScreen extends React.Component {
 		this.props.navigation.navigate('CreateAccountScreen');
 	};
 
-
 	render() {
 
 		let mode = this.checkScreenOrientation();
@@ -116,7 +115,7 @@ class LoginScreen extends React.Component {
 
 		return (
 			<View style={styles.mainContainer}>
-				{mode && mode === 'portrait' && !this.state.keyboardShow ?
+				{mode !=='landscape' && !this.state.keyboardShow ?
 					<View style={[styles.boxContainer, styles.boxImage]}>
 						<Image source={require('../assets/fishmap-lightsky.png')}/>
 					</View>

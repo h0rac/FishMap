@@ -2,23 +2,14 @@ import React, { Component } from 'react';
 import {
 	Text,
 	View,
+	Image
 } from 'react-native';
 
 
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import { removeShareMyWaypoint } from '../actions/fishmarks';
-
-import {
-	Menu,
-	MenuProvider,
-	MenuOptions,
-	MenuOption,
-	MenuTrigger
-
-} from 'react-native-popup-menu';
-
-
+import Swipeout from 'react-native-swipeout';
 
 class SharedWaypoint extends Component {
 
@@ -28,7 +19,6 @@ class SharedWaypoint extends Component {
 			checked: null
 		};
 		this.renderMenuItem = this.renderMenuItem.bind(this)
-
 	}
 
 	renderMenuItem = (icon, name, color) => {
@@ -41,47 +31,43 @@ class SharedWaypoint extends Component {
 	};
 
 	render() {
-		return (
+
+		const rightButtons = [
+			{
+				backgroundColor: '#e61b1b',
+				underlayColor:  '#e61b1b',
+				onPress: () => this.props.dispatch(removeShareMyWaypoint(this.props.item)) ,
+				component:
+					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+							<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+								<Image
+									style={{ width: 26, height: 26 }}
+									disabled={true}
+									source={require('../assets/close-circle.png')}
+									onPress={() => this.props.dispatch(removeShareMyWaypoint(this.props.item))}/>
+								<Text style={{color:'white'}}>Remove</Text>
+							</View>
+					</View>
+			}
+		];
+		const splitDate = this.props.item.date.split(' ')
+		return(
+			<Swipeout right={rightButtons} backgroundColor={'whitesmoke'} buttonWidth={60}>
 			<View style={styles.row}>
-				<View style={styles.iconLeft}>
-					<Icon
-						name='share-alt'
-						type='font-awesome'
-						size={20}
-						color={'#2F95D6'}/>
-				</View>
 				<View style={styles.nameTitle}>
 					<Text style={styles.name}>{this.props.item.title} </Text>
 				</View>
 				<View style={styles.coords}>
-					<Text style={styles.level}>{this.props.item.latitude}</Text>
-					<Text style={styles.scoreDate}>{this.props.item.longitude}</Text>
+					<Text style={styles.latitude}>{this.props.item.latitude}</Text>
+					<Text style={styles.longitude}>{this.props.item.longitude}</Text>
 				</View>
-				<View style={styles.rightIcon}>
-					<Menu opened={this.state.opened}>
-						<MenuTrigger onPress={() => this.setState({ opened: true })}>
-							<Icon
-								name='more-vert'
-								color={'green'}
-								size={20}
-								underlayColor={'mintcream'}
-								containerStyle={{ backgroundColor: 'mintcream' }}
-
-							/>
-						</MenuTrigger>
-						<MenuOptions>
-							<View style={styles.contextDivider}/>
-							<MenuOption onSelect={() => this.props.dispatch(removeShareMyWaypoint(this.props.item))}>
-								{this.renderMenuItem('close', 'Remove from share', 'red')}
-								<View style={styles.contextDivider}/>
-							</MenuOption>
-							<MenuOption onSelect={() => this.setState({ opened: false })}>
-								{this.renderMenuItem('sign-out', 'Close', '#2F95D6')}
-							</MenuOption>
-						</MenuOptions>
-					</Menu>
+				<View style={styles.date}>
+					<Text style={styles.year}>{splitDate[3]}</Text>
+					<Text style={styles.month}>{`${splitDate[0]} ${splitDate[1]} ${splitDate[2]}`}</Text>
 				</View>
-			</View>)
+			</View>
+			</Swipeout>
+		)
 
 	}
 }
@@ -90,8 +76,8 @@ const styles = {
 
 	iconLeft: {
 		justifyContent: 'center',
-		paddingLeft: 20,
-		alignItems: 'flex-start'
+		flex: 1,
+		alignItems: 'center'
 	},
 
 	nameTitleShared: {
@@ -121,8 +107,9 @@ const styles = {
 		borderColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		flexDirection: 'row',
+		justifyContent:'space-between',
 		backgroundColor: 'mintcream',
-		height: 70
+		height: 80
 
 	},
 
@@ -141,39 +128,57 @@ const styles = {
 	},
 
 	nameTitle: {
-		flex: 1.5,
-		justifyContent: 'center',
-		alignItems: 'flex-end'
+		flex: 1,
+		alignItems: 'flex-start',
+		paddingLeft: 20,
+		justifyContent: 'center'
 	},
 	name: {
-		fontSize: 10,
+		fontSize: 11,
 		fontWeight: 'bold'
 	},
 	level: {
-		fontSize: 10
+		fontSize: 11
 	},
 	coords: {
-		flex: 1.5,
-		justifyContent: 'center',
-		alignItems: 'flex-end'
-
+		flex: 1,
+		alignItems: 'center',
+		paddingRight:20,
+		justifyContent:'center'
 	},
-	rightIcon: {
-		width: 80,
-		justifyContent: 'center',
+
+	date: {
+		flex: 0.5,
 		alignItems: 'flex-end',
-		paddingRight: 20
-	},
-	scoreDate: {
-		fontSize: 10,
-		marginBottom: 5
-	},
-	scoreText: {
-		fontSize: 10,
-		marginTop: 8
-	}
-};
+		paddingRight:20,
+		justifyContent:'center'
 
+	},
+
+	rightIcon: {
+		justifyContent: 'center',
+		flex:1,
+		flexDirection:'row',
+		alignItems: 'center',
+	},
+	latitude: {
+		fontSize: 11,
+	},
+	longitude: {
+		fontSize: 11,
+		marginTop: 2,
+	},
+
+	year: {
+		fontSize: 11,
+		marginRight:12
+	},
+	month: {
+		fontSize: 11,
+		marginTop: 2,
+	}
+
+};
 const mapStateToProps = state => {
 
 

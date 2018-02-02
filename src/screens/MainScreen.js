@@ -6,14 +6,8 @@ import {
 	StyleSheet,
 	View,
 	Alert,
-	Platform,
-	Linking,
 	AsyncStorage,
-	Button,
 	Text,
-	TouchableHighlight,
-	ActivityIndicator,
-	TouchableOpacity
 } from 'react-native';
 import MapView from 'react-native-maps';
 
@@ -24,14 +18,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import { loadFishPositions, IOsetFishmarksCandidateList } from '../actions/fishmarks';
 import {
-	logout, getUserLocation, changeDuration, emitWaypointReceive, setIntervalID,
-	setIOSocket, checkAuthToken, setIntervalAlive
+	logout, getUserLocation, setIntervalID, checkAuthToken, setIntervalAlive
 } from '../actions/user';
-
-
-import SocketIOClient from "socket.io-client";
-import {API_ENDPOINT} from "../constants/constants";
-
 
 import { displayAlert } from '../common/utils';
 
@@ -60,8 +48,6 @@ class MainScreen extends Component {
 		this.setInitialUserPosition = this.setInitialUserPosition.bind(this)
 		this.onReceiveError = this.onReceiveError.bind(this);
 		this.handleSharing = this.handleSharing.bind(this)
-		//this.setTimeoutLoop = this.setTimeoutLoop.bind(this)
-
 
 		this.state = {
 			interval: 0,
@@ -69,9 +55,7 @@ class MainScreen extends Component {
 			test:null,
 			clear:null,
 			intervalAlive:true,
-
 		};
-
 	}
 
 	onReceiveError = (data) => {
@@ -137,7 +121,6 @@ class MainScreen extends Component {
 					name="home"
 					size={26}
 					color={'white'}
-					//style={{paddingLeft:20}}
 				/>
 		};
 	};
