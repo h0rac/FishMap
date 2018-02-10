@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { Text, View, FlatList, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
-	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypointChecked, shareMyWaypoint
+	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypointChecked, shareMyWaypoint, deleteAllUserFishmarks
 } from '../actions/fishmarks';
 import Notificator from '../components/Notificator';
 import SaveSharedWaypoint from '../components/SaveSharedWaypoint';
 import Waypoint from '../components/Waypoint';
+import { Icon } from 'react-native-elements';
+import {displayAlert} from '../common/utils';
 
 
 const labelStyle = (props, alignSelf, marginTop) => ({
@@ -47,7 +49,7 @@ class WayPointScreen extends Component {
 		this.handleCheck = this.handleCheck.bind(this);
 
 		this.state = {
-			showWaypoints: false,
+			showWaypoints: true,
 			selectedWaypoints: []
 		};
 	}
@@ -127,6 +129,26 @@ class WayPointScreen extends Component {
 							style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Received waypoints >'}</Text>
 					</View>
 				</TouchableOpacity> : null}
+			{this.state.showWaypoints ?
+				<View style={styles.deleteAll}>
+					<Icon name={'trash'}
+					      size={24}
+					      type='font-awesome'
+					      color={!this.props.positions.fishmarks.length > 0 ? 'gray' : 'white'}
+					      disabled={this.props.positions.fishmarks.length <= 0}
+					      underlayColor={'#E3E3E3'}
+					      onPress={()=> Alert.alert(
+						      'Delete Waypoints',
+						      'Do you want to delete all your waypoints ?',
+						      [
+							      { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+							      { text: 'Delete', onPress: () => this.props.dispatch(deleteAllUserFishmarks()) },
+
+						      ],
+						      { cancelable: true }
+					      )}
+					/>
+				</View> : null}
 		</View>);
 	}
 }
@@ -135,6 +157,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: 'whitesmoke'
+	},
+
+	deleteAll: {
+		flex:0.1,
+		justifyContent:'center',
+		alignItems: 'center',
+		backgroundColor: '#E3E3E3'
 	},
 
 	waypoints: {

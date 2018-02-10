@@ -133,8 +133,8 @@ const styles = {
 	submit: {
 		flex: 1,
 		flexDirection: 'column',
-		paddingLeft: 20,
-		paddingRight: 20,
+		paddingLeft: 10,
+		paddingRight: 10,
 		paddingTop: 40,
 		paddingBottom: 20,
 		alignItems: 'flex-end'

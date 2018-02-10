@@ -23,7 +23,7 @@ class SaveSettings extends React.Component {
 				size={28}
 				color="white"
 				onPress={() => this.saveSettings()}
-				style={{ paddingRight: 20 }}
+				style={{ paddingRight: 10 }}
 			/>);
 	}
 

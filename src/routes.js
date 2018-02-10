@@ -80,7 +80,7 @@ const NavigatorStack = StackNavigator({
 				name="md-close"
 				size={28}
 				color={'white'}
-				style={{ paddingLeft: 20 }}
+				style={{ paddingLeft: 10 }}
 				onPress={() => navigation.navigate('DrawerOpen')}
 			/>
 
@@ -98,7 +98,7 @@ const NavigatorStack = StackNavigator({
 				name="md-close"
 				size={28}
 				color={'white'}
-				style={{ paddingLeft: 20 }}
+				style={{ paddingLeft: 10 }}
 				onPress={() => navigation.navigate('DrawerOpen')}
 			/>
 		})

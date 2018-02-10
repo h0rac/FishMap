@@ -28,7 +28,10 @@ import {
 	UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED,
 	SET_FISHMARK_POSITION_PENDING,
-	DELETE_FISHMARK_POSITION_PENDING
+	DELETE_FISHMARK_POSITION_PENDING,
+	DELETE_ALL_FISHMARKS_PENDING,
+	DELETE_ALL_FISHMARKS_FAILED,
+	DELETE_ALL_FISHMARKS_SUCCESS
 
 } from '../constants/constants';
 
@@ -39,6 +42,7 @@ import { displayAlert, getToken, removeDuplicates } from '../common/utils';
 
 const fetchFishmarks = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoints', params);
 const saveFishmark = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoint', params);
+const delAllFishmarks = params => fetch(`http://${API_ENDPOINT}/api/v1/waypoints`, params);
 const delFishmark = (latitude, longitude, params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`, params);
 const fetchFishmark = (latitude, longitude, params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`, params);
 
@@ -355,6 +359,44 @@ function* saveSharedWaypoints(action) {
 	}
 }
 
+function* deleteAllUserFishmarks(action) {
+
+	try {
+		const myHeaders = new Headers();
+		const token = yield call(getToken, 'token');
+
+		myHeaders.append('Content-Type', 'application/json');
+
+		let params = {
+			method: 'DELETE',
+			headers: myHeaders,
+			body: JSON.stringify({
+				token: JSON.parse(decodeURI(token)),
+			})
+		};
+
+		yield put({ type: DELETE_ALL_FISHMARKS_PENDING, isFetching: true });
+		const response = yield call(delAllFishmarks, params);
+		const result = yield response.json();
+
+		if (result.success === false) {
+			console.log("WE FAILED", result)
+			yield put({ type: DELETE_ALL_FISHMARKS_FAILED, error: result.message, isFetching: false });
+			displayAlert('Delete', result.message);
+		} else {
+				yield put({
+					type: DELETE_ALL_FISHMARKS_SUCCESS,
+					message: result.message,
+					isFetching: false
+				});
+				displayAlert('Success Delete', result.message)
+		}
+	} catch (e) {
+		yield put({ type: DELETE_ALL_FISHMARKS_FAILED, error: result.message, isFetching: false });
+		displayAlert('Delete', result.message);
+	}
+}
+
 export const fishmarkSaga = [
 
 	takeEvery('SET_FISHMARK_POSITION', setFishmarkPosition),
@@ -364,5 +406,6 @@ export const fishmarkSaga = [
 	takeEvery('IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST', IOCreateCandidateFishmarksList),
 	takeEvery('SHARE_WAYPOINT_TO_PEER', shareWaypoint),
 	takeEvery('SHARE_WAYPOINT_CHECKED', shareWaypointChecked),
-	takeEvery('SAVE_SHARED_WAYPOINTS', saveSharedWaypoints)
+	takeEvery('SAVE_SHARED_WAYPOINTS', saveSharedWaypoints),
+	takeEvery('DELETE_ALL_FISHMARKS', deleteAllUserFishmarks)
 ];

@@ -111,7 +111,7 @@ styles = {
 		flex: 1,
 		flexDirection: 'row',
 		padding: 10,
-		paddingLeft: 20
+		paddingLeft: 10
 	},
 
 	navItemStyle: {
@@ -130,7 +130,7 @@ styles = {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
-		paddingRight: 20,
+		paddingRight: 10,
 		paddingTop: 10
 
 	},
@@ -147,7 +147,7 @@ styles = {
 	footerText: {
 		color: 'white',
 		fontSize: 12,
-		paddingLeft: 20
+		paddingLeft: 10
 	}
 };
 

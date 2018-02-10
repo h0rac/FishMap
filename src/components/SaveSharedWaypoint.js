@@ -1,10 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import IconAwesome from 'react-native-vector-icons/FontAwesome';
+import {Icon} from 'react-native-elements'
 import { saveSharedWaypoints } from '../actions/fishmarks';
 
 class SaveSharedWaypoint extends Component {
-
 
 	constructor() {
 		super();
@@ -36,12 +35,13 @@ class SaveSharedWaypoint extends Component {
 	render() {
 		return (
 			this.props.sharedFishmarks.length > 0 && this.displaySaveIcon() ?
-				<IconAwesome
-					name="check"
-					size={24}
-					color={'white'}
-					onPress={this.saveToWaypoints}
-					style={{ paddingRight: 20 }}/> : null
+
+				<Icon name="save"
+				      size={26}
+				      color={'white'}
+				      underlayColor={'#2F95D6'}
+				      onPress={this.saveToWaypoints}
+				      containerStyle={{paddingRight: 10 }}/> : null
 		);
 	}
 }

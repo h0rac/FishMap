@@ -130,7 +130,7 @@ const styles = {
 	nameTitle: {
 		flex: 1,
 		alignItems: 'flex-start',
-		paddingLeft: 20,
+		paddingLeft: 10,
 		justifyContent: 'center'
 	},
 	name: {
@@ -143,14 +143,14 @@ const styles = {
 	coords: {
 		flex: 1,
 		alignItems: 'center',
-		paddingRight: 20,
+		paddingRight: 10,
 		justifyContent: 'center'
 	},
 
 	date: {
 		flex: 0.5,
 		alignItems: 'flex-end',
-		paddingRight: 20,
+		paddingRight: 10,
 		justifyContent: 'center'
 
 	},

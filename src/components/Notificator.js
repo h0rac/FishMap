@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import {
-	Text,
+	Text, Platform
 } from 'react-native';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -10,6 +10,19 @@ import IconBadge from 'react-native-icon-badge';
 
 class Notificator extends Component {
 
+	constructor() {
+		super();
+
+		this.state = {
+			ios: false,
+		}
+	}
+
+	componentDidMount() {
+		if (Platform.OS === 'ios') {
+			this.setState({ ios: true });
+		}
+	}
 
 	render() {
 		return (
@@ -27,18 +40,18 @@ class Notificator extends Component {
 				IconBadgeStyle={
 					this.props.type === 'waypoint' ?
 						{
-							top: -3,
-							left: 11,
-							minWidth: 20,
-							height: 20,
+							top: !this.state.ios ? 1: -3,
+							left: !this.state.ios ? 4: 11,
+							minWidth: !this.state.ios ? 15 : 20,
+							height: !this.state.ios ? 15 : 20,
 							justifyContent: 'space-around',
-							backgroundColor: 'red'
+							backgroundColor: '#E83535'
 						}
 						: {
-							top: -3,
-							left: 20,
-							minWidth: 20,
-							height: 20,
+							top: !this.state.ios ? 1: -3,
+							left: !this.state.ios ? 8: 20,
+							minWidth: !this.state.ios ? 15 : 20,
+							height: !this.state.ios ? 15 : 20,
 							justifyContent: 'space-around',
 							backgroundColor: 'yellow'
 						}

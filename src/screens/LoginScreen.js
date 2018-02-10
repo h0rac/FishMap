@@ -3,19 +3,14 @@ import {
 	View,
 	Text,
 	TouchableHighlight,
-	StyleSheet,
 	Image,
 	Platform,
 	TextInput,
 	Keyboard,
 	Dimensions,
-	Alert
 } from 'react-native';
-import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { setUserData, login, checkAuthToken, setIOSocket } from '../actions/user';
+import {login, checkAuthToken} from '../actions/user';
 import { connect } from 'react-redux';
-import { displayAlert } from '../common/utils';
 
 import { Button } from 'react-native-elements';
 
@@ -206,8 +201,8 @@ const styles = {
 		backgroundColor: 'white',
 		paddingBottom: 40,
 		paddingTop: 32,
-		paddingLeft: 20,
-		paddingRight: 20
+		paddingLeft: 10,
+		paddingRight: 10
 
 
 	},
@@ -216,8 +211,8 @@ const styles = {
 		flexDirection: 'column',
 		backgroundColor: 'white',
 		justifyContent: 'space-around',
-		paddingLeft: 20,
-		paddingRight: 20
+		paddingLeft: 10,
+		paddingRight: 10
 
 	},
 
@@ -226,8 +221,8 @@ const styles = {
 		//backgroundColor:"red",
 		justifyContent: 'space-around',
 		backgroundColor: 'white',
-		paddingLeft: 20,
-		paddingRight: 20
+		paddingLeft: 10,
+		paddingRight: 10
 	},
 
 	button: {

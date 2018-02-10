@@ -14,13 +14,21 @@ import {
 	SHARE_WAYPOINT_CHECKED_SUCCESS,
 	SHARE_WAYPOINT_CHECKED_FAILED,
 	SHARE_WAYPOINT_CHECKED_FALSE,
-	SHARE_WAYPOINT_CHECKED_CLEAR, UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
+	SHARE_WAYPOINT_CHECKED_CLEAR,
+	UPDATE_WAYPOINT_ON_SAVE_SUCCESS,
 	UPDATE_WAYPOINT_ON_SAVE_FAILED,
 	CHANGE_DISPLAY_SAVE_STATUS,
 	SET_MAP_FOR_ANIMATION,
 	SHARE_MY_WAYPOINT,
-	REMOVE_SHARE_MY_WAYPOINT, CLEAR_DATA, SHARE_WAYPOINT_FAILED, SHARE_WAYPOINT_SUCCESS, SET_FISHMARK_POSITION_PENDING,
-	DELETE_FISHMARK_POSITION_PENDING
+	REMOVE_SHARE_MY_WAYPOINT,
+	CLEAR_DATA,
+	SHARE_WAYPOINT_FAILED,
+	SHARE_WAYPOINT_SUCCESS,
+	SET_FISHMARK_POSITION_PENDING,
+	DELETE_FISHMARK_POSITION_PENDING,
+	DELETE_ALL_FISHMARKS_SUCCESS,
+	DELETE_ALL_FISHMARKS_FAILED,
+	DELETE_ALL_FISHMARKS_PENDING
 
 } from '../constants/constants';
 
@@ -73,6 +81,16 @@ const reducer = (state = initialState, action) => {
 				myFishmarkWaypoints: [...state.myFishmarkWaypoints.filter(mark => mark.latitude !== action.position.latitude
 					&& mark.longitude !== action.position.longitude)]
 			};
+
+		case DELETE_ALL_FISHMARKS_PENDING:
+			return { ...state, isFetching: action.isFetching };
+
+		case DELETE_ALL_FISHMARKS_SUCCESS:
+			return { ...state, fishmarks: [], message: action.message, isFetching: action.isFetching };
+
+		case DELETE_ALL_FISHMARKS_FAILED:
+			return { ...state, error: action.error, isFetching: action.isFetching };
+
 		case DELETE_FISHMARK_POSITION_PENDING:
 			return { ...state, isFetching: action.isFetching };
 

@@ -357,10 +357,10 @@
 		B9AF7F5D2023B33D00B19E3D /* main.jsbundle.meta */ = {isa = PBXFileReference; lastKnownFileType = file; path = main.jsbundle.meta; sourceTree = "<group>"; };
 		B9AF7F642023B4E800B19E3D /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		B9AF7F662023B4FD00B19E3D /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = "<group>"; };
-		B9BE75B22023C236009E174A /* FishMap Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "FishMap Beta.app"; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Beta.Release-iphoneos/FishMap Beta.app"; sourceTree = "<absolute>"; };
-		B9BE75B32023C236009E174A /* FishMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = FishMapTests.xctest; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Beta.Release-iphoneos/FishMapTests.xctest"; sourceTree = "<absolute>"; };
-		B9BE75B42023C236009E174A /* FishMap-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "FishMap-tvOS.app"; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Debug-appletvos/FishMap-tvOS.app"; sourceTree = "<absolute>"; };
-		B9BE75B52023C236009E174A /* FishMap-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = "FishMap-tvOSTests.xctest"; path = "/Users/grzegorzwypych/MSS_Development/FishMap/ios/build/Debug-appletvos/FishMap-tvOSTests.xctest"; sourceTree = "<absolute>"; };
+		B9E0028A20251CE000413056 /* FishMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FishMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9E0028B20251CE000413056 /* FishMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FishMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9E0028C20251CE000413056 /* FishMap-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FishMap-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9E0028D20251CE000413056 /* FishMap-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "FishMap-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C262755E09074FE9BE955861 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		C9141C8EE7EA4DC09EAD9F99 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		CF545A1B97974CBDB9AAA4A4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
@@ -600,6 +600,10 @@
 				00E356EF1AD99517003FC87E /* FishMapTests */,
 				8B8233FC7545495BAE5005E8 /* Resources */,
 				B9FE3D8E1FB3DFDB008D74F7 /* Recovered References */,
+				B9E0028A20251CE000413056 /* FishMap.app */,
+				B9E0028B20251CE000413056 /* FishMapTests.xctest */,
+				B9E0028C20251CE000413056 /* FishMap-tvOS.app */,
+				B9E0028D20251CE000413056 /* FishMap-tvOSTests.xctest */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -692,7 +696,7 @@
 			);
 			name = FishMapTests;
 			productName = FishMapTests;
-			productReference = B9BE75B32023C236009E174A /* FishMapTests.xctest */;
+			productReference = B9E0028B20251CE000413056 /* FishMapTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		13B07F861A680F5B00A75B9A /* FishMap */ = {
@@ -710,7 +714,7 @@
 			);
 			name = FishMap;
 			productName = "Hello World";
-			productReference = B9BE75B22023C236009E174A /* FishMap Beta.app */;
+			productReference = B9E0028A20251CE000413056 /* FishMap.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E47A1E0B4A5D006451C7 /* FishMap-tvOS */ = {
@@ -728,7 +732,7 @@
 			);
 			name = "FishMap-tvOS";
 			productName = "FishMap-tvOS";
-			productReference = B9BE75B42023C236009E174A /* FishMap-tvOS.app */;
+			productReference = B9E0028C20251CE000413056 /* FishMap-tvOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 		2D02E48F1E0B4A5D006451C7 /* FishMap-tvOSTests */ = {
@@ -746,7 +750,7 @@
 			);
 			name = "FishMap-tvOSTests";
 			productName = "FishMap-tvOSTests";
-			productReference = B9BE75B52023C236009E174A /* FishMap-tvOSTests.xctest */;
+			productReference = B9E0028D20251CE000413056 /* FishMap-tvOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */

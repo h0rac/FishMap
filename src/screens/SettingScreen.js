@@ -93,8 +93,6 @@ class SettingScreen extends Component {
 						/>
 					</View>
 				</View>
-				<Divider style={{ height: 0.5, backgroundColor: 'gray' }}/>
-
 				<TouchableOpacity key='language' style={styles.generalContainer}
 				                  onPress={() => this.props.navigation.navigate('LanguageScreen')}>
 
@@ -126,7 +124,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		backgroundColor: 'mintcream',
 		alignItems: 'center',
-		height: 70
+		height: 70,
+		marginBottom:2
 	},
 
 
@@ -142,7 +141,7 @@ const styles = StyleSheet.create({
 	section: {
 		backgroundColor: 'whitesmoke',
 		flex: 0.05,
-		paddingLeft: 20,
+		paddingLeft: 10,
 		paddingTop: 30,
 		flexDirection: 'row',
 		alignItems: 'center'
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
-		paddingRight: 20
+		paddingRight: 10
 
 	},
 
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
 		flex: 3,
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
-		paddingLeft: 20
+		paddingLeft: 10
 	},
 
 	enableText: {

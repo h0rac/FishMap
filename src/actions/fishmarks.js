@@ -12,7 +12,8 @@ import {
 	SAVE_SHARED_WAYPOINTS,
 	SET_MAP_FOR_ANIMATION,
 	SHARE_MY_WAYPOINT,
-	REMOVE_SHARE_MY_WAYPOINT
+	REMOVE_SHARE_MY_WAYPOINT,
+	DELETE_ALL_FISHMARKS
 } from '../constants/constants';
 
 export const setFishmark = (data) => ({
@@ -37,6 +38,10 @@ export const loadFishPositions = () => ({
 
 export const loadFishWaypointsOnPush = () => ({
 	type: LOAD_WAYPOINTS_ON_PUSH
+});
+
+export const deleteAllUserFishmarks = (waypoints) => ({
+	type: DELETE_ALL_FISHMARKS,
 });
 
 export const IOsetFishmarksCandidateList = (waypoints) => ({

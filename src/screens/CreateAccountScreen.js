@@ -159,8 +159,8 @@ const styles = {
 	textInput: {
 		flex: 2,
 		backgroundColor: 'mintcream',
-		paddingLeft: 20,
-		paddingRight: 20,
+		paddingLeft: 10,
+		paddingRight: 10,
 		paddingTop: 20
 
 	},

@@ -15,8 +15,7 @@ import MapView from 'react-native-maps';
 import { setFishmark, setMapViewForAnimation, shareMyWaypoint } from '../actions/fishmarks';
 import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconAwesome from 'react-native-vector-icons/FontAwesome';
+import {Icon} from 'react-native-elements';
 import { loadFishPositions, IOsetFishmarksCandidateList } from '../actions/fishmarks';
 import {
 	logout, getUserLocation, setIntervalID, checkAuthToken, setIntervalAlive
@@ -104,22 +103,22 @@ class MainScreen extends Component {
 			headerTintColor: 'white',
 			tabBarLabel: (props) => (<Text style={labelStyle(props, 'flex-end', 15)}> Fish Map </Text>),
 			headerLeft: <Icon
-				name="md-menu"
+				name="menu"
 				size={28}
 				color={'white'}
-				style={{ paddingLeft: 20 }}
+				containerStyle={{ paddingLeft: 10 }}
+				underlayColor={"#2F95D6"}
 				onPress={() => navigation.navigate('DrawerOpen')}
 			/>,
 			headerRight:
-				<Icon
-					name="md-exit"
-					size={28}
-					color={'white'}
-					style={{ paddingRight: 20 }}
-					onPress={() => params.handleLogout()}
-				/>,
+				<Icon name="exit-to-app"
+				      size={28}
+				      color={'white'}
+				      containerStyle={{ paddingRight: 10 }}
+				      underlayColor={"#2F95D6"}
+				      onPress={() => params.handleLogout()}/>,
 			tabBarIcon:
-				<IconAwesome
+				<Icon
 					name="home"
 					size={26}
 					color={'white'}

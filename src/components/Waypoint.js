@@ -128,8 +128,8 @@ class Waypoint extends Component {
 		];
 		const rightButtons = [
 			{
-				backgroundColor: !this.props.shared ? '#23B523' : '#e61b1b',
-				underlayColor: !this.props.shared ? '#1F9F1F' : '#e61b1b',
+				backgroundColor: !this.props.shared ? '#23B523' : '#E83535',
+				underlayColor: !this.props.shared ? '#1F9F1F' : '#E83535',
 				onPress: () => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null,
 				component:
 					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -237,7 +237,7 @@ const styles = {
 	nameTitle: {
 		flex: 1,
 		alignItems: 'flex-start',
-		paddingLeft: 20,
+		paddingLeft: 10,
 		justifyContent: 'center'
 	},
 	name: {
@@ -250,14 +250,14 @@ const styles = {
 	coords: {
 		flex: 1,
 		alignItems: 'center',
-		paddingRight: 20,
+		paddingRight: 10,
 		justifyContent: 'center'
 	},
 
 	date: {
 		flex: 0.5,
 		alignItems: 'flex-end',
-		paddingRight: 20,
+		paddingRight: 10,
 		justifyContent: 'center'
 
 	},
