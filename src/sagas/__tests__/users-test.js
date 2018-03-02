@@ -42,10 +42,6 @@ describe('When testing user Saga getUserPosition generator function', () => {
 	it('should have called the getPosition function', userLocation => {
 		expect(userLocation).toEqual(call(getPosition, { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 }));
 
-
-		// It's very important to understand that the generator ran the 'call' function,
-		// which only describes what it does, and that the API itself is never called.
-		// This is what we are testing here: (but you don't need to test that in your own tests)
 	});
 
 });

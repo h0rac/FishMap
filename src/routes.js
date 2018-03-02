@@ -13,96 +13,95 @@ import SideMenu from '../src/components/SideMenu';
 import { LanguageScreen } from './screens/LanguageScreen';
 
 const indicatorStyle = (props, alignSelf) => ({
-	borderBottomWidth: 3,
-	borderBottomColor: 'yellow',
-	alignSelf: 'flex-end'
+  borderBottomWidth: 3,
+  borderBottomColor: 'yellow',
+  alignSelf: 'flex-end',
 });
 
 const mainStack = TabNavigator({
 
-	MainScreen: {
-		screen: MainScreen
+MainScreen: {
+	screen: MainScreen,
 
-	},
+},
 
-	WayPointScreen: {
-		screen: WayPointScreen
+WayPointScreen: {
+	screen: WayPointScreen,
 
-	},
+},
 
-	SharingScreen: {
-		screen: SharingScreen
-	}
+SharingScreen: {
+	screen: SharingScreen,
+},
 }, {
-	tabBarComponent: (props) => <TabBarTop {...props} indicatorStyle={indicatorStyle(props, 'flex-end')}/>,
-	tabBarPosition: 'bottom',
-	tabBarOptions: {
-		showIcon: true
-	}
+tabBarComponent: props => <TabBarTop {...props} indicatorStyle={indicatorStyle(props, 'flex-end')} />,
+tabBarPosition: 'bottom',
+tabBarOptions: {
+	showIcon: true,
+},
 });
 
 
 const NavigatorStack = StackNavigator({
 
-	LoginScreen: {
-		screen: LoginScreen
+LoginScreen: {
+  screen: LoginScreen,
 
-	},
-	CreateAccountScreen: {
-		screen: CreateAccountScreen
+},
+CreateAccountScreen: {
+  screen: CreateAccountScreen,
 
-	},
-	LanguageScreen: {
-		screen: LanguageScreen
+},
+LanguageScreen: {
+  screen: LanguageScreen,
 
-	},
-	SharingScreen: {
-		screen: SharingScreen
-	},
+},
+SharingScreen: {
+  screen: SharingScreen,
+},
+
+mainStack: {
+  screen: mainStack,
+},
 
 
-	mainStack: {
-		screen: mainStack
-	},
+WayPointEditScreen: { screen: WayPointEditScreen },
 
+ProfileScreen: {
+	screen: ProfileScreen,
+	navigationOptions: ({ navigation }) => ({
+		headerStyle: {
+			backgroundColor: '#2F95D6',
+		},
+		drawerLabel: 'Profile',
+		headerTintColor: 'white',
+		headerLeft: <Icon
+name="md-close"
+size={28}
+color="white"
+style={{ paddingLeft: 10 }}
+onPress={() => navigation.navigate('DrawerOpen')}
+		/>,
 
-	WayPointEditScreen: { screen: WayPointEditScreen },
-
-	ProfileScreen: {
-		screen: ProfileScreen,
-		navigationOptions: ({ navigation }) => ({
-			headerStyle: {
-				backgroundColor: '#2F95D6'
-			},
-			drawerLabel: 'Profile',
-			headerTintColor: 'white',
-			headerLeft: <Icon
-				name="md-close"
-				size={28}
-				color={'white'}
-				style={{ paddingLeft: 10 }}
-				onPress={() => navigation.navigate('DrawerOpen')}
-			/>
-
-		})
-	},
-	SettingScreen: {
-		screen: SettingScreen,
-		navigationOptions: ({ navigation }) => ({
-			headerStyle: {
-				backgroundColor: '#2F95D6'
-			},
-			drawerLabel: 'Settings',
-			headerTintColor: 'white',
-			headerLeft: <Icon
-				name="md-close"
-				size={28}
-				color={'white'}
-				style={{ paddingLeft: 10 }}
-				onPress={() => navigation.navigate('DrawerOpen')}
-			/>
-		})
-	}
+	}),
+},
+SettingScreen: {
+	screen: SettingScreen,
+	navigationOptions: ({ navigation }) => ({
+		headerStyle: {
+			backgroundColor: '#2F95D6',
+		},
+		drawerLabel: 'Settings',
+		headerTintColor: 'white',
+		headerLeft: <Icon
+name="md-close"
+size={28}
+color="white"
+style={{ paddingLeft: 10 }}
+onPress={() => navigation.navigate('DrawerOpen')}
+		/>,
+	}),
+},
 
 
 }, {});
@@ -110,28 +109,28 @@ const NavigatorStack = StackNavigator({
 
 const DrawerStack = DrawerNavigator({
 
-	NavigatorStack: {
-		screen: NavigatorStack,
-		navigationOptions: ({ navigation }) => ({
-			drawerLabel: 'Home'
+NavigatorStack: {
+	screen: NavigatorStack,
+	navigationOptions: ({ navigation }) => ({
+		drawerLabel: 'Home',
 
-		})
-	},
-	ProfileStack: {
-		screen: ProfileScreen,
-		navigationOptions: ({ navigation }) => ({
-			headerTintColor: '#2F95D6',
-			drawerIcon: <Icon
-				name="md-person"
-				size={20}
-				color={'#2F95D6'}
-			/>
-		})
-	}
+	}),
+},
+ProfileStack: {
+	screen: ProfileScreen,
+	navigationOptions: ({ navigation }) => ({
+		headerTintColor: '#2F95D6',
+		drawerIcon: <Icon
+name="md-person"
+size={20}
+color="#2F95D6"
+		/>,
+	}),
+},
 
 }, {
-	contentComponent: SideMenu,
-	drawerWidth: 300
+contentComponent: SideMenu,
+drawerWidth: 300,
 });
 
 export default DrawerStack;

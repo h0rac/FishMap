@@ -1,0 +1,221 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Testing Main screen renders correctly 1`] = `
+ShallowWrapper {
+  "length": 1,
+  Symbol(enzyme.__root__): [Circular],
+  Symbol(enzyme.__unrendered__): <MainScreen
+    clearActions={[Function]}
+    dispatch={[Function]}
+    duration={1000}
+    emitStatus={undefined}
+    getActions={[Function]}
+    getState={[Function]}
+    intervalAlive={undefined}
+    isFetching={undefined}
+    isSelected={undefined}
+    navigation={
+      Object {
+        "navigate": [Function],
+      }
+    }
+    positions={Array []}
+    receive={undefined}
+    replaceReducer={[Function]}
+    selectedPosition={undefined}
+    sharedFishmarks={undefined}
+    socketIO={undefined}
+    store={
+      Object {
+        "clearActions": [Function],
+        "dispatch": [Function],
+        "getActions": [Function],
+        "getState": [Function],
+        "replaceReducer": [Function],
+        "subscribe": [Function],
+      }
+    }
+    storeSubscription={
+      Subscription {
+        "listeners": Object {
+          "clear": [Function],
+          "get": [Function],
+          "notify": [Function],
+          "subscribe": [Function],
+        },
+        "onStateChange": [Function],
+        "parentSub": undefined,
+        "store": Object {
+          "clearActions": [Function],
+          "dispatch": [Function],
+          "getActions": [Function],
+          "getState": [Function],
+          "replaceReducer": [Function],
+          "subscribe": [Function],
+        },
+        "unsubscribe": [Function],
+      }
+    }
+    subscribe={[Function]}
+    timeoutID={undefined}
+    userLocation={Object {}}
+  />,
+  Symbol(enzyme.__renderer__): Object {
+    "batchedUpdates": [Function],
+    "getNode": [Function],
+    "render": [Function],
+    "simulateEvent": [Function],
+    "unmount": [Function],
+  },
+  Symbol(enzyme.__node__): Object {
+    "instance": null,
+    "key": undefined,
+    "nodeType": "class",
+    "props": Object {
+      "children": Array [
+        <MapView
+          initialRegion={
+            Object {
+              "latitude": 54.475408,
+              "latitudeDelta": 0.0922,
+              "longitude": 18.263086,
+              "longitudeDelta": 0.0421,
+            }
+          }
+          onLongPress={[Function]}
+          style={
+            Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            }
+          }
+        />,
+        null,
+      ],
+      "style": Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+      },
+    },
+    "ref": null,
+    "rendered": Array [
+      Object {
+        "instance": null,
+        "key": undefined,
+        "nodeType": "class",
+        "props": Object {
+          "children": Array [
+            Array [],
+            null,
+          ],
+          "initialRegion": Object {
+            "latitude": 54.475408,
+            "latitudeDelta": 0.0922,
+            "longitude": 18.263086,
+            "longitudeDelta": 0.0421,
+          },
+          "onLongPress": [Function],
+          "style": Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+        },
+        "ref": [Function],
+        "rendered": Array [
+          null,
+        ],
+        "type": [Function],
+      },
+      null,
+    ],
+    "type": [Function],
+  },
+  Symbol(enzyme.__nodes__): Array [
+    Object {
+      "instance": null,
+      "key": undefined,
+      "nodeType": "class",
+      "props": Object {
+        "children": Array [
+          <MapView
+            initialRegion={
+              Object {
+                "latitude": 54.475408,
+                "latitudeDelta": 0.0922,
+                "longitude": 18.263086,
+                "longitudeDelta": 0.0421,
+              }
+            }
+            onLongPress={[Function]}
+            style={
+              Object {
+                "bottom": 0,
+                "left": 0,
+                "position": "absolute",
+                "right": 0,
+                "top": 0,
+              }
+            }
+          />,
+          null,
+        ],
+        "style": Object {
+          "alignItems": "center",
+          "flex": 1,
+          "justifyContent": "center",
+        },
+      },
+      "ref": null,
+      "rendered": Array [
+        Object {
+          "instance": null,
+          "key": undefined,
+          "nodeType": "class",
+          "props": Object {
+            "children": Array [
+              Array [],
+              null,
+            ],
+            "initialRegion": Object {
+              "latitude": 54.475408,
+              "latitudeDelta": 0.0922,
+              "longitude": 18.263086,
+              "longitudeDelta": 0.0421,
+            },
+            "onLongPress": [Function],
+            "style": Object {
+              "bottom": 0,
+              "left": 0,
+              "position": "absolute",
+              "right": 0,
+              "top": 0,
+            },
+          },
+          "ref": [Function],
+          "rendered": Array [
+            null,
+          ],
+          "type": [Function],
+        },
+        null,
+      ],
+      "type": [Function],
+    },
+  ],
+  Symbol(enzyme.__options__): Object {
+    "adapter": ReactSixteenAdapter {
+      "options": Object {
+        "enableComponentDidUpdateOnSetState": true,
+      },
+    },
+    "lifecycleExperimental": true,
+  },
+}
+`;
