@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { CheckBox, Divider } from 'react-native-elements';
+import { Divider } from 'react-native-elements';
 import {
 	StyleSheet,
 	Text,
 	View,
 	TouchableOpacity,
 	Switch,
-  AsyncStorage
+	AsyncStorage
 } from 'react-native';
 
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
 	emitWaypointReceive,
-	setIntervalID,
+	setIntervalID
 } from '../actions/user';
 
 
@@ -31,7 +31,7 @@ class SettingScreen extends Component {
 			intervalId: null,
 			emitStatus: false,
 			durationSet: false,
-			color:'mintcream',
+			color: 'mintcream',
 			pickerValue: 0
 		};
 	}
@@ -45,7 +45,7 @@ class SettingScreen extends Component {
 				backgroundColor: '#2F95D6'
 			},
 			title: 'Settings',
-			headerTintColor: 'white',
+			headerTintColor: 'white'
 		};
 	};
 	static propTypes = {
@@ -93,9 +93,8 @@ class SettingScreen extends Component {
 						/>
 					</View>
 				</View>
-				<Divider style={{ height:0.5, backgroundColor: 'gray'}} />
-
-				<TouchableOpacity key='language' style={styles.generalContainer} onPress={()=>this.props.navigation.navigate('LanguageScreen')}>
+				<TouchableOpacity key='language' style={styles.generalContainer}
+				                  onPress={() => this.props.navigation.navigate('LanguageScreen')}>
 
 					<View style={styles.generalText}>
 						<Text style={styles.enableText}>Language settings</Text>
@@ -117,46 +116,47 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: 'whitesmoke',
-		flexDirection:'column'
+		flexDirection: 'column'
 	},
 
 	generalContainer: {
 		flex: 0.1,
-		flexDirection:'row',
-		backgroundColor:'mintcream',
-		alignItems:'center',
-		height:70
+		flexDirection: 'row',
+		backgroundColor: 'mintcream',
+		alignItems: 'center',
+		height: 70,
+		marginBottom:2
 	},
 
 
 	itemContainer: {
 		flex: 0.1,
-		flexDirection:'row',
-		backgroundColor:'mintcream',
-		alignItems:'center',
-		paddingBottom:5,
-		paddingTop:5
+		flexDirection: 'row',
+		backgroundColor: 'mintcream',
+		alignItems: 'center',
+		paddingBottom: 5,
+		paddingTop: 5
 	},
 
 	section: {
 		backgroundColor: 'whitesmoke',
-		flex:0.05,
-		paddingLeft:20,
-		paddingTop:30,
-		flexDirection:'row',
-		alignItems:'center'
+		flex: 0.05,
+		paddingLeft: 10,
+		paddingTop: 30,
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 
 	enableSwitch: {
 		flex: 1,
 		flexDirection: 'row',
 		justifyContent: 'flex-end',
-		paddingRight:20
+		paddingRight: 10
 
 	},
 
 	sectionText: {
-		color:'gray'
+		color: 'gray'
 
 	},
 
@@ -164,11 +164,11 @@ const styles = StyleSheet.create({
 		flex: 3,
 		flexDirection: 'row',
 		justifyContent: 'flex-start',
-		paddingLeft:20
+		paddingLeft: 10
 	},
 
 	enableText: {
-		paddingTop:5
+		paddingTop: 5
 	},
 
 	title: {

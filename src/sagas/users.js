@@ -7,7 +7,6 @@ import {
 	SUCCESS_REMOVE_TOKEN,
 	FAILED_REMOVE_TOKEN,
 	GET_USER_LOCATION,
-	CHANGE_RECEIVE_STATUS,
 	EMIT_WAYPOINT_RECEIVE,
 	EMIT_WAYPOINT_RECEIVE_STOPPED,
 	EMIT_WAYPOINT_RECEIVE_STARTED,
@@ -19,12 +18,10 @@ import {
 
 } from '../constants/constants';
 import { call, put, takeEvery, select } from 'redux-saga/effects';
-import { AsyncStorage, Dimensions } from 'react-native';
+import { Dimensions } from 'react-native';
 import { displayAlert, getToken, setToken, removeToken } from '../common/utils';
 
 import SocketIOClient from 'socket.io-client';
-import { setIOSocket } from '../actions/user';
-
 export const selectSocket = state => state.user.socketIO;
 
 
@@ -64,7 +61,7 @@ export function* getUserPosition() {
 
 
 		if (userLocation) {
-			yield put({ type: SUCCESS_GET_USER_LOCATION, position: userPosition });
+			yield put({ type: SUCCESS_GET_USER_LOCATION, position: userPosition, isFetching:false });
 		} else {
 			yield put({ type: FAILED_GET_USER_LOCATION, error: 'FAILED TO GET USER LOCATION' });
 		}

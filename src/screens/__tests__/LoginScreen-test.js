@@ -1,7 +1,6 @@
-import { TextInput, Keyboard, Dimensions, Platform } from 'react-native';
+import { TextInput, Platform } from 'react-native';
 import React from 'react';
 import LoginScreen from '../LoginScreen';
-import TestUtils from 'react-dom/test-utils';
 import { shallow, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
@@ -12,13 +11,6 @@ configure({ adapter: new Adapter() });
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-jest.mock('Platform', () => {
-		return {
-			Platform: { OS: 'ios' }
-		};
-	}
-);
-
 describe('Testing Login screen', () => {
 
 	let tree;
@@ -28,6 +20,13 @@ describe('Testing Login screen', () => {
 	let dispatch;
 
 	beforeEach(() => {
+
+		jest.mock('react-native', () => ({
+			Platform: {
+				OS:'ios',
+				select: (obj: Object) => obj.ios,
+			}}));
+
 		navigate = jest.fn();
 		state = {
 			window: { screen: { height: 375, width: 667 } },
@@ -105,22 +104,22 @@ describe('Testing Login screen', () => {
 		expect(inputs.length).toBe(2);
 	});
 
-	it('should render 2 IconButtons', () => {
+	it('should render 2 Buttons', () => {
 		const LoginScreenComponent = tree.dive();
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		expect(buttons.length).toBe(2);
 	});
 
 	it('should send API Request when email and password are valid', () => {
 		const LoginScreenComponent = tree.dive();
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		LoginScreenComponent.setState({ email: 'test@test.com', password: 'pass123' });
 		buttons.first().simulate('Press');
 	});
 
 	it('should not send API Request when email is invalid', () => {
 		const LoginScreenComponent = tree.dive();
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		LoginScreenComponent.setState({ email: 'test#test.com', password: 'pass123' });
 		buttons.first().simulate('Press');
 		expect(LoginScreenComponent.state().disableLogin).toBe(true);
@@ -128,7 +127,7 @@ describe('Testing Login screen', () => {
 
 	it('should redirect to Create Account screen when create account button is pressed', () => {
 		const LoginScreenComponent = tree.dive();
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		buttons.forEach(button => {
 			if (button.getElement().props.name === 'user-o')
 				button.simulate('Press');
@@ -154,7 +153,7 @@ describe('Testing Login screen', () => {
 		inputs.forEach(input => {
 			expect(input.simulate('ChangeText'));
 		});
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		buttons.forEach(button => {
 			if(button.getElement().props.name === 'sign-in')
 				expect(button.getElement().props.disabled).toBe(true)
@@ -168,7 +167,7 @@ describe('Testing Login screen', () => {
 		inputs.forEach(input => {
 			expect(input.simulate('ChangeText'));
 		});
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		buttons.forEach(button => {
 			if(button.getElement().props.name === 'sign-in')
 				expect(button.getElement().props.disabled).toBe(true)
@@ -182,7 +181,7 @@ describe('Testing Login screen', () => {
 		inputs.forEach(input => {
 			expect(input.simulate('ChangeText', 'test@false.com'));
 		});
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		buttons.forEach(button => {
 			if(button.getElement().props.name === 'sign-in')
 			expect(button.getElement().props.disabled).toBe(false)
@@ -199,7 +198,7 @@ describe('Testing Login screen', () => {
 		inputs.forEach(input => {
 			expect(input.simulate('ChangeText'));
 		});
-		const buttons = LoginScreenComponent.find('IconButton');
+		const buttons = LoginScreenComponent.find('Button');
 		buttons.forEach(button => {
 			if(button.getElement().props.name === 'sign-in')
 				expect(button.getElement().props.disabled).toBe(true)

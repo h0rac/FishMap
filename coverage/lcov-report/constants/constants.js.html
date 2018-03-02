@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for constants/constants.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../index.html">All files</a> / <a href="index.html">constants</a> constants.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>75/75</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/0</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>75/75</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98</td><td class="line-coverage quiet"><span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span></td><td class="text"><pre class="prettyprint lang-js">export const SET_FISHMARK_POSITION = 'SET_FISHMARK_POSITION';
+export const SET_FISHMARK_POSITION_PENDING = 'SET_FISHMARK_POSITION_PENDING';
+export const MOVE_TO_FISHMARK_POSITION = 'MOVE_TO_FISHMARK_POSITION';
+export const DELETE_FISHMARK_POSITION = 'DELETE_FISHMARK_POSITION';
+export const DELETE_FISHMARK_POSITION_PENDING = 'DELETE_FISHMARK_POSITION_PENDING';
+export const LOAD_FISHMARKS_POSITIONS_PENDING = 'LOAD_FISHMARKS_POSITIONS_PENDING';
+&nbsp;
+export const SUCCESS_LOAD_FISHMARKS_POSITIONS = 'SUCCESS_LOAD_FISHMARKS_POSITIONS';
+export const FAILED_LOAD_FISHMARKS_POSITIONS = 'FAILED_LOAD_FISHMARKS_POSITIONS';
+export const FAILED_SET_FISHMARK_POSITION = 'FAILED_SET_FISHMARK_POSITION';
+export const SUCCESS_SET_FISHMARK_POSITION = 'SUCCESS_SET_FISHMARK_POSITION';
+export const LOAD_FISHMARKS_POSITIONS = 'LOAD_FISHMARKS_POSITIONS';
+&nbsp;
+&nbsp;
+export const OAUTH_URL = 'http://fishmap.test.pl:3000/auth/google';
+//export const OAUTH_URL = "https://yqxcjoicsc.localtunnel.me/auth/google"
+//export const API_ENDPOINT = "192.168.0.115:3999" // Local DEV
+export const API_ENDPOINT = '31.186.87.151:3999';
+export const SET_USER_DATA = 'SET_USER_DATA';
+&nbsp;
+export const CLEAR_DATA = 'CLEAR_DATA';
+&nbsp;
+export const LOGOUT = 'LOGOUT';
+export const LOGIN = 'LOGIN';
+export const CREATE_ACCOUNT = 'CREATE_ACCOUNT';
+export const FAILED_CREATE_ACCOUNT = 'FAILED_CREATE_ACCOUNT';
+export const RESEND_VERIFICATION_EMAIL = 'RESEND_VERIFICATION_EMAIL';
+export const FAILED_RESEND_VERIFICATION_EMAIL = 'FAILED_CREATE_RESEND_VERIFICATION_EMAIL';
+&nbsp;
+export const FAILED_SET_TOKEN = 'FAILED_SET_TOKEN';
+export const SUCCESS_SET_TOKEN = 'SUCCESS_SET_TOKEN';
+export const VERIFY_TOKEN = 'VERIFY_TOKEN';
+export const SUCCESS_REMOVE_TOKEN = 'SUCCESS_REMOVE_TOKEN';
+export const FAILED_REMOVE_TOKEN = 'FAILED_REMOVE_TOKEN';
+export const SUCCESS_VERIFY_TOKEN = 'SUCCESS_VERIFY_TOKEN';
+export const FAILED_VERIFY_TOKEN = 'FAILED_VERIFY_TOKEN';
+&nbsp;
+export const SUCCESS_GET_USER_LOCATION = 'SUCCESS_GET_USER_LOCATION';
+export const FAILED_GET_USER_LOCATION = 'FAILED_GET_USER_LOCATION';
+export const GET_USER_LOCATION = 'GET_USER_LOCATION';
+export const LOAD_WAYPOINTS_ON_PUSH = 'LOAD_WAYPOINTS_ON_PUSH';
+export const SUCCESS_UPDATE_WAYPOINTS_ON_PUSH = 'SUCCESS_UPDATE_WAYPOINTS_ON_PUSH';
+export const FAILED_UPDATE_WAYPOINT_ON_PUSH = 'FAILED_UPDATE_WAYPOINT_ON_PUSH';
+export const INCREMENT_SEED = 'INCREMENT_SEED';
+&nbsp;
+export const DELETE_WAYPOINT = 'DELETE_WAYPOINT';
+export const SUCCESS_DELETE_WAYPOINT = 'SUCCESS_DELETE_WAYPOINT';
+export const FAILED_DELETE_WAYPOINT = 'FAILED_DELETE_WAYPOINT';
+&nbsp;
+export const IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST = 'IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST';
+export const IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS = 'IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_SUCCESS';
+export const IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED = 'IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST_FAILED';
+&nbsp;
+export const SHARE_WAYPOINT_TO_PEER = 'SHARE_WAYPOINT_TO_PEER';
+export const SHARE_WAYPOINT_SUCCESS = 'SHARE_WAYPOINT_SUCCESS';
+export const SHARE_WAYPOINT_FAILED = 'SHARE_WAYPOINT_FAILED';
+&nbsp;
+export const SET_DST_EMAIL = 'SET_DST_EMAIL';
+&nbsp;
+export const DELETE_ALL_FISHMARKS = "DELETE_ALL_FISHMARKS";
+export const DELETE_ALL_FISHMARKS_PENDING = "DELETE_ALL_FISHMARKS_PENDING"
+export const DELETE_ALL_FISHMARKS_SUCCESS = "DELETE_ALL_FISHMARKS_SUCCESS";
+export const DELETE_ALL_FISHMARKS_FAILED = "DELETE_ALL_FISHMARKS_FAILED";
+&nbsp;
+export const SHARE_WAYPOINT_CHECKED = 'SHARE_WAYPOINT_CHECKED';
+export const SHARE_WAYPOINT_CHECKED_SUCCESS = 'SHARE_WAYPOINT_CHECKED_SUCCESS';
+export const SHARE_WAYPOINT_CHECKED_FAILED = 'SHARE_WAYPOINT_CHECKED_FAILED';
+export const SHARE_WAYPOINT_CHECKED_FALSE = 'SHARE_WAYPOINT_CHECKED_FALSE';
+export const SHARE_WAYPOINT_ALL_SELECTED = 'SHARE_WAYPOINT_ALL_SELECTED';
+export const SHARE_WAYPOINT_CHECKED_CLEAR = 'SHARE_WAYPOINT_CHECKED_CLEAR';
+export const SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS = 'SHARE_WAYPOINT_CHECKED_CLEAR_SUCCESS';
+export const SHARE_WAYPOINT_UNCHECKED = 'SHARE_WAYPOINT_UNCHECKED';
+&nbsp;
+export const SHARE_MY_WAYPOINT = 'SHARE_MY_WAYPOINT';
+export const REMOVE_SHARE_MY_WAYPOINT = 'REMOVE_SHARE_MY_WAYPOINT';
+&nbsp;
+export const CHANGE_DURATION = 'CHANGE_DURATION';
+export const CHANGE_INTERVAL_TIME_SUCCESS = 'CHANGE_INTERVAL_TIME_SUCCESS';
+&nbsp;
+export const CHANGE_RECEIVE_STATUS = 'CHANGE_RECEIVE_STATUS';
+export const SAVE_SHARED_WAYPOINTS = 'SAVE_SHARED_WAYPOINTS';
+&nbsp;
+export const UPDATE_WAYPOINT_ON_SAVE_SUCCESS = 'UPDATE_WAYPOINT_ON_SAVE_SUCCESS';
+export const UPDATE_WAYPOINT_ON_SAVE_FAILED = 'UPDATE_WAYPOINT_ON_SAVE_FAILED';
+export const CHANGE_DISPLAY_SAVE_STATUS = 'CHANGE_DISPLAY_SAVE_STATUS';
+&nbsp;
+export const EMIT_WAYPOINT_RECEIVE = 'EMIT_WAYPOINT_RECEIVE';
+export const EMIT_WAYPOINT_RECEIVE_STARTED = 'EMIT_WAYPOINT_RECEIVE_STARTED';
+export const EMIT_WAYPOINT_RECEIVE_STOPPED = 'EMIT_WAYPOINT_RECEIVE_STOPPED';
+export const SET_INTERVAL_ID = 'SET_INTERVAL_ID';
+&nbsp;
+export const SET_SELECTED_DURATION = 'SET_SELECTED_DURATION';
+&nbsp;
+export const CHANGE_DURATION_SUCCESS = 'CHANGE_DURATION_SUCCESS';
+export const SET_IO_SOCKET = 'SET_IO_SOCKET';
+export const SET_INTERVAL_ALIVE = 'SET_INTERVAL_ALIVE';
+&nbsp;
+export const SET_MAP_FOR_ANIMATION = 'SET_MAP_FOR_ANIMATION';</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Feb 03 2018 23:47:07 GMT+0100 (CET)
+</div>
+</div>
+<script src="../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../sorter.js"></script>
+</body>
+</html>

@@ -6,100 +6,85 @@ import {
 	StyleSheet,
 	View,
 	Alert,
-	Platform,
-	Linking,
 	AsyncStorage,
-	Button,
 	Text,
-	TouchableHighlight,
-	ActivityIndicator,
-	TouchableOpacity
+	ActivityIndicator
 } from 'react-native';
 import MapView from 'react-native-maps';
 
 import { setFishmark, setMapViewForAnimation, shareMyWaypoint } from '../actions/fishmarks';
 import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/Ionicons';
-import IconAwesome from 'react-native-vector-icons/FontAwesome';
+import {Icon} from 'react-native-elements';
 import { loadFishPositions, IOsetFishmarksCandidateList } from '../actions/fishmarks';
 import {
-	logout, getUserLocation, changeDuration, emitWaypointReceive, setIntervalID,
-	setIOSocket, checkAuthToken, setIntervalAlive
+	logout, getUserLocation, setIntervalID, checkAuthToken, setIntervalAlive
 } from '../actions/user';
-
-
-import SocketIOClient from "socket.io-client";
-import {API_ENDPOINT} from "../constants/constants";
-
 
 import { displayAlert } from '../common/utils';
 
 
-const labelStyle =(props, alignSelf, marginTop)=> ({
+const labelStyle = (props, alignSelf, marginTop) => ({
 	fontSize: 14,
 	fontWeight: '500',
 	marginTop,
-	color: props.focused ? props.tintColor : "white",
+	color: props.focused ? props.tintColor : 'white'
 });
 
 let timeoutID;
-let intervalId
+let intervalId;
 
 let _mapView = MapView;
+
 class MainScreen extends Component {
 
 	constructor() {
 		super();
 
-		this._handleFishMarkerSet = this._handleFishMarkerSet.bind(this);
+		this.handleFishMarkerSet = this.handleFishMarkerSet.bind(this);
 		this._handleFishMarkPress = this._handleFishMarkPress.bind(this);
-		this._handleLogout = this._handleLogout.bind(this);
-		this._logoutUser = this._logoutUser.bind(this);
+		this.handleLogout = this.handleLogout.bind(this);
+		this.logoutUser = this.logoutUser.bind(this);
 		this.onReceiveFishmark = this.onReceiveFishmark.bind(this);
-		this.setInitialUserPosition = this.setInitialUserPosition.bind(this)
+		this.setInitialUserPosition = this.setInitialUserPosition.bind(this);
 		this.onReceiveError = this.onReceiveError.bind(this);
-		this.handleSharing = this.handleSharing.bind(this)
-		//this.setTimeoutLoop = this.setTimeoutLoop.bind(this)
-
+		this.handleSharing = this.handleSharing.bind(this);
 
 		this.state = {
 			interval: 0,
-			intervalId:0,
-			test:null,
-			clear:null,
-			intervalAlive:true,
-
+			intervalId: 0,
+			test: null,
+			clear: null,
+			intervalAlive: true
 		};
-
 	}
 
 	onReceiveError = (data) => {
-		  displayAlert('Authentication', data)
-			this.props.socketIO.emit('onErrorDisconnect')
-		  this.props.navigation.navigate('LoginScreen')
+		displayAlert('Authentication', data);
+		this.props.socketIO.emit('onErrorDisconnect');
+		this.props.navigation.navigate('LoginScreen');
 
 	};
 
-	_logoutUser() {
+	logoutUser() {
 		AsyncStorage.getItem('token').then(token => {
 			if (token) {
-				this.props.socketIO.emit('onForceDisconnect', {token: JSON.parse(decodeURI(token))})
+				this.props.socketIO.emit('onForceDisconnect', { token: JSON.parse(decodeURI(token)) });
 			}
-		})
-		clearInterval(this.props.timeoutID)
-		this.props.dispatch(setIntervalAlive(true))
+		});
+		clearInterval(this.props.timeoutID);
+		this.props.dispatch(setIntervalAlive(true));
 		this.props.dispatch(logout());
 		this.props.navigation.navigate('LoginScreen');
 
 	}
 
-	_handleLogout() {
+	handleLogout() {
 		Alert.alert(
 			'Logout',
 			'Do you want to logout from FishMap ?',
 			[
-				{ text: 'OK', onPress: () => this._logoutUser(), style: 'ok' },
+				{ text: 'OK', onPress: () => this.logoutUser(), style: 'ok' },
 				{ text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel' }
 			],
 			{ cancelable: true }
@@ -116,35 +101,38 @@ class MainScreen extends Component {
 				backgroundColor: '#2F95D6'
 			},
 			headerTintColor: 'white',
-			tabBarLabel: (props)=>(<Text style={labelStyle(props, 'flex-end', 15)}> Fish Map </Text>),
+			tabBarLabel: (props) => (<Text style={labelStyle(props, 'flex-end', 15)}> Fish Map </Text>),
 			headerLeft: <Icon
-				name="md-menu"
+				name="menu"
 				size={28}
 				color={'white'}
-				style={{ paddingLeft: 20 }}
+				containerStyle={{ paddingLeft: 10 }}
+				underlayColor={"#2F95D6"}
 				onPress={() => navigation.navigate('DrawerOpen')}
 			/>,
 			headerRight:
-				<Icon
-					name="md-exit"
-					size={28}
-					color={'white'}
-					style={{ paddingRight: 20 }}
-					onPress={() => params.handleLogout()}
-				/>,
+				<Icon name="exit-to-app"
+				      size={28}
+				      color={'white'}
+				      containerStyle={{ paddingRight: 10 }}
+				      underlayColor={"#2F95D6"}
+				      onPress={() => params.handleLogout()}/>,
 			tabBarIcon:
-				<IconAwesome
+				<Icon
 					name="home"
 					size={26}
 					color={'white'}
-					//style={{paddingLeft:20}}
 				/>
 		};
 	};
 
 
 	componentWillMount() {
-		this.setState({ interval: this.props.duration , timeoutID:this.props.timeoutID,  intervalAlive:this.props.intervalAlive});
+		this.setState({
+			interval: this.props.duration,
+			timeoutID: this.props.timeoutID,
+			intervalAlive: this.props.intervalAlive
+		});
 	}
 
 
@@ -155,17 +143,17 @@ class MainScreen extends Component {
 			}
 			else {
 				this.props.dispatch(checkAuthToken(this.props.navigation, 'MainScreen'));
-				if(this.props.intervalAlive) {
-					clearInterval(this.props.timeoutID)
-					 intervalId = setInterval(() => this.props.socketIO.emit('onFishmarkUpdate', {
+				if (this.props.intervalAlive) {
+					clearInterval(this.props.timeoutID);
+					intervalId = setInterval(() => this.props.socketIO.emit('onFishmarkUpdate', {
 						token: JSON.parse(decodeURI(token)),
 						receive: this.props.receive
 					}), this.state.interval);
-					this.props.dispatch(setIntervalID(intervalId))
+					this.props.dispatch(setIntervalID(intervalId));
 				}
 				this.props.dispatch(getUserLocation());
 				this.props.dispatch(loadFishPositions());
-				this.props.navigation.setParams({ handleLogout: this._handleLogout });
+				this.props.navigation.setParams({ handleLogout: this.handleLogout });
 				this.props.socketIO.on('onReceiveFishmark', data => this.onReceiveFishmark(data));
 				this.props.socketIO.on('onReceiveError', data => this.onReceiveError(data.error));
 			}
@@ -178,7 +166,7 @@ class MainScreen extends Component {
 	};
 
 
-	_handleFishMarkerSet(e) {
+	handleFishMarkerSet(e) {
 
 		this.props.dispatch(setFishmark({
 			...e.nativeEvent.coordinate, latitudeDelta: 0.0922,
@@ -188,10 +176,10 @@ class MainScreen extends Component {
 	};
 
 	handleSharing = (position) => {
-		const toShare = this.props.positions.find(waypoint => waypoint.latitude === position.latitude && waypoint.longitude === waypoint.longitude)
-		this.props.dispatch(shareMyWaypoint(toShare))
-		this.props.navigation.navigate('SharingScreen')
-	}
+		const toShare = this.props.positions.find(waypoint => waypoint.latitude === position.latitude && waypoint.longitude === waypoint.longitude);
+		this.props.dispatch(shareMyWaypoint(toShare));
+		this.props.navigation.navigate('SharingScreen');
+	};
 
 
 	_handleFishMarkPress = (e) => {
@@ -201,7 +189,7 @@ class MainScreen extends Component {
 			'Waypoint',
 			'What do you want to do with Waypoint ?',
 			[
-				{text: 'Share',  onPress: () => this.handleSharing(position) },
+				{ text: 'Share', onPress: () => this.handleSharing(position) },
 				{ text: 'Edit', onPress: () => this.props.navigation.navigate('WayPointEditScreen') },
 				{ text: 'Delete', onPress: () => this.props.dispatch(deleteFishmarkPosition(position)) },
 				{ text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel' }
@@ -216,33 +204,40 @@ class MainScreen extends Component {
 		if (userPos || this.props.positions.length === 0) {
 			initPosition = userPos;
 		}
-		return initPosition
-	}
+		return initPosition;
+	};
 
 
 	render() {
 
 		const initUserPosition = this.setInitialUserPosition();
-
+		const loading = this.props.isFetching;
 		return (
 			<View style={styles.container}>
-				<MapView onLongPress={this._handleFishMarkerSet}
+
+				<MapView onLongPress={this.handleFishMarkerSet}
 					//onRegionChangeComplete={()=> this.props.dispatch(loadFishmarkPositions())}
-								 ref = {(mapView) => { _mapView = mapView; this.props.dispatch(setMapViewForAnimation(_mapView)) }}
-								 style={styles.map}
-								initialRegion={{latitude: 54.475408,
-					longitude: 18.263086,
-					latitudeDelta: 0.0922,
-					longitudeDelta: 0.0421}}>
+					       ref={(mapView) => {
+						       _mapView = mapView;
+						       this.props.dispatch(setMapViewForAnimation(_mapView));
+					       }}
+					       style={styles.map}
+					       initialRegion={{
+						       latitude: 54.475408,
+						       longitude: 18.263086,
+						       latitudeDelta: 0.0922,
+						       longitudeDelta: 0.0421
+					       }}>
 
 					{this.props.positions.map((marker, index) =>
 						<FishMarker key={index} marker={marker}
-												callbackPress={this._handleFishMarkPress}
+						            callbackPress={this._handleFishMarkPress}
 						/>
 					)}
 					{this.props.userLocation.latitude ?
 						<UserMarker marker={initUserPosition}/> : null}
 				</MapView>
+				{loading === true ? <ActivityIndicator size={'large'}/> : null}
 			</View>
 		);
 	}
@@ -283,7 +278,7 @@ const mapStateToProps = state => {
 		userLocation: state.user.position,
 		sharedFishmarks: state.fishmarks.sharedFishmarks,
 		receive: state.user.receive,
-		duration:state.user.duration,
+		duration: state.user.duration,
 		emitStatus: state.user.emitStatus,
 		socketIO: state.user.socketIO,
 		timeoutID: state.user.timeoutID,
@@ -292,6 +287,3 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps)(MainScreen);
-
-
-

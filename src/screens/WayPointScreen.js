@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import { Text, View, FlatList, Image, TouchableOpacity, Platform, StyleSheet, Dimensions, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { Text, View, FlatList, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import {
-	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypointToPeer, clearSharedCheckedWaypoints,
-	shareWaypointChecked, uncheckWaypointShared, shareMyWaypoint
+	moveToFishmarkPosition, loadFishWaypointsOnPush, shareWaypointChecked, shareMyWaypoint, deleteAllUserFishmarks
 } from '../actions/fishmarks';
 import Notificator from '../components/Notificator';
-import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import SaveSharedWaypoint from '../components/SaveSharedWaypoint';
-import { changeReceiveStatus } from '../actions/user';
 import Waypoint from '../components/Waypoint';
+import { Icon } from 'react-native-elements';
+import {displayAlert} from '../common/utils';
 
 
 const labelStyle = (props, alignSelf, marginTop) => ({
@@ -28,9 +26,9 @@ class WayPointScreen extends Component {
 
 		return {
 			headerStyle: {
-				backgroundColor: '#2F95D6',
+				backgroundColor: '#2F95D6'
 			},
-			title:'Waypoints',
+			title: 'Waypoints',
 			tabBarLabel: (props) => (<Text style={labelStyle(props, 'flex-end', 15)}> Waypoints </Text>),
 			headerTintColor: 'white',
 			tabBarIcon:
@@ -43,15 +41,15 @@ class WayPointScreen extends Component {
 	constructor() {
 		super();
 		this._handleMoveToFishmarkPostion = this._handleMoveToFishmarkPostion.bind(this);
-		this._handlePushToRefresh = this._handlePushToRefresh.bind(this);
-		this._shareWaypoint = this._shareWaypoint.bind(this);
-		this._renderCurrentFishmarks = this._renderCurrentFishmarks.bind(this);
-		this._renderSharedFishmarks = this._renderSharedFishmarks.bind(this);
-		this._handleScreenSwitcher = this._handleScreenSwitcher.bind(this);
-		this._handleCheck = this._handleCheck.bind(this);
+		this.handlePushToRefresh = this.handlePushToRefresh.bind(this);
+		this.shareWaypoint = this.shareWaypoint.bind(this);
+		this.renderCurrentFishmarks = this.renderCurrentFishmarks.bind(this);
+		this.renderSharedFishmarks = this.renderSharedFishmarks.bind(this);
+		this.handleScreenSwitcher = this.handleScreenSwitcher.bind(this);
+		this.handleCheck = this.handleCheck.bind(this);
 
 		this.state = {
-			showWaypoints: false,
+			showWaypoints: true,
 			selectedWaypoints: []
 		};
 	}
@@ -73,45 +71,45 @@ class WayPointScreen extends Component {
 
 	};
 
-	_handlePushToRefresh = () => {
+	handlePushToRefresh = () => {
 		this.props.dispatch(loadFishWaypointsOnPush());
 	};
 
-	_shareWaypoint = (data) => {
-		this.props.dispatch(shareMyWaypoint(data))
+	shareWaypoint = (data) => {
+		this.props.dispatch(shareMyWaypoint(data));
 	};
 
 
-	_renderCurrentFishmarks = () => {
+	renderCurrentFishmarks = () => {
 		const result = <FlatList
 			data={this.props.loadedWaypoints.length > 0 ? this.props.loadedWaypoints : this.props.positions.fishmarks.slice(0, 7).reverse()}
 			renderItem={({ item }) => <Waypoint navigation={this.props.navigation}
-																					item={item}
-																					callback={this._handleMoveToFishmarkPostion}
-																					shareWaypointCallback={this._shareWaypoint} shared={false}/>}
+			                                    item={item}
+			                                    callback={this._handleMoveToFishmarkPostion}
+			                                    shareWaypointCallback={this.shareWaypoint} shared={false}/>}
 			keyExtractor={item => item.key}
-			onRefresh={this._handlePushToRefresh}
+			onRefresh={this.handlePushToRefresh}
 			refreshing={this.props.refreshing}
 		/>;
 		return result;
 	};
 
-	_handleCheck = (status, item) => {
+	handleCheck = (status, item) => {
 		this.props.dispatch(shareWaypointChecked(item.checked, item, this.props.intervalAlive));
 
 	};
 
-	_renderSharedFishmarks = () => {
+	renderSharedFishmarks = () => {
 		const result = <FlatList
 			data={this.props.sharedFishmarks}
-			renderItem={({ item }) => <Waypoint item={item} callbackHandleCheck={this._handleCheck}
-																					shared={true}/>}
+			renderItem={({ item }) => <Waypoint item={item} callbackHandleCheck={this.handleCheck}
+			                                    shared={true}/>}
 			keyExtractor={item => item.key}
 		/>;
 		return result;
 	};
 
-	_handleScreenSwitcher = () => {
+	handleScreenSwitcher = () => {
 		this.setState({ showWaypoints: !this.state.showWaypoints });
 	};
 
@@ -122,14 +120,35 @@ class WayPointScreen extends Component {
 
 			<View style={styles.waypoints}>
 				{(this.props.sharedFishmarks && this.props.sharedFishmarks.length > 0 && !this.state.showWaypoints) ?
-					this._renderSharedFishmarks() : this._renderCurrentFishmarks()}
+					this.renderSharedFishmarks() : this.renderCurrentFishmarks()}
 			</View>
 			{this.props.sharedFishmarks.length > 0 ?
-			<TouchableOpacity style={styles.switcher} onPress={this._handleScreenSwitcher}>
-				 <View>
-						<Text style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Received waypoints >'}</Text>
+				<TouchableOpacity style={styles.switcher} onPress={this.handleScreenSwitcher}>
+					<View>
+						<Text
+							style={styles.switcherText}>{!this.state.showWaypoints ? '< Your waypoints' : 'Received waypoints >'}</Text>
 					</View>
-			</TouchableOpacity>:null}
+				</TouchableOpacity> : null}
+			{this.state.showWaypoints ?
+				<View style={styles.deleteAll}>
+					<Icon name={'trash'}
+					      size={24}
+					      type='font-awesome'
+					      color={!this.props.positions.fishmarks.length > 0 ? 'gray' : 'white'}
+					      disabled={this.props.positions.fishmarks.length <= 0}
+					      underlayColor={'#E3E3E3'}
+					      onPress={()=> Alert.alert(
+						      'Delete Waypoints',
+						      'Do you want to delete all your waypoints ?',
+						      [
+							      { text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel' },
+							      { text: 'Delete', onPress: () => this.props.dispatch(deleteAllUserFishmarks()) },
+
+						      ],
+						      { cancelable: true }
+					      )}
+					/>
+				</View> : null}
 		</View>);
 	}
 }
@@ -138,6 +157,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: 'whitesmoke'
+	},
+
+	deleteAll: {
+		flex:0.1,
+		justifyContent:'center',
+		alignItems: 'center',
+		backgroundColor: '#E3E3E3'
 	},
 
 	waypoints: {

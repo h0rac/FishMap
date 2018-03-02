@@ -3,141 +3,134 @@ import MainScreen from '../src/screens/MainScreen';
 import ProfileScreen from '../src/screens/ProfileScreen';
 import SettingScreen from '../src/screens/SettingScreen';
 import WayPointScreen from '../src/screens/WayPointScreen';
-import SharingScreen from '../src/screens/SharingScreen'
-import MarkerScreen from '../src/screens/MarkerScreen';
+import SharingScreen from '../src/screens/SharingScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import WayPointEditScreen from '../src/screens/WayPointEditScreen';
 import LoginScreen from '../src/screens/LoginScreen';
 import CreateAccountScreen from '../src/screens/CreateAccountScreen';
-import { Badge } from 'react-native-elements';
-import SideMenu from '../src/components/SideMenu'
+import SideMenu from '../src/components/SideMenu';
 import { LanguageScreen } from './screens/LanguageScreen';
 
 const indicatorStyle = (props, alignSelf) => ({
-	borderBottomWidth: 3,
-	borderBottomColor: 'yellow',
-	alignSelf: 'flex-end'
+  borderBottomWidth: 3,
+  borderBottomColor: 'yellow',
+  alignSelf: 'flex-end',
 });
 
 const mainStack = TabNavigator({
 
-	MainScreen: {
-		screen: MainScreen
+MainScreen: {
+	screen: MainScreen,
 
-	},
+},
 
-	WayPointScreen: {
-		screen: WayPointScreen
+WayPointScreen: {
+	screen: WayPointScreen,
 
-	},
+},
 
-	SharingScreen: {
-		screen: SharingScreen,
-	},
+SharingScreen: {
+	screen: SharingScreen,
+},
 }, {
-	tabBarComponent: (props) => <TabBarTop {...props} indicatorStyle={indicatorStyle(props, 'flex-end')}/>,
-	tabBarPosition: 'bottom',
-	tabBarOptions: {
-		showIcon: true
-	}
+tabBarComponent: props => <TabBarTop {...props} indicatorStyle={indicatorStyle(props, 'flex-end')} />,
+tabBarPosition: 'bottom',
+tabBarOptions: {
+	showIcon: true,
+},
 });
 
 
 const NavigatorStack = StackNavigator({
 
-	LoginScreen: {
-		screen: LoginScreen
+LoginScreen: {
+  screen: LoginScreen,
 
-	},
-	CreateAccountScreen: {
-		screen: CreateAccountScreen
+},
+CreateAccountScreen: {
+  screen: CreateAccountScreen,
 
-	},
-	LanguageScreen: {
-		screen: LanguageScreen
+},
+LanguageScreen: {
+  screen: LanguageScreen,
 
-	},
-	SharingScreen: {
-		screen:SharingScreen
-	},
+},
+SharingScreen: {
+  screen: SharingScreen,
+},
 
-
-	mainStack: {
-		screen: mainStack
-	},
-
+mainStack: {
+  screen: mainStack,
+},
 
 
-	WayPointEditScreen: { screen: WayPointEditScreen },
+WayPointEditScreen: { screen: WayPointEditScreen },
 
-	ProfileScreen: {
-		screen: ProfileScreen,
-		navigationOptions: ({ navigation }) => ({
-			headerStyle: {
-				backgroundColor: '#2F95D6'
-			},
-			drawerLabel: 'Profile',
-			headerTintColor: 'white',
-			headerLeft: <Icon
-				name="md-close"
-				size={28}
-				color={'white'}
-				style={{ paddingLeft: 20 }}
-				onPress={() => navigation.navigate('DrawerOpen')}
-			/>
+ProfileScreen: {
+	screen: ProfileScreen,
+	navigationOptions: ({ navigation }) => ({
+		headerStyle: {
+			backgroundColor: '#2F95D6',
+		},
+		drawerLabel: 'Profile',
+		headerTintColor: 'white',
+		headerLeft: <Icon
+name="md-close"
+size={28}
+color="white"
+style={{ paddingLeft: 10 }}
+onPress={() => navigation.navigate('DrawerOpen')}
+		/>,
 
-		})
-	},
-	SettingScreen: {
-		screen: SettingScreen,
-		navigationOptions: ({ navigation }) => ({
-			headerStyle: {
-				backgroundColor: '#2F95D6'
-			},
-			drawerLabel: 'Settings',
-			headerTintColor: 'white',
-			headerLeft: <Icon
-				name="md-close"
-				size={28}
-				color={'white'}
-				style={{ paddingLeft: 20 }}
-				onPress={() => navigation.navigate('DrawerOpen')}
-			/>
-		})
-	}
+	}),
+},
+SettingScreen: {
+	screen: SettingScreen,
+	navigationOptions: ({ navigation }) => ({
+		headerStyle: {
+			backgroundColor: '#2F95D6',
+		},
+		drawerLabel: 'Settings',
+		headerTintColor: 'white',
+		headerLeft: <Icon
+name="md-close"
+size={28}
+color="white"
+style={{ paddingLeft: 10 }}
+onPress={() => navigation.navigate('DrawerOpen')}
+		/>,
+	}),
+},
 
 
-}, {
-
-});
-
+}, {});
 
 
 const DrawerStack = DrawerNavigator({
 
-	NavigatorStack: {
-		screen: NavigatorStack,
-		navigationOptions: ({ navigation }) => ({
-			drawerLabel: 'Home',
+NavigatorStack: {
+	screen: NavigatorStack,
+	navigationOptions: ({ navigation }) => ({
+		drawerLabel: 'Home',
 
-		})
-	},
-	ProfileStack: {
-		screen: ProfileScreen,
-		navigationOptions: ({ navigation }) => ({
-			headerTintColor: '#2F95D6',
-			drawerIcon: <Icon
-				name="md-person"
-				size={20}
-				color={'#2F95D6'}
-			/>
-		})
-	},
+	}),
+},
+ProfileStack: {
+	screen: ProfileScreen,
+	navigationOptions: ({ navigation }) => ({
+		headerTintColor: '#2F95D6',
+		drawerIcon: <Icon
+name="md-person"
+size={20}
+color="#2F95D6"
+		/>,
+	}),
+},
 
 }, {
-	contentComponent: SideMenu,
-	drawerWidth: 300
+contentComponent: SideMenu,
+drawerWidth: 300,
 });
 
 export default DrawerStack;

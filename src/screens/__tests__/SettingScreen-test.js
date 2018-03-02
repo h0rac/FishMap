@@ -104,9 +104,9 @@ describe('Testing Main screen', () => {
 		const touchables = SettingScreenCompononent.find('TouchableOpacity');
 		touchables.forEach(item => {
 			if (item.getElement().key === 'language') {
-				item.simulate('Press')
+				item.simulate('Press');
 			}
 		});
-	})
+	});
 
 });

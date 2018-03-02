@@ -3,19 +3,14 @@ import {
 	View,
 	Text,
 	TouchableHighlight,
-	StyleSheet,
 	Image,
 	Platform,
 	TextInput,
 	Keyboard,
 	Dimensions,
-	Alert
 } from 'react-native';
-import PropTypes from 'prop-types';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { setUserData, login, checkAuthToken, setIOSocket } from '../actions/user';
+import {login, checkAuthToken} from '../actions/user';
 import { connect } from 'react-redux';
-import { displayAlert } from '../common/utils';
 
 import { Button } from 'react-native-elements';
 
@@ -107,7 +102,6 @@ class LoginScreen extends React.Component {
 		this.props.navigation.navigate('CreateAccountScreen');
 	};
 
-
 	render() {
 
 		let mode = this.checkScreenOrientation();
@@ -116,7 +110,7 @@ class LoginScreen extends React.Component {
 
 		return (
 			<View style={styles.mainContainer}>
-				{mode && mode === 'portrait' && !this.state.keyboardShow ?
+				{mode !=='landscape' && !this.state.keyboardShow ?
 					<View style={[styles.boxContainer, styles.boxImage]}>
 						<Image source={require('../assets/fishmap-lightsky.png')}/>
 					</View>
@@ -159,9 +153,6 @@ class LoginScreen extends React.Component {
 				</View>
 				<View style={[styles.boxContainer, styles.signUpBox]}>
 					<Button
-
-
-						asd
 						rounded={true}
 						icon={{name:"user-o", type:'font-awesome'}}
 						backgroundColor="green"
@@ -210,8 +201,8 @@ const styles = {
 		backgroundColor: 'white',
 		paddingBottom: 40,
 		paddingTop: 32,
-		paddingLeft: 20,
-		paddingRight: 20
+		paddingLeft: 10,
+		paddingRight: 10
 
 
 	},
@@ -220,8 +211,8 @@ const styles = {
 		flexDirection: 'column',
 		backgroundColor: 'white',
 		justifyContent: 'space-around',
-		paddingLeft: 20,
-		paddingRight: 20
+		paddingLeft: 10,
+		paddingRight: 10
 
 	},
 
@@ -230,8 +221,8 @@ const styles = {
 		//backgroundColor:"red",
 		justifyContent: 'space-around',
 		backgroundColor: 'white',
-		paddingLeft: 20,
-		paddingRight: 20
+		paddingLeft: 10,
+		paddingRight: 10
 	},
 
 	button: {

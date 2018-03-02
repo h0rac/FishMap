@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 import {
-	StyleSheet,
-	Text, Alert,
+	Text,
 	View,
-	Image, TouchableHighlight, TouchableOpacity
+	Image
 } from 'react-native';
-
-import IconBtn from 'react-native-vector-icons/FontAwesome';
-import FlipCard from 'react-native-flip-card-view';
-import { deleteFishmarkPosition, shareWaypointChecked, uncheckWaypointShared } from '../actions/fishmarks';
+import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
 import { Icon, Button } from 'react-native-elements';
-import CheckBox from 'react-native-check-box';
 import Swipeout from 'react-native-swipeout';
 import {
 	Menu,
-	MenuProvider,
 	MenuOptions,
 	MenuOption,
 	MenuTrigger
@@ -82,9 +76,9 @@ class Waypoint extends Component {
 
 		const leftButtons = [
 			{
-				backgroundColor: !this.props.shared ? '#2F95D6': !this.props.item.checked ? '#2F95D6' : '#23B523' ,
+				backgroundColor: !this.props.shared ? '#2F95D6' : !this.props.item.checked ? '#2F95D6' : '#23B523',
 				onPress: !this.props.shared ? () => this.setState({ opened: true }) : () => this.props.callbackHandleCheck(this.props.item.checked, this.props.item),
-				underlayColor:  !this.props.shared ? '#2684C1' : '#23B523',
+				underlayColor: !this.props.shared ? '#2684C1' : '#23B523',
 				component:
 					<View style={styles.iconLeft}>
 						{!this.props.shared ?
@@ -96,7 +90,7 @@ class Waypoint extends Component {
 										disabled={true}
 										source={require('../assets/dots-horizontal.png')}
 									/>
-									<Text style={{color:'white'}}>More</Text>
+									<Text style={{ color: 'white' }}>More</Text>
 								</MenuTrigger>
 								<MenuOptions>
 									<MenuOption
@@ -120,12 +114,12 @@ class Waypoint extends Component {
 							</Menu>
 							:
 							<View>
-							<Image
-								style={{ width: 26, height: 26 }}
-								disabled={this.props.item.checked}
-								source={!this.props.item.checked ? require('../assets/radiobox-blank.png') : require('../assets/radiobox-marked.png')}
-								onPress={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}/>
-								<Text style={{color:'white'}}>Save</Text>
+								<Image
+									style={{ width: 26, height: 26 }}
+									disabled={this.props.item.checked}
+									source={!this.props.item.checked ? require('../assets/radiobox-blank.png') : require('../assets/radiobox-marked.png')}
+									onPress={() => this.props.callbackHandleCheck(this.props.item.checked, this.props.item)}/>
+								<Text style={{ color: 'white' }}>Save</Text>
 							</View>
 
 						}
@@ -134,35 +128,35 @@ class Waypoint extends Component {
 		];
 		const rightButtons = [
 			{
-				backgroundColor: !this.props.shared ? '#23B523' : '#e61b1b',
-				underlayColor: !this.props.shared ? '#1F9F1F' : '#e61b1b',
+				backgroundColor: !this.props.shared ? '#23B523' : '#E83535',
+				underlayColor: !this.props.shared ? '#1F9F1F' : '#E83535',
 				onPress: () => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null,
 				component:
 					<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 						{!this.props.shared ?
 							<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-							<Image
-								style={{ width: 26, height: 26 }}
-								disabled={true}
-								source={require('../assets/arrow-right-bold-circle.png')}
-								onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}/>
-								<Text style={{color:'white'}}>Move to</Text>
+								<Image
+									style={{ width: 26, height: 26 }}
+									disabled={true}
+									source={require('../assets/arrow-right-bold-circle.png')}
+									onPress={() => !this.props.shared ? this.moveToFishWaypoint('MainScreen') : null}/>
+								<Text style={{ color: 'white' }}>Move to</Text>
 							</View>
 							:
 							<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-							<Image
-								style={{ width: 26, height: 26 }}
-								disabled={true}
-								source={require('../assets/delete.png')}
-								onPress={() => console.log("cancel press")}/>
-							<Text style={{color:'white'}}>Delete</Text>
+								<Image
+									style={{ width: 26, height: 26 }}
+									disabled={true}
+									source={require('../assets/delete.png')}
+									onPress={() => console.log('cancel press')}/>
+								<Text style={{ color: 'white' }}>Delete</Text>
 							</View>
 						}
 					</View>
 			}
 		];
 
-		const splitDate = this.props.item.date.split(' ')
+		const splitDate = this.props.item.date.split(' ');
 
 		return (
 			<Swipeout left={leftButtons} right={rightButtons} backgroundColor={'whitesmoke'} buttonWidth={60}>
@@ -220,7 +214,7 @@ const styles = {
 		borderColor: '#f1f1f1',
 		borderBottomWidth: 1,
 		flexDirection: 'row',
-		justifyContent:'space-between',
+		justifyContent: 'space-between',
 		backgroundColor: 'mintcream',
 		height: 80
 
@@ -243,7 +237,7 @@ const styles = {
 	nameTitle: {
 		flex: 1,
 		alignItems: 'flex-start',
-		paddingLeft: 20,
+		paddingLeft: 10,
 		justifyContent: 'center'
 	},
 	name: {
@@ -256,39 +250,39 @@ const styles = {
 	coords: {
 		flex: 1,
 		alignItems: 'center',
-		paddingRight:20,
-		justifyContent:'center'
+		paddingRight: 10,
+		justifyContent: 'center'
 	},
 
 	date: {
 		flex: 0.5,
 		alignItems: 'flex-end',
-		paddingRight:20,
-		justifyContent:'center'
+		paddingRight: 10,
+		justifyContent: 'center'
 
 	},
 
 	rightIcon: {
 		justifyContent: 'center',
-		flex:1,
-		flexDirection:'row',
-		alignItems: 'center',
+		flex: 1,
+		flexDirection: 'row',
+		alignItems: 'center'
 	},
 	latitude: {
-		fontSize: 11,
+		fontSize: 11
 	},
 	longitude: {
 		fontSize: 11,
-		marginTop: 2,
+		marginTop: 2
 	},
 
 	year: {
 		fontSize: 11,
-		marginRight:12
+		marginRight: 12
 	},
 	month: {
 		fontSize: 11,
-		marginTop: 2,
+		marginTop: 2
 	}
 
 };
