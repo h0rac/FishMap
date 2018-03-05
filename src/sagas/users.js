@@ -25,11 +25,11 @@ import SocketIOClient from 'socket.io-client';
 export const selectSocket = state => state.user.socketIO;
 
 
-export const authenticateUser = params => fetch(`http://${API_ENDPOINT}/api/v1/login`, params);
-export const createConfirmationToken = params => fetch(`http://${API_ENDPOINT}/api/v1/create`, params);
-export const resendVerifyEmail = params => fetch(`http://${API_ENDPOINT}/api/v1/resend`, params);
+export const authenticateUser = params => fetch(`http://${API_ENDPOINT}/v1/api/login`, params);
+export const createConfirmationToken = params => fetch(`http://${API_ENDPOINT}/v1/api/create`, params);
+export const resendVerifyEmail = params => fetch(`http://${API_ENDPOINT}/v1/api/resend`, params);
 
-export const checkTokenLife = params => fetch(`http://${API_ENDPOINT}/api/v1/verify`, params);
+export const checkTokenLife = params => fetch(`http://${API_ENDPOINT}/v1/api/verify`, params);
 
 
 export const getPosition = (options) => {
@@ -202,13 +202,11 @@ export function* verifyToken(action) {
 	const myHeaders = new Headers();
 
 	myHeaders.append('Content-Type', 'application/json');
+  myHeaders.append('x-api-key', JSON.parse(decodeURI(token)))
 
 	let params = {
-		method: 'POST',
+		method: 'GET',
 		headers: myHeaders,
-		body: JSON.stringify({
-			token: token ? JSON.parse(decodeURI(token)) : null
-		})
 	};
 	let response;
 	if (token !== null) {

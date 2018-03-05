@@ -33,8 +33,9 @@ class SaveSharedWaypoint extends Component {
 	};
 
 	render() {
+    console.log("Shared marks", this.props.selectedSharedFishmarks)
 		return (
-			this.props.sharedFishmarks.length > 0 && this.displaySaveIcon() ?
+			this.props.selectedSharedFishmarks && this.props.selectedSharedFishmarks.length > 0 && this.displaySaveIcon() ?
 
 				<Icon name="save"
 				      size={26}
@@ -47,6 +48,7 @@ class SaveSharedWaypoint extends Component {
 }
 
 const mapStateToProps = state => {
+  console.log("STatE", state)
 	return {
 		displaySave: state.fishmarks.displaySave,
 		selectedSharedFishmarks: state.fishmarks.selectedSharedFishmarks,

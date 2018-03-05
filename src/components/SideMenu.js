@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { NavigationActions } from 'react-navigation';
-import { ScrollView, Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, Text, View, TouchableOpacity } from 'react-native';
 import { Avatar, Divider } from 'react-native-elements';
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -22,7 +22,6 @@ constructor() {
 		routes: []
 	};
 }
-
 
 navigateToScreen = (route) => () => {
 
@@ -64,7 +63,6 @@ renderItems() {
 }
 
 render() {
-	const date = this.state.date;
 	return (
 		<View style={styles.container}>
 			<ScrollView>
@@ -73,7 +71,6 @@ render() {
 						large
 						rounded
 						source={{ uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg' }}
-						onPress={() => console.log('Works!')}
 						activeOpacity={0.7}
 					/>
 				</View>
@@ -92,7 +89,7 @@ SideMenu.propTypes = {
 navigation: PropTypes.object
 };
 
-styles = {
+const styles = {
 container: {
 	paddingTop: 20,
 	flex: 1,

@@ -40,15 +40,13 @@ import { LOAD_FISHMARKS_POSITIONS } from '../constants/constants';
 import { takeEvery, select, put, call, all } from 'redux-saga/effects';
 import { displayAlert, getToken, removeDuplicates } from '../common/utils';
 
-const fetchFishmarks = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoints', params);
-const saveFishmark = params => fetch('http://' + API_ENDPOINT + '/api/v1/waypoint', params);
-const delAllFishmarks = params => fetch(`http://${API_ENDPOINT}/api/v1/waypoints`, params);
-const delFishmark = (latitude, longitude, params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`, params);
-const fetchFishmark = (latitude, longitude, params) => fetch(`http://${API_ENDPOINT}/api/v1/waypoint?latitude=${latitude}&longitude=${longitude}`, params);
-
-
-const shareWaypointToUser = (params) => fetch(`http://${API_ENDPOINT}/api/v1/share/waypoint`, params);
-const saveFishmarks = params => fetch(`http://${API_ENDPOINT}/api/v1/save/waypoints`, params);
+const fetchFishmarks = params => fetch(`http://${API_ENDPOINT}/v1/api/waypoints`, params);
+const saveFishmark = params => fetch(`http://${API_ENDPOINT}/v1/api/waypoint`, params);
+const delAllFishmarks = params => fetch(`http://${API_ENDPOINT}/v1/api/waypoints`, params);
+const delFishmark = (params) => fetch(`http://${API_ENDPOINT}/v1/api/waypoint`, params);
+const fetchFishmark = (key, params) => fetch(`http://${API_ENDPOINT}/v1/api/waypoint?key=${key}`, params);
+const shareWaypointToUser = (params) => fetch(`http://${API_ENDPOINT}/v1/api/share/waypoints`, params);
+const saveFishmarks = params => fetch(`http://${API_ENDPOINT}/v1/api/waypoints`, params);
 
 let temp = [];
 
@@ -59,7 +57,7 @@ function* fetchFishPositions() {
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
-		myHeaders.append('authorization', JSON.parse(decodeURI(token)));
+		myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
 		let params = {
 			method: 'GET',
@@ -69,8 +67,6 @@ function* fetchFishPositions() {
 		yield put({ type: LOAD_FISHMARKS_POSITIONS_PENDING, isFetching: true });
 		const response = yield call(fetchFishmarks, params);
 		const result = yield response.json();
-
-
 		if (result.error) {
 			yield put({ type: FAILED_LOAD_FISHMARKS_POSITIONS, error: result.error });
 			displayAlert('Fishmark Upload', result.error);
@@ -80,7 +76,7 @@ function* fetchFishPositions() {
 				yield put({ type: SUCCESS_LOAD_FISHMARKS_POSITIONS, fetchedFishmarks, isFetching: false });
 			} else {
 				yield put({ type: FAILED_LOAD_FISHMARKS_POSITIONS, error: result.error, isFetching: false });
-				displayAlert('Fishmark Upload', 'Failed to upload fishmarks');
+				displayAlert('Fishmark Upload', 'Failed to load fishmarks');
 			}
 		}
 
@@ -96,16 +92,14 @@ function* setFishmarkPosition(action) {
 		const myHeaders = new Headers();
 		const token = yield call(getToken, 'token');
 
+    console.log("TOKEN", token)
 		myHeaders.append('Content-Type', 'application/json');
 		myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
 		let params = {
 			method: 'POST',
 			headers: myHeaders,
-			body: JSON.stringify({
-				token: JSON.parse(decodeURI(token)),
-				waypoint: action.data
-			})
+			body: JSON.stringify(action.data)
 		};
 
 		yield put({ type: SET_FISHMARK_POSITION_PENDING, isFetching: true });
@@ -123,7 +117,7 @@ function* setFishmarkPosition(action) {
 					method: 'GET',
 					headers: myHeaders
 				};
-				const fetchResponse = yield call(fetchFishmark, action.data.latitude, action.data.longitude, fetchParams);
+				const fetchResponse = yield call(fetchFishmark, action.data.key, fetchParams);
 				const fetchResult = yield fetchResponse.json();
 
 				if (fetchResult.success === false) {
@@ -152,18 +146,16 @@ export function* delFishmarkPosition(action) {
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
 		let params = {
 			method: 'DELETE',
 			headers: myHeaders,
-			body: JSON.stringify({
-				token: JSON.parse(decodeURI(token)),
-				waypoint: action.position
-			})
+			body: JSON.stringify(action.position)
 		};
 
 		yield put({ type: DELETE_FISHMARK_POSITION_PENDING, isFetching: true });
-		const response = yield call(delFishmark, action.position.latitude, action.position.longitude, params);
+		const response = yield call(delFishmark, params);
 		const result = yield response.json();
 
 		if (result.success === false) {
@@ -240,20 +232,18 @@ function* shareWaypoint(action) {
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
 		let params = {
 			method: 'POST',
 			headers: myHeaders,
 			body: JSON.stringify({
-				token: JSON.parse(decodeURI(token)),
 				waypoints: action.data,
 				email: action.email
 			})
 		};
-
 		const response = yield call(shareWaypointToUser, params);
 		const result = yield response.json();
-
 
 		if (result && result.success === false) {
 			yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
@@ -317,26 +307,26 @@ function* saveSharedWaypoints(action) {
 		});
 
 		const allWaypoints = yield  select(state => state.fishmarks.fishmarks);
-		const sharedWaypoints = yield select(state => state.fishmarks.sharedFishmarks);
+		let sharedWaypoints = yield select(state => state.fishmarks.sharedFishmarks);
 
 
 		temp.forEach(waypoint => {
 			sharedWaypoints = sharedWaypoints.filter(item => item.key !== waypoint.key);
 		});
 
+    console.log("sharedWaypoints", sharedWaypoints)
 		const updatedWaypoints = removeDuplicates(allWaypoints.concat(temp), 'key');
-
 
 		const myHeaders = new Headers();
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
 		let params = {
 			method: 'POST',
 			headers: myHeaders,
 			body: JSON.stringify({
-				token: JSON.parse(decodeURI(token)),
 				waypoints: updatedWaypoints
 			})
 		};
@@ -366,13 +356,11 @@ function* deleteAllUserFishmarks(action) {
 		const token = yield call(getToken, 'token');
 
 		myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
 		let params = {
 			method: 'DELETE',
 			headers: myHeaders,
-			body: JSON.stringify({
-				token: JSON.parse(decodeURI(token)),
-			})
 		};
 
 		yield put({ type: DELETE_ALL_FISHMARKS_PENDING, isFetching: true });
