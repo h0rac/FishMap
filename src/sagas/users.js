@@ -14,7 +14,12 @@ import {
 	FAILED_CREATE_ACCOUNT,
 	RESEND_VERIFICATION_EMAIL,
 	FAILED_RESEND_VERIFICATION_EMAIL,
-	CLEAR_DATA
+	CLEAR_DATA,
+  LOGIN,
+  CREATE_ACCOUNT,
+  VERIFY_TOKEN,
+  CHANGE_DURATION,
+  LOGOUT
 
 } from '../constants/constants';
 import { call, put, takeEvery, select } from 'redux-saga/effects';
@@ -51,15 +56,12 @@ export function* getUserPosition() {
 	try {
 		//TODO enableHighAccuracy false in indoor, set to true when outdoor, false only for tests
 		const userLocation = yield call(getPosition, { enableHighAccuracy: false, timeout: 20000, maximumAge: 1000 });
-
 		const userPosition = {
 			latitude: userLocation.coords.latitude,
 			longitude: userLocation.coords.longitude,
 			latitudeDelta: LATITUDE_DETLTA,
 			longitudeDelta: LONGITUDE_DELTA
 		};
-
-
 		if (userLocation) {
 			yield put({ type: SUCCESS_GET_USER_LOCATION, position: userPosition, isFetching:false });
 		} else {
@@ -70,16 +72,13 @@ export function* getUserPosition() {
 	}
 }
 
-
-export function* logoutUser(action) {
+export function* logoutUser() {
 	try {
-
 		yield call(removeToken, 'token');
 		const test = yield call(getToken, 'token');
 		if (!test) {
 			yield put({ type: SUCCESS_REMOVE_TOKEN, message: 'Token removed' });
 			yield put({type:CLEAR_DATA, message: 'cleared'})
-
 		}
 	} catch (e) {
 		yield put({ type: FAILED_REMOVE_TOKEN, message: e.error });
@@ -90,9 +89,7 @@ export function* createUserAccount(action) {
 
 	try {
 		const myHeaders = new Headers();
-
 		myHeaders.append('Content-Type', 'application/json');
-
 		let params = {
 			method: 'POST',
 			headers: myHeaders,
@@ -103,7 +100,6 @@ export function* createUserAccount(action) {
 		};
 		const response = yield call(createConfirmationToken, params);
 		const result = yield response.json();
-
 
 		if (result.success === false) {
 			yield put({ type: FAILED_CREATE_ACCOUNT, error: result.message });
@@ -125,7 +121,6 @@ export function * resendVerificationEmail(action) {
 		const myHeaders = new Headers();
 
 		myHeaders.append('Content-Type', 'application/json');
-
 		let params = {
 			method: 'POST',
 			headers: myHeaders,
@@ -135,7 +130,6 @@ export function * resendVerificationEmail(action) {
 		};
 		const response = yield call(resendVerifyEmail, params);
 		const result = yield response.json();
-
 
 		if (result.success === false) {
 			yield put({ type: FAILED_RESEND_VERIFICATION_EMAIL, error: result.message });
@@ -168,7 +162,6 @@ function* loginUser(action) {
 		};
 		const response = yield call(authenticateUser, params);
 		const result = yield response.json();
-
 
 		if (result.success === false) {
 			yield put({ type: FAILED_SET_TOKEN, error: result.message });
@@ -217,8 +210,6 @@ export function* verifyToken(action) {
 		}
 	}
 	const result = yield response ? response.json() : null;
-
-
 	let socket = null;
 	if (result && result.success) {
 		if (!socketIO) {
@@ -232,7 +223,6 @@ export function* verifyToken(action) {
 		}
 		if (action.screen !== 'LoginScreen') {
 			action.navigate.navigate('LoginScreen');
-
 		}
 	}
 }
@@ -259,12 +249,12 @@ export function* changeDurationInterval(action) {
 }
 
 export const usersSaga = [
-	takeEvery('GET_USER_LOCATION', getUserPosition),
-	takeEvery('LOGIN', loginUser),
-	takeEvery('CREATE_ACCOUNT', createUserAccount),
-	takeEvery('RESEND_VERIFICATION_EMAIL', resendVerificationEmail),
-	takeEvery('VERIFY_TOKEN', verifyToken),
-	takeEvery('LOGOUT', logoutUser),
-	takeEvery('EMIT_WAYPOINT_RECEIVE', emitWaypointReceiver),
-	takeEvery('CHANGE_DURATION', changeDurationInterval)
+	takeEvery(GET_USER_LOCATION, getUserPosition),
+	takeEvery(LOGIN, loginUser),
+	takeEvery(CREATE_ACCOUNT, createUserAccount),
+	takeEvery(RESEND_VERIFICATION_EMAIL, resendVerificationEmail),
+	takeEvery(VERIFY_TOKEN, verifyToken),
+	takeEvery(LOGOUT, logoutUser),
+	takeEvery(EMIT_WAYPOINT_RECEIVE, emitWaypointReceiver),
+	takeEvery(CHANGE_DURATION, changeDurationInterval)
 ];

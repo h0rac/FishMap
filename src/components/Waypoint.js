@@ -3,22 +3,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-Text,
-View,
-Image
+  Text,
+  View,
+  Image
 } from 'react-native';
 import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import {
-Menu,
-MenuOptions,
-MenuOption,
-MenuTrigger
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger
 
 } from 'react-native-popup-menu';
-
 
 class Waypoint extends Component {
 
@@ -34,7 +33,6 @@ constructor() {
 	};
 
 }
-
 
 moveToFishWaypoint = (screen) => {
 	const region = {
@@ -73,7 +71,6 @@ handleEdit = () => {
 	this.setState({ opened: false });
 	this.props.navigation.navigate('WayPointEditScreen');
 };
-
 
 render() {
 
@@ -176,10 +173,8 @@ render() {
 				</View>
 			</View>
 		</Swipeout>
-	);
+	)}
 }
-}
-
 
 const styles = {
 
@@ -306,4 +301,5 @@ Waypoint.propTypes = {
   shareWaypointCallback: PropTypes.func,
   callbackHandleCheck: PropTypes.func,
   myFishmarkWaypoints: PropTypes.array,
+  dispatch: PropTypes.func
 }

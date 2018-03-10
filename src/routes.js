@@ -22,12 +22,10 @@ const mainStack = TabNavigator({
 
 MainScreen: {
 	screen: MainScreen,
-
 },
 
 WayPointScreen: {
 	screen: WayPointScreen,
-
 },
 
 SharingScreen: {
@@ -40,7 +38,6 @@ tabBarOptions: {
 	showIcon: true,
 },
 });
-
 
 const NavigatorStack = StackNavigator({
 
@@ -94,18 +91,15 @@ SettingScreen: {
 		drawerLabel: 'Settings',
 		headerTintColor: 'white',
 		headerLeft: <Icon
-name="md-close"
-size={28}
-color="white"
-style={{ paddingLeft: 10 }}
-onPress={() => navigation.navigate('DrawerOpen')}
-		/>,
+    name="md-close"
+    size={28}
+    color="white"
+    style={{ paddingLeft: 10 }}
+    onPress={() => navigation.navigate('DrawerOpen')}
+    />,
 	}),
 },
-
-
 }, {});
-
 
 const DrawerStack = DrawerNavigator({
 
@@ -121,9 +115,9 @@ ProfileStack: {
 	navigationOptions: ({ navigation }) => ({
 		headerTintColor: '#2F95D6',
 		drawerIcon: <Icon
-name="md-person"
-size={20}
-color="#2F95D6"
+    name="md-person"
+    size={20}
+    color="#2F95D6"
 		/>,
 	}),
 },

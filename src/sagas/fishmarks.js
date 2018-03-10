@@ -31,13 +31,13 @@ import {
 	DELETE_FISHMARK_POSITION_PENDING,
 	DELETE_ALL_FISHMARKS_PENDING,
 	DELETE_ALL_FISHMARKS_FAILED,
-	DELETE_ALL_FISHMARKS_SUCCESS
+	DELETE_ALL_FISHMARKS_SUCCESS,
+  DELETE_ALL_FISHMARKS,
+  LOAD_FISHMARKS_POSITIONS
 
 } from '../constants/constants';
 
-import { LOAD_FISHMARKS_POSITIONS } from '../constants/constants';
-
-import { takeEvery, select, put, call, all } from 'redux-saga/effects';
+import { takeEvery, select, put, call} from 'redux-saga/effects';
 import { displayAlert, getToken, removeDuplicates } from '../common/utils';
 
 const fetchFishmarks = params => fetch(`http://${API_ENDPOINT}/v1/api/waypoints`, params);
@@ -92,7 +92,6 @@ function* setFishmarkPosition(action) {
 		const myHeaders = new Headers();
 		const token = yield call(getToken, 'token');
 
-    console.log("TOKEN", token)
 		myHeaders.append('Content-Type', 'application/json');
 		myHeaders.append('x-api-key', JSON.parse(decodeURI(token)));
 
@@ -175,12 +174,12 @@ export function* delFishmarkPosition(action) {
 		}
 
 	} catch (e) {
-		yield put({ type: FAILED_DELETE_WAYPOINT, error: result.message, isFetching: false });
-		displayAlert('Waypoint', result.message);
+		yield put({ type: FAILED_DELETE_WAYPOINT, error: e.message, isFetching: false });
+		displayAlert('Waypoint', e.message);
 	}
 }
 
-function* loadWaypointsOnPush(action) {
+function* loadWaypointsOnPush() {
 
 	try {
 
@@ -257,7 +256,7 @@ function* shareWaypoint(action) {
 
 		}
 	} catch (e) {
-		yield put({ type: SHARE_WAYPOINT_FAILED, error: result.message });
+		yield put({ type: SHARE_WAYPOINT_FAILED, error: e.message });
 		const error = yield select(state => state.fishmarks.error);
 		if (error)
 			displayAlert('Waypoint', error);
@@ -305,18 +304,12 @@ function* saveSharedWaypoints(action) {
 			delete item.checked;
 			return item;
 		});
-
 		const allWaypoints = yield  select(state => state.fishmarks.fishmarks);
 		let sharedWaypoints = yield select(state => state.fishmarks.sharedFishmarks);
-
-
 		temp.forEach(waypoint => {
 			sharedWaypoints = sharedWaypoints.filter(item => item.key !== waypoint.key);
 		});
-
-    console.log("sharedWaypoints", sharedWaypoints)
 		const updatedWaypoints = removeDuplicates(allWaypoints.concat(temp), 'key');
-
 		const myHeaders = new Headers();
 		const token = yield call(getToken, 'token');
 
@@ -345,11 +338,11 @@ function* saveSharedWaypoints(action) {
 			yield put({ type: CHANGE_RECEIVE_STATUS, receive: true });
 		}
 	} catch (e) {
-		yield put({ type: UPDATE_WAYPOINT_ON_SAVE_FAILED, error: result.message });
+		yield put({ type: UPDATE_WAYPOINT_ON_SAVE_FAILED, error: e.message });
 	}
 }
 
-function* deleteAllUserFishmarks(action) {
+function* deleteAllUserFishmarks() {
 
 	try {
 		const myHeaders = new Headers();
@@ -368,7 +361,6 @@ function* deleteAllUserFishmarks(action) {
 		const result = yield response.json();
 
 		if (result.success === false) {
-			console.log("WE FAILED", result)
 			yield put({ type: DELETE_ALL_FISHMARKS_FAILED, error: result.message, isFetching: false });
 			displayAlert('Delete', result.message);
 		} else {
@@ -380,20 +372,20 @@ function* deleteAllUserFishmarks(action) {
 				displayAlert('Success Delete', result.message)
 		}
 	} catch (e) {
-		yield put({ type: DELETE_ALL_FISHMARKS_FAILED, error: result.message, isFetching: false });
-		displayAlert('Delete', result.message);
+		yield put({ type: DELETE_ALL_FISHMARKS_FAILED, error: e.message, isFetching: false });
+		displayAlert('Delete', e.message);
 	}
 }
 
 export const fishmarkSaga = [
 
-	takeEvery('SET_FISHMARK_POSITION', setFishmarkPosition),
-	takeEvery('LOAD_FISHMARKS_POSITIONS', fetchFishPositions),
-	takeEvery('LOAD_WAYPOINTS_ON_PUSH', loadWaypointsOnPush),
-	takeEvery('DELETE_FISHMARK_POSITION', delFishmarkPosition),
-	takeEvery('IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST', IOCreateCandidateFishmarksList),
-	takeEvery('SHARE_WAYPOINT_TO_PEER', shareWaypoint),
-	takeEvery('SHARE_WAYPOINT_CHECKED', shareWaypointChecked),
-	takeEvery('SAVE_SHARED_WAYPOINTS', saveSharedWaypoints),
-	takeEvery('DELETE_ALL_FISHMARKS', deleteAllUserFishmarks)
+	takeEvery(SET_FISHMARK_POSITION, setFishmarkPosition),
+	takeEvery(LOAD_FISHMARKS_POSITIONS, fetchFishPositions),
+	takeEvery(LOAD_WAYPOINTS_ON_PUSH, loadWaypointsOnPush),
+	takeEvery(DELETE_FISHMARK_POSITION, delFishmarkPosition),
+	takeEvery(IOSOCKET_CREATE_CANDIDATE_FISHMARKS_LIST, IOCreateCandidateFishmarksList),
+	takeEvery(SHARE_WAYPOINT_TO_PEER, shareWaypoint),
+	takeEvery(SHARE_WAYPOINT_CHECKED, shareWaypointChecked),
+	takeEvery(SAVE_SHARED_WAYPOINTS, saveSharedWaypoints),
+	takeEvery(DELETE_ALL_FISHMARKS, deleteAllUserFishmarks)
 ];

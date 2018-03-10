@@ -12,10 +12,10 @@ export const SUCCESS_SET_FISHMARK_POSITION = 'SUCCESS_SET_FISHMARK_POSITION';
 export const LOAD_FISHMARKS_POSITIONS = 'LOAD_FISHMARKS_POSITIONS';
 
 
-export const OAUTH_URL = 'http://fishmap.test.pl:3000/auth/google';
-//export const OAUTH_URL = "https://yqxcjoicsc.localtunnel.me/auth/google"
+
 //export const API_ENDPOINT = "192.168.0.115:3999" // Local DEV
-export const API_ENDPOINT = '31.186.87.151:3999';
+//export const API_ENDPOINT = '31.186.87.151:3999';
+export const API_ENDPOINT = '127.0.0.1:3999';
 export const SET_USER_DATA = 'SET_USER_DATA';
 
 export const CLEAR_DATA = 'CLEAR_DATA';
@@ -96,4 +96,3 @@ export const SET_IO_SOCKET = 'SET_IO_SOCKET';
 export const SET_INTERVAL_ALIVE = 'SET_INTERVAL_ALIVE';
 
 export const SET_MAP_FOR_ANIMATION = 'SET_MAP_FOR_ANIMATION';
-

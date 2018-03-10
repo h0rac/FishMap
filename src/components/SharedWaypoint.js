@@ -183,9 +183,10 @@ month: {
 
 };
 
-const mapStateToProps = state => {
-  return {}
+SharedWaypoint.propTypes = {
+  dispatch: PropTypes.func,
+  item: PropTypes.object,
+
 }
 
-
-export default connect(mapStateToProps)(SharedWaypoint);
+export default connect()(SharedWaypoint);
