@@ -1,197 +1,191 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Divider } from 'react-native-elements';
 import {
-	StyleSheet,
-	Text,
-	View,
-	TouchableOpacity,
-	Switch,
-	AsyncStorage
+StyleSheet,
+Text,
+View,
+TouchableOpacity,
+Switch,
+AsyncStorage
 } from 'react-native';
 
 import IconAwesome from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import {
-	emitWaypointReceive,
-	setIntervalID
+emitWaypointReceive,
+setIntervalID
 } from '../actions/user';
-
 
 class SettingScreen extends Component {
 
+constructor() {
+super();
+this.state = {
+	interval: 5000,
+	intervalId: null,
+	emitStatus: false,
+	durationSet: false,
+	color: 'mintcream',
+	pickerValue: 0
+};
+this.setEmit = this.setEmit.bind(this);
+}
 
-	constructor() {
-		super();
+static navigationOptions = ({ navigation }) => {
 
-		this.setEmit = this.setEmit.bind(this);
+const { params = {} } = navigation.state;
 
-		this.state = {
-			interval: 5000,
-			intervalId: null,
-			emitStatus: false,
-			durationSet: false,
-			color: 'mintcream',
-			pickerValue: 0
-		};
-	}
+return {
+	headerStyle: {
+		backgroundColor: '#2F95D6'
+	},
+	title: 'Settings',
+	headerTintColor: 'white'
+  };
+};
 
-	static navigationOptions = ({ navigation }) => {
+static propTypes = {
+  navigation: PropTypes.object
+};
 
-		const { params = {} } = navigation.state;
-
-		return {
-			headerStyle: {
-				backgroundColor: '#2F95D6'
-			},
-			title: 'Settings',
-			headerTintColor: 'white'
-		};
-	};
-	static propTypes = {
-		navigation: PropTypes.object
-	};
-
-
-	setEmit() {
-		if (this.props.emitStatus) {
-			this.props.dispatch(emitWaypointReceive(false));
-			AsyncStorage.getItem('token').then(token => {
-				if (token) {
-					const intervalId = setInterval(() => this.props.socketIO.emit('onFishmarkUpdate', {
-						token: JSON.parse(decodeURI(token)),
-						receive: this.props.receive
-					}), this.props.duration);
-					this.props.dispatch(setIntervalID(intervalId));
-				}
-			});
+setEmit() {
+if (this.props.emitStatus) {
+	this.props.dispatch(emitWaypointReceive(false));
+	AsyncStorage.getItem('token').then(token => {
+		if (token) {
+			const intervalId = setInterval(() => this.props.socketIO.emit('onFishmarkUpdate', {
+				token: JSON.parse(decodeURI(token)),
+				receive: this.props.receive
+			}), this.props.duration);
+			this.props.dispatch(setIntervalID(intervalId));
 		}
-		else {
-			clearInterval(this.props.timeoutID);
-			this.props.dispatch(emitWaypointReceive(true));
+	});
+}
+else {
+	clearInterval(this.props.timeoutID);
+	this.props.dispatch(emitWaypointReceive(true));
 
-		}
-	}
+}
+}
 
+render() {
 
-	render() {
-
-		return (
-			<View style={styles.container}>
-				<View style={styles.section}>
-					<Text style={styles.sectionText}>GENERAL</Text>
-				</View>
-				<View style={styles.generalContainer}>
-					<View style={styles.generalText}>
-						<Text style={styles.enableText}>Enable waypoint updates</Text>
-					</View>
-					<View style={styles.enableSwitch}>
-						<Switch
-							key={'waypointSwitch'}
-							value={!this.props.emitStatus}
-							onValueChange={() => this.setEmit()}
-						/>
-					</View>
-				</View>
-				<TouchableOpacity key='language' style={styles.generalContainer}
-				                  onPress={() => this.props.navigation.navigate('LanguageScreen')}>
-
-					<View style={styles.generalText}>
-						<Text style={styles.enableText}>Language settings</Text>
-					</View>
-					<View style={styles.enableSwitch}>
-						<IconAwesome
-							name={'angle-right'}
-							size={28}
-							color={'gray'}
-						/>
-					</View>
-				</TouchableOpacity>
-			</View>
-		);
-	}
+  return (
+    <View style={styles.container}>
+    <View style={styles.section}>
+    <Text style={styles.sectionText}>GENERAL</Text>
+    </View>
+    <View style={styles.generalContainer}>
+      <View style={styles.generalText}>
+        <Text style={styles.enableText}>Enable waypoint updates</Text>
+      </View>
+    <View style={styles.enableSwitch}>
+    <Switch
+      key={'waypointSwitch'}
+      value={!this.props.emitStatus}
+      onValueChange={() => this.setEmit()}/>
+    </View>
+    </View>
+    <TouchableOpacity key='language' style={styles.generalContainer}
+        onPress={() => this.props.navigation.navigate('LanguageScreen')}>
+        <View style={styles.generalText}>
+          <Text style={styles.enableText}>Language settings</Text>
+        </View>
+        <View style={styles.enableSwitch}>
+        <IconAwesome
+          name={'angle-right'}
+          size={28}
+          color={'gray'}/>
+          </View>
+    </TouchableOpacity>
+    </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-	container: {
-		flex: 1,
-		backgroundColor: 'whitesmoke',
-		flexDirection: 'column'
-	},
+container: {
+  flex: 1,
+  backgroundColor: 'whitesmoke',
+  flexDirection: 'column'
+},
 
-	generalContainer: {
-		flex: 0.1,
-		flexDirection: 'row',
-		backgroundColor: 'mintcream',
-		alignItems: 'center',
-		height: 70,
-		marginBottom:2
-	},
+generalContainer: {
+  flex: 0.1,
+  flexDirection: 'row',
+  backgroundColor: 'mintcream',
+  alignItems: 'center',
+  height: 70,
+  marginBottom:2
+},
 
+itemContainer: {
+  flex: 0.1,
+  flexDirection: 'row',
+  backgroundColor: 'mintcream',
+  alignItems: 'center',
+  paddingBottom: 5,
+  paddingTop: 5
+},
 
-	itemContainer: {
-		flex: 0.1,
-		flexDirection: 'row',
-		backgroundColor: 'mintcream',
-		alignItems: 'center',
-		paddingBottom: 5,
-		paddingTop: 5
-	},
+section: {
+  backgroundColor: 'whitesmoke',
+  flex: 0.05,
+  paddingLeft: 10,
+  paddingTop: 30,
+  flexDirection: 'row',
+  alignItems: 'center'
+},
 
-	section: {
-		backgroundColor: 'whitesmoke',
-		flex: 0.05,
-		paddingLeft: 10,
-		paddingTop: 30,
-		flexDirection: 'row',
-		alignItems: 'center'
-	},
+enableSwitch: {
+  flex: 1,
+  flexDirection: 'row',
+  justifyContent: 'flex-end',
+  paddingRight: 10
+},
 
-	enableSwitch: {
-		flex: 1,
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		paddingRight: 10
+sectionText: {
+  color: 'gray'
+},
 
-	},
+generalText: {
+  flex: 3,
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+  paddingLeft: 10
+},
 
-	sectionText: {
-		color: 'gray'
+enableText: {
+  paddingTop: 5
+},
 
-	},
-
-	generalText: {
-		flex: 3,
-		flexDirection: 'row',
-		justifyContent: 'flex-start',
-		paddingLeft: 10
-	},
-
-	enableText: {
-		paddingTop: 5
-	},
-
-	title: {
-		backgroundColor: 'black',
-		color: '#fff',
-		fontSize: 18,
-		fontWeight: 'bold',
-		padding: 10,
-		textAlign: 'center'
-	}
+title: {
+  backgroundColor: 'black',
+  color: '#fff',
+  fontSize: 18,
+  fontWeight: 'bold',
+  padding: 10,
+  textAlign: 'center'
+  }
 });
 
 
 const mapStateToProps = state => {
-	return {
-		duration: state.user.duration,
-		receive: state.user.receive,
-		emitStatus: state.user.emitStatus,
-		tempDuration: state.user.tempDuration,
-		socketIO: state.user.socketIO,
-		timeoutID: state.user.timeoutID
-	};
+  return {
+    duration: state.user.duration,
+    receive: state.user.receive,
+    emitStatus: state.user.emitStatus,
+    tempDuration: state.user.tempDuration,
+    socketIO: state.user.socketIO,
+    timeoutID: state.user.timeoutID
+  };
 };
 
+SettingScreen.propTypes = {
+  dispatch: PropTypes.func,
+  socketIO: PropTypes.object,
+  duration: PropTypes.number,
+  timeoutID: PropTypes.number,
+}
 
 export default connect(mapStateToProps)(SettingScreen);

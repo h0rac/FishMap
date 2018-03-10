@@ -1,5 +1,8 @@
+/* global require */
+
 import React, { Component } from 'react';
 import MapView from 'react-native-maps';
+import PropTypes from 'prop-types'
 
 class FishMarker extends Component {
   render() {
@@ -18,6 +21,13 @@ class FishMarker extends Component {
       />
     );
   }
+}
+
+FishMarker.propTypes = {
+  marker: PropTypes.object,
+  callbackPress: PropTypes.func,
+  title: PropTypes.string,
+  index: PropTypes.number
 }
 
 export default FishMarker;
