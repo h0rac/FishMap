@@ -1,4 +1,4 @@
-import { TextInput,Platform } from 'react-native';
+
 import React from 'react';
 import CreateAccountScreen from '../CreateAccountScreen';
 import { shallow, configure } from 'enzyme';
@@ -10,22 +10,19 @@ configure({ adapter: new Adapter() });
 const middlewares = [];
 const mockStore = configureStore(middlewares);
 
-jest.mock('Platform', () => {
-		return {
-			Platform: { OS: 'ios' }
-		};
-	}
-);
-
 describe('Testing CreateAccount screen', () => {
 
 	let tree;
 	let navigate;
 	let state;
 	let props;
-	let dispatch;
 
 	beforeEach(() => {
+		jest.mock('react-native', () => ({
+			Platform: {
+				OS:'ios',
+				select: (obj: Object) => obj.ios,
+			}}));
 		navigate = jest.fn();
 		state = {
 			window: { screen: { height: 375, width: 667 } },
@@ -34,7 +31,6 @@ describe('Testing CreateAccount screen', () => {
 			disableCreate: true
 		};
 		const store = mockStore(state);
-		dispatch = jest.fn();
 		props = store;
 		tree = shallow(
 			<CreateAccountScreen {...props} store={store} navigation={{ navigate }} state={state}
@@ -53,7 +49,7 @@ describe('Testing CreateAccount screen', () => {
 
 	it('should render 1 createButton', () => {
 		const CreateAccountScreenComponent = tree.dive();
-		const buttons = CreateAccountScreenComponent.find('IconButton');
+		const buttons = CreateAccountScreenComponent.find('Button');
 		expect(buttons.length).toBe(1);
 	});
 
@@ -236,7 +232,7 @@ describe('Testing CreateAccount screen', () => {
 
 	it('should invoke create account button', () => {
 		const CreateAccountScreenComponent = tree.dive();
-		const buttons = CreateAccountScreenComponent.find('IconButton');
+		const buttons = CreateAccountScreenComponent.find('Button');
 		buttons.first().simulate('Press');
 	});
 

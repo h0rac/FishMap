@@ -2,29 +2,20 @@
 
 exports[`Testing Main screen renders correctly 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <MainScreen
     clearActions={[Function]}
     dispatch={[Function]}
     duration={1000}
-    emitStatus={undefined}
     getActions={[Function]}
     getState={[Function]}
-    intervalAlive={undefined}
-    isFetching={undefined}
-    isSelected={undefined}
     navigation={
       Object {
-        "navigate": [Function],
+        "navigate": [MockFunction],
       }
     }
     positions={Array []}
-    receive={undefined}
     replaceReducer={[Function]}
-    selectedPosition={undefined}
-    sharedFishmarks={undefined}
-    socketIO={undefined}
     store={
       Object {
         "clearActions": [Function],
@@ -57,7 +48,6 @@ ShallowWrapper {
       }
     }
     subscribe={[Function]}
-    timeoutID={undefined}
     userLocation={Object {}}
   />,
   Symbol(enzyme.__renderer__): Object {
@@ -215,6 +205,8 @@ ShallowWrapper {
         "enableComponentDidUpdateOnSetState": true,
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
     "lifecycleExperimental": true,
   },
 }

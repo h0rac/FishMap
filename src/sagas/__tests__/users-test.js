@@ -9,34 +9,18 @@ import 'isomorphic-fetch';
 
 import {
 	getUserPosition, getPosition, emitWaypointReceiver, changeDurationInterval, logoutUser,
-	verifyToken, selectSocket, checkTokenLife
+	verifyToken, selectSocket
 } from '../users';
 
-const userLocation = {
-	coords: {
-		latitude: 54.475408,
-		longitude: 18.263086
-	}
-};
-
-const userPosition = {
-	latitude: userLocation.coords.longitude,
-	longitude: userLocation.coords.longitude,
-	latitudeDelta: 0.0922,
-	longitudeDelta: 0.0421
-};
-
-
-const api = url => fetch(url).then(response => {
-	if (response.ok) {
-		return response.json();
-	} else {
-		throw new Error(response.status); // for example
-	}
-});
 
 
 describe('When testing user Saga getUserPosition generator function', () => {
+	const userLocation = {
+		coords: {
+			latitude: 54.475408,
+			longitude: 18.263086
+		}
+	};
 	const it = sagaHelper(getUserPosition());
 
 	it('should have called the getPosition function', userLocation => {
@@ -112,24 +96,10 @@ describe('When testing user Saga verifyToken function', () => {
 		return token = '1234';
 	});
 
-	let params = {
-		method: 'POST',
-		headers: myHeaders,
-		body: JSON.stringify({
-			token: JSON.parse(decodeURI('1234'))
-		})
-	};
-
 
 	it('should select IOSocket from user store', result => {
 		expect(result).toEqual(select(selectSocket));
 
 	});
-
-	it('should call checkTokenLife if token is not null', result => {
-		expect(result).toEqual(call(checkTokenLife, params));
-
-	});
-
 
 });

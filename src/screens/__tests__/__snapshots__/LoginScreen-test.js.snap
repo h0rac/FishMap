@@ -2,7 +2,6 @@
 
 exports[`Testing Login screen renders correctly 1`] = `
 ShallowWrapper {
-  "length": 1,
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <LoginScreen
     clearActions={[Function]}
@@ -11,7 +10,7 @@ ShallowWrapper {
     getState={[Function]}
     navigation={
       Object {
-        "navigate": [Function],
+        "navigate": [MockFunction],
       }
     }
     replaceReducer={[Function]}
@@ -73,7 +72,7 @@ ShallowWrapper {
     "nodeType": "class",
     "props": Object {
       "children": Array [
-        <View
+        <Component
           style={
             Array [
               Object {
@@ -90,10 +89,14 @@ ShallowWrapper {
           }
         >
           <Image
-            source={1}
+            source={
+              Object {
+                "testUri": "../../../src/assets/fishmap-lightsky.png",
+              }
+            }
           />
-        </View>,
-        <View
+        </Component>,
+        <Component
           style={
             Array [
               Object {
@@ -104,14 +107,15 @@ ShallowWrapper {
                 "flex": 2,
                 "flexDirection": "column",
                 "paddingBottom": 40,
-                "paddingLeft": 20,
-                "paddingRight": 20,
+                "paddingLeft": 10,
+                "paddingRight": 10,
                 "paddingTop": 32,
               },
             ]
           }
         >
           <TextInput
+            allowFontScaling={true}
             maxLength={40}
             onChangeText={[Function]}
             placeholder="your@email.com"
@@ -127,6 +131,7 @@ ShallowWrapper {
             underlineColorAndroid="#2F95D6"
           />
           <TextInput
+            allowFontScaling={true}
             maxLength={40}
             onChangeText={[Function]}
             placeholder="password"
@@ -142,8 +147,8 @@ ShallowWrapper {
             }
             underlineColorAndroid="#2F95D6"
           />
-        </View>,
-        <View
+        </Component>,
+        <Component
           style={
             Array [
               Object {
@@ -154,8 +159,8 @@ ShallowWrapper {
                 "flex": 3,
                 "flexDirection": "column",
                 "justifyContent": "space-around",
-                "paddingLeft": 20,
-                "paddingRight": 20,
+                "paddingLeft": 10,
+                "paddingRight": 10,
               },
             ]
           }
@@ -173,7 +178,7 @@ ShallowWrapper {
             rounded={true}
             title="Login"
           />
-          <View
+          <Component
             style={
               Object {
                 "alignItems": "center",
@@ -182,20 +187,20 @@ ShallowWrapper {
           >
             <TouchableHighlight
               activeOpacity={0.85}
+              delayPressOut={100}
               underlayColor="black"
             >
               <Text
                 accessible={true}
                 allowFontScaling={true}
-                disabled={false}
                 ellipsizeMode="tail"
               >
                 Forgot password ?
               </Text>
             </TouchableHighlight>
-          </View>
-        </View>,
-        <View
+          </Component>
+        </Component>,
+        <Component
           style={
             Array [
               Object {
@@ -205,8 +210,8 @@ ShallowWrapper {
                 "backgroundColor": "white",
                 "flex": 2,
                 "justifyContent": "space-around",
-                "paddingLeft": 20,
-                "paddingRight": 20,
+                "paddingLeft": 10,
+                "paddingRight": 10,
               },
             ]
           }
@@ -223,7 +228,7 @@ ShallowWrapper {
             rounded={true}
             title="Create new Account"
           />
-        </View>,
+        </Component>,
       ],
       "style": Object {
         "backgroundColor": "#2F95D6",
@@ -239,7 +244,11 @@ ShallowWrapper {
         "nodeType": "class",
         "props": Object {
           "children": <Image
-            source={1}
+            source={
+              Object {
+                "testUri": "../../../src/assets/fishmap-lightsky.png",
+              }
+            }
           />,
           "style": Array [
             Object {
@@ -260,7 +269,9 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "source": 1,
+            "source": Object {
+              "testUri": "../../../src/assets/fishmap-lightsky.png",
+            },
           },
           "ref": null,
           "rendered": null,
@@ -275,6 +286,7 @@ ShallowWrapper {
         "props": Object {
           "children": Array [
             <TextInput
+              allowFontScaling={true}
               maxLength={40}
               onChangeText={[Function]}
               placeholder="your@email.com"
@@ -290,6 +302,7 @@ ShallowWrapper {
               underlineColorAndroid="#2F95D6"
             />,
             <TextInput
+              allowFontScaling={true}
               maxLength={40}
               onChangeText={[Function]}
               placeholder="password"
@@ -315,8 +328,8 @@ ShallowWrapper {
               "flex": 2,
               "flexDirection": "column",
               "paddingBottom": 40,
-              "paddingLeft": 20,
-              "paddingRight": 20,
+              "paddingLeft": 10,
+              "paddingRight": 10,
               "paddingTop": 32,
             },
           ],
@@ -328,6 +341,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
+              "allowFontScaling": true,
               "maxLength": 40,
               "onChangeText": [Function],
               "placeholder": "your@email.com",
@@ -349,6 +363,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
+              "allowFontScaling": true,
               "maxLength": 40,
               "onChangeText": [Function],
               "placeholder": "password",
@@ -388,7 +403,7 @@ ShallowWrapper {
               rounded={true}
               title="Login"
             />,
-            <View
+            <Component
               style={
                 Object {
                   "alignItems": "center",
@@ -397,18 +412,18 @@ ShallowWrapper {
             >
               <TouchableHighlight
                 activeOpacity={0.85}
+                delayPressOut={100}
                 underlayColor="black"
               >
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                 >
                   Forgot password ?
                 </Text>
               </TouchableHighlight>
-            </View>,
+            </Component>,
           ],
           "style": Array [
             Object {
@@ -419,8 +434,8 @@ ShallowWrapper {
               "flex": 3,
               "flexDirection": "column",
               "justifyContent": "space-around",
-              "paddingLeft": 20,
-              "paddingRight": 20,
+              "paddingLeft": 10,
+              "paddingRight": 10,
             },
           ],
         },
@@ -452,12 +467,12 @@ ShallowWrapper {
             "props": Object {
               "children": <TouchableHighlight
                 activeOpacity={0.85}
+                delayPressOut={100}
                 underlayColor="black"
               >
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                 >
                   Forgot password ?
@@ -477,11 +492,11 @@ ShallowWrapper {
                 "children": <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                 >
                   Forgot password ?
                 </Text>,
+                "delayPressOut": 100,
                 "underlayColor": "black",
               },
               "ref": null,
@@ -493,7 +508,6 @@ ShallowWrapper {
                   "accessible": true,
                   "allowFontScaling": true,
                   "children": "Forgot password ?",
-                  "disabled": false,
                   "ellipsizeMode": "tail",
                 },
                 "ref": null,
@@ -532,8 +546,8 @@ ShallowWrapper {
               "backgroundColor": "white",
               "flex": 2,
               "justifyContent": "space-around",
-              "paddingLeft": 20,
-              "paddingRight": 20,
+              "paddingLeft": 10,
+              "paddingRight": 10,
             },
           ],
         },
@@ -568,7 +582,7 @@ ShallowWrapper {
       "nodeType": "class",
       "props": Object {
         "children": Array [
-          <View
+          <Component
             style={
               Array [
                 Object {
@@ -585,10 +599,14 @@ ShallowWrapper {
             }
           >
             <Image
-              source={1}
+              source={
+                Object {
+                  "testUri": "../../../src/assets/fishmap-lightsky.png",
+                }
+              }
             />
-          </View>,
-          <View
+          </Component>,
+          <Component
             style={
               Array [
                 Object {
@@ -599,14 +617,15 @@ ShallowWrapper {
                   "flex": 2,
                   "flexDirection": "column",
                   "paddingBottom": 40,
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
+                  "paddingLeft": 10,
+                  "paddingRight": 10,
                   "paddingTop": 32,
                 },
               ]
             }
           >
             <TextInput
+              allowFontScaling={true}
               maxLength={40}
               onChangeText={[Function]}
               placeholder="your@email.com"
@@ -622,6 +641,7 @@ ShallowWrapper {
               underlineColorAndroid="#2F95D6"
             />
             <TextInput
+              allowFontScaling={true}
               maxLength={40}
               onChangeText={[Function]}
               placeholder="password"
@@ -637,8 +657,8 @@ ShallowWrapper {
               }
               underlineColorAndroid="#2F95D6"
             />
-          </View>,
-          <View
+          </Component>,
+          <Component
             style={
               Array [
                 Object {
@@ -649,8 +669,8 @@ ShallowWrapper {
                   "flex": 3,
                   "flexDirection": "column",
                   "justifyContent": "space-around",
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
+                  "paddingLeft": 10,
+                  "paddingRight": 10,
                 },
               ]
             }
@@ -668,7 +688,7 @@ ShallowWrapper {
               rounded={true}
               title="Login"
             />
-            <View
+            <Component
               style={
                 Object {
                   "alignItems": "center",
@@ -677,20 +697,20 @@ ShallowWrapper {
             >
               <TouchableHighlight
                 activeOpacity={0.85}
+                delayPressOut={100}
                 underlayColor="black"
               >
                 <Text
                   accessible={true}
                   allowFontScaling={true}
-                  disabled={false}
                   ellipsizeMode="tail"
                 >
                   Forgot password ?
                 </Text>
               </TouchableHighlight>
-            </View>
-          </View>,
-          <View
+            </Component>
+          </Component>,
+          <Component
             style={
               Array [
                 Object {
@@ -700,8 +720,8 @@ ShallowWrapper {
                   "backgroundColor": "white",
                   "flex": 2,
                   "justifyContent": "space-around",
-                  "paddingLeft": 20,
-                  "paddingRight": 20,
+                  "paddingLeft": 10,
+                  "paddingRight": 10,
                 },
               ]
             }
@@ -718,7 +738,7 @@ ShallowWrapper {
               rounded={true}
               title="Create new Account"
             />
-          </View>,
+          </Component>,
         ],
         "style": Object {
           "backgroundColor": "#2F95D6",
@@ -734,7 +754,11 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": <Image
-              source={1}
+              source={
+                Object {
+                  "testUri": "../../../src/assets/fishmap-lightsky.png",
+                }
+              }
             />,
             "style": Array [
               Object {
@@ -755,7 +779,9 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "source": 1,
+              "source": Object {
+                "testUri": "../../../src/assets/fishmap-lightsky.png",
+              },
             },
             "ref": null,
             "rendered": null,
@@ -770,6 +796,7 @@ ShallowWrapper {
           "props": Object {
             "children": Array [
               <TextInput
+                allowFontScaling={true}
                 maxLength={40}
                 onChangeText={[Function]}
                 placeholder="your@email.com"
@@ -785,6 +812,7 @@ ShallowWrapper {
                 underlineColorAndroid="#2F95D6"
               />,
               <TextInput
+                allowFontScaling={true}
                 maxLength={40}
                 onChangeText={[Function]}
                 placeholder="password"
@@ -810,8 +838,8 @@ ShallowWrapper {
                 "flex": 2,
                 "flexDirection": "column",
                 "paddingBottom": 40,
-                "paddingLeft": 20,
-                "paddingRight": 20,
+                "paddingLeft": 10,
+                "paddingRight": 10,
                 "paddingTop": 32,
               },
             ],
@@ -823,6 +851,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
+                "allowFontScaling": true,
                 "maxLength": 40,
                 "onChangeText": [Function],
                 "placeholder": "your@email.com",
@@ -844,6 +873,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
+                "allowFontScaling": true,
                 "maxLength": 40,
                 "onChangeText": [Function],
                 "placeholder": "password",
@@ -883,7 +913,7 @@ ShallowWrapper {
                 rounded={true}
                 title="Login"
               />,
-              <View
+              <Component
                 style={
                   Object {
                     "alignItems": "center",
@@ -892,18 +922,18 @@ ShallowWrapper {
               >
                 <TouchableHighlight
                   activeOpacity={0.85}
+                  delayPressOut={100}
                   underlayColor="black"
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                   >
                     Forgot password ?
                   </Text>
                 </TouchableHighlight>
-              </View>,
+              </Component>,
             ],
             "style": Array [
               Object {
@@ -914,8 +944,8 @@ ShallowWrapper {
                 "flex": 3,
                 "flexDirection": "column",
                 "justifyContent": "space-around",
-                "paddingLeft": 20,
-                "paddingRight": 20,
+                "paddingLeft": 10,
+                "paddingRight": 10,
               },
             ],
           },
@@ -947,12 +977,12 @@ ShallowWrapper {
               "props": Object {
                 "children": <TouchableHighlight
                   activeOpacity={0.85}
+                  delayPressOut={100}
                   underlayColor="black"
                 >
                   <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                   >
                     Forgot password ?
@@ -972,11 +1002,11 @@ ShallowWrapper {
                   "children": <Text
                     accessible={true}
                     allowFontScaling={true}
-                    disabled={false}
                     ellipsizeMode="tail"
                   >
                     Forgot password ?
                   </Text>,
+                  "delayPressOut": 100,
                   "underlayColor": "black",
                 },
                 "ref": null,
@@ -988,7 +1018,6 @@ ShallowWrapper {
                     "accessible": true,
                     "allowFontScaling": true,
                     "children": "Forgot password ?",
-                    "disabled": false,
                     "ellipsizeMode": "tail",
                   },
                   "ref": null,
@@ -1027,8 +1056,8 @@ ShallowWrapper {
                 "backgroundColor": "white",
                 "flex": 2,
                 "justifyContent": "space-around",
-                "paddingLeft": 20,
-                "paddingRight": 20,
+                "paddingLeft": 10,
+                "paddingRight": 10,
               },
             ],
           },
@@ -1063,6 +1092,8 @@ ShallowWrapper {
         "enableComponentDidUpdateOnSetState": true,
       },
     },
+    "attachTo": undefined,
+    "hydrateIn": undefined,
   },
 }
 `;

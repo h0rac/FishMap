@@ -7,7 +7,7 @@ import {
   View,
   Image
 } from 'react-native';
-import { deleteFishmarkPosition } from '../actions/fishmarks';
+import { deleteFishmarkPosition, selectWaypoint } from '../actions/fishmarks';
 import { connect } from 'react-redux';
 import { Icon } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
@@ -69,6 +69,8 @@ renderMenuItem = (icon, name, color) => {
 
 handleEdit = () => {
 	this.setState({ opened: false });
+	const position = {latitude: this.props.item.latitude, longitude: this.props.item.longitude}
+	this.props.dispatch(selectWaypoint(position));
 	this.props.navigation.navigate('WayPointEditScreen');
 };
 

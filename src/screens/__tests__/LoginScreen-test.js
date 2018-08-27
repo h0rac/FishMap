@@ -1,4 +1,4 @@
-import { TextInput, Platform } from 'react-native';
+
 import React from 'react';
 import LoginScreen from '../LoginScreen';
 import { shallow, configure } from 'enzyme';

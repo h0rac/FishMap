@@ -14,6 +14,7 @@ import {
   SHARE_MY_WAYPOINT,
   REMOVE_SHARE_MY_WAYPOINT,
   DELETE_ALL_FISHMARKS,
+  SELECT_WAYPOINT,
 } from '../constants/constants';
 
 export const setFishmark = data => ({
@@ -93,3 +94,8 @@ export const setMapViewForAnimation = mapView => ({
   type: SET_MAP_FOR_ANIMATION,
   mapView,
 });
+
+export const selectWaypoint = (position) => ({
+  type: SELECT_WAYPOINT,
+  position,
+})

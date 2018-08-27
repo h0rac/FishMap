@@ -29,6 +29,8 @@ import {
   DELETE_ALL_FISHMARKS_SUCCESS,
   DELETE_ALL_FISHMARKS_FAILED,
   DELETE_ALL_FISHMARKS_PENDING,
+  PASS_WAYPOINT_DATA,
+  SELECT_WAYPOINT
 
 } from '../constants/constants';
 
@@ -45,6 +47,7 @@ const initialState = {
   myFishmarkWaypoints: [],
   loadedWaypoints: [],
   sharedFishmarks: [],
+  selectedPosition: null,
   selectedSharedFishmarks: [],
   copiedSharedFishmarks: [],
   selectedSharedFishmark: {},
@@ -211,6 +214,11 @@ return {
     return {
       ...state, message: action.message,
     };
+  }
+  case SELECT_WAYPOINT:
+  return {
+    ...state, selectedPosition: state.fishmarks.find(mark => mark.latitude === action.position.latitude
+      && mark.longitude === action.position.longitude)
   }
 
   default:

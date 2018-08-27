@@ -17,7 +17,7 @@ import { setFishmark, setMapViewForAnimation, shareMyWaypoint } from '../actions
 import { deleteFishmarkPosition } from '../actions/fishmarks';
 import { connect } from 'react-redux';
 import {Icon} from 'react-native-elements';
-import { loadFishPositions, IOsetFishmarksCandidateList } from '../actions/fishmarks';
+import { loadFishPositions, IOsetFishmarksCandidateList , selectWaypoint} from '../actions/fishmarks';
 import {
 logout, getUserLocation, setIntervalID, checkAuthToken, setIntervalAlive
 } from '../actions/user';
@@ -176,6 +176,11 @@ handleSharing = (position) => {
 	this.props.navigation.navigate('SharingScreen');
 };
 
+handleWaypointEdit = (position) => {
+	this.props.dispatch(selectWaypoint(position));
+	this.props.navigation.navigate('WayPointEditScreen');
+}
+
 
 _handleFishMarkPress = (e) => {
 	const position = e.nativeEvent.coordinate;
@@ -185,7 +190,7 @@ _handleFishMarkPress = (e) => {
 		'What do you want to do with Waypoint ?',
 		[
 			{ text: 'Share', onPress: () => this.handleSharing(position) },
-			{ text: 'Edit', onPress: () => this.props.navigation.navigate('WayPointEditScreen') },
+			{ text: 'Edit', onPress: () => this.handleWaypointEdit(position)},
 			{ text: 'Delete', onPress: () => this.props.dispatch(deleteFishmarkPosition(position)) },
 			{ text: 'Cancel', onPress: () => console.log('cancel'), style: 'cancel' }
 		],
@@ -224,7 +229,7 @@ render() {
 
 				{this.props.positions.map((marker, index) =>
 					<FishMarker key={index} marker={marker}
-          callbackPress={this._handleFishMarkPress}
+					callbackPress={this._handleFishMarkPress}
 					/>
 				)}
 				{this.props.userLocation.latitude ?

@@ -155,7 +155,7 @@ describe('Testing Main screen', () => {
 		componentDidMount();
 		expect(componentDidMount).toBeCalled();
 
-		spyOn(MainScreenComponent.instance(), 'componentDidMount').and.returnValue(function () {
+		jest.spyOn(MainScreenComponent.instance(), 'componentDidMount').and.returnValue(function () {
 			return AsyncStorage.getItem('token');
 		});
 		expect(MainScreenComponent.instance().state.interval).not.toBe(null);
@@ -163,8 +163,7 @@ describe('Testing Main screen', () => {
 
 	it('should not have token in AsyncStorage and redirect to LoginScreen', () => {
 		const MainScreenComponent = tree.dive();
-
-		spyOn(MainScreenComponent.instance(), 'componentDidMount').and.returnValue(function () {
+		jest.spyOn(MainScreenComponent.instance(), 'componentDidMount').and.returnValue(function () {
 			return AsyncStorage.getItem('fake');
 		});
 	});

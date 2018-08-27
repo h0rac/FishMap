@@ -1,6 +1,7 @@
 /* global require */
 
 import React, { Component } from 'react';
+import { Image } from 'react-native';
 import MapView from 'react-native-maps';
 import PropTypes from 'prop-types'
 
@@ -11,14 +12,14 @@ class FishMarker extends Component {
       longitude: this.props.marker.longitude,
     };
     return (
-      <MapView.Marker
+      <MapView.Marker 
       key={this.props.index}
       coordinate={region}
       title={this.props.marker.title}
-      image={require('../assets/perch.png')}
       onPress={this.props.callbackPress}
-      identifier={this.props.title}
-      />
+      identifier={this.props.title}>
+      <Image source={require('../assets/perch.png')}  style={{width: 20, height: 20}}/>
+      </MapView.Marker>
     );
   }
 }
