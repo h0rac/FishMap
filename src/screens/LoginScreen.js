@@ -13,8 +13,17 @@ import {
 } from 'react-native';
 import {login, checkAuthToken} from '../actions/user';
 import { connect } from 'react-redux';
-
+import { graphql } from 'react-apollo';
+import {gql} from 'apollo-boost';
 import { Button } from 'react-native-elements';
+
+const loginMutation = gql`
+  mutation ($email: String!, $password: String!) {
+    loginUser(email: $email, password: $password) {
+      token
+    }
+  }
+`
 
 class LoginScreen extends React.Component {
 
@@ -34,6 +43,7 @@ class LoginScreen extends React.Component {
 		this.state = {
 			disableLogin: true,
 			ios: false,
+			login: false,
 			email: null,
 			password: null,
 			scaleAnimation: new Animated.Value(1),
@@ -70,7 +80,7 @@ class LoginScreen extends React.Component {
 		if (Platform.OS === 'ios') {
 			this.setState({ ios: true });
 		}
-		this.props.dispatch(checkAuthToken(this.props.navigation, 'LoginScreen'));
+		// this.props.dispatch(checkAuthToken(this.props.navigation, 'LoginScreen'));
 	}
 
 	validateEmail = (email) => {
@@ -78,20 +88,23 @@ class LoginScreen extends React.Component {
 		return re.test(email);
 	};
 
-	handleSubmit = () => {
+	handleSubmit = async () => {
 		if (this.validateEmail(this.state.email) && this.state.password) {
 			const data = {
 				email: this.state.email,
 				password: this.state.password,
 				navigation: this.props.navigation
 			};
-			this.props.dispatch(login(data));
+			const { email, password } = this.state
+			const result = await this.props.loginMutation({
+				variables: {email, password }
+			})
+			//this.props.dispatch(login(data));
 
 		} else {
 			this.setState({ disableLogin: true });
 		}
 	};
-
 
 	checkScreenOrientation = () => {
 		let mode;
@@ -130,6 +143,8 @@ class LoginScreen extends React.Component {
 			{ scaleX: this.state.scaleAnimation}
 		], opacity: this.state.opacityAnimation}
 
+		
+
 		return (
 			<View style={styles.mainContainer}>
 				{mode !=='landscape' && !this.state.keyboardShow ?
@@ -154,16 +169,16 @@ class LoginScreen extends React.Component {
 						maxLength={40} />
 				</View>
 				<View style={[styles.boxContainer, styles.loginBox]}>
-					<Button
-						rounded={true}
-						icon={{name:"sign-in", type:'font-awesome'}}
-						backgroundColor={
-							(!this.validateEmail(this.state.email)) ||
-							(!this.state.password) ? 'gray' : 'steelblue'}
-						disabled={!password || !this.validateEmail(email)}
-						title ={'Login'}
-						onPress={this.handleSubmit}>
-					</Button>
+						<Button
+							rounded={true}
+							icon={{name:"sign-in", type:'font-awesome'}}
+							backgroundColor={
+								(!this.validateEmail(this.state.email)) ||
+								(!this.state.password) ? 'gray' : 'steelblue'}
+							disabled={!password || !this.validateEmail(email)}
+							title ={'Login'}
+							onPress={this.handleSubmit}>
+						</Button>
 					<View style={styles.forgotPassBox}>
 						<TouchableHighlight>
 							<Text>
@@ -273,9 +288,5 @@ const styles = {
 	}
 
 };
-const mapStateToProps = state => {
-	return {};
-};
 
-
-export default connect(mapStateToProps)(LoginScreen);
+export default graphql(loginMutation, { name: 'loginMutation' })(LoginScreen);

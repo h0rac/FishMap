@@ -8,6 +8,13 @@ import { Provider } from 'react-redux';
 import { MenuProvider } from 'react-native-popup-menu';
 import store from './src/store';
 import DrawerStack from './src/routes';
+import ApolloClient from 'apollo-boost';
+import {ApolloProvider} from 'react-apollo'
+import {GRAPHQL_SERVER} from './src/constants/constants'
+
+const client = new ApolloClient({
+  uri: GRAPHQL_SERVER
+})
 
 /**
  * [store description]
@@ -20,11 +27,13 @@ export default class App extends Component {
  */
 render() {
 return (
-  <Provider store={store}>
-    <MenuProvider>
-      <DrawerStack />
-    </MenuProvider>
-  </Provider>
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <MenuProvider>
+        <DrawerStack />
+      </MenuProvider>
+    </Provider>
+  </ApolloProvider>
   );
 }
 }
