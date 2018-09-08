@@ -8,6 +8,8 @@ import {
 	TextInput,
 	Keyboard,
 	Dimensions,
+	Animated,
+	Easing
 } from 'react-native';
 import {login, checkAuthToken} from '../actions/user';
 import { connect } from 'react-redux';
@@ -33,7 +35,9 @@ class LoginScreen extends React.Component {
 			disableLogin: true,
 			ios: false,
 			email: null,
-			password: null
+			password: null,
+			scaleAnimation: new Animated.Value(1),
+			opacityAnimation: new Animated.Value(1)
 		};
 
 	}
@@ -67,7 +71,6 @@ class LoginScreen extends React.Component {
 			this.setState({ ios: true });
 		}
 		this.props.dispatch(checkAuthToken(this.props.navigation, 'LoginScreen'));
-
 	}
 
 	validateEmail = (email) => {
@@ -98,8 +101,23 @@ class LoginScreen extends React.Component {
 		return mode;
 	};
 
+	startAnimation = () => {
+		Animated.sequence([
+			Animated.timing(this.state.scaleAnimation, { 	
+				toValue:0, 
+				duration:700,
+				easing: Easing.back(1.5)
+			}),
+			Animated.timing(this.state.opacityAnimation, { toValue:0, duration:500})
+		]).start(callback =>  {
+			this.state.scaleAnimation.setValue(1);
+			Animated.timing(this.state.opacityAnimation, { toValue:1, duration:1000}).start(),
+			callback.finished === true ? this.props.navigation.navigate('CreateAccountScreen'): null;
+		});	
+	}
+
 	handleNewCreateAccount = () => {
-		this.props.navigation.navigate('CreateAccountScreen');
+		this.startAnimation();
 	};
 
 	render() {
@@ -107,6 +125,10 @@ class LoginScreen extends React.Component {
 		let mode = this.checkScreenOrientation();
 		const password = this.state.password;
 		const email = this.state.email;
+
+		const animatedStyles = { transform: [
+			{ scaleX: this.state.scaleAnimation}
+		], opacity: this.state.opacityAnimation}
 
 		return (
 			<View style={styles.mainContainer}>
@@ -118,18 +140,18 @@ class LoginScreen extends React.Component {
 
 				<View style={[styles.boxContainer, styles.boxInputs]}>
 					<TextInput style={!this.state.ios ? styles.input : styles.inputIOS}
-										 onChangeText={(email) => this.setState({ email: email })}
-										 placeholder={'your@email.com'}
-										 placeholderTextColor={'lightgray'}
-										 underlineColorAndroid='#2F95D6'
-										 maxLength={40}/>
+						onChangeText={(email) => this.setState({ email: email })}
+						placeholder={'your@email.com'}
+						placeholderTextColor={'lightgray'}
+						underlineColorAndroid='#2F95D6'
+						maxLength={40} />
 					<TextInput style={!this.state.ios ? styles.input : styles.inputIOS}
-										 secureTextEntry={true}
-										 placeholder={'password'}
-										 placeholderTextColor={'lightgray'}
-										 underlineColorAndroid='#2F95D6'
-										 onChangeText={(password) => this.setState({ password: password })}
-										 maxLength={40}/>
+						secureTextEntry={true}
+						placeholder={'password'}
+						placeholderTextColor={'lightgray'}
+						underlineColorAndroid='#2F95D6'
+						onChangeText={(password) => this.setState({ password: password })}
+						maxLength={40} />
 				</View>
 				<View style={[styles.boxContainer, styles.loginBox]}>
 					<Button
@@ -152,16 +174,17 @@ class LoginScreen extends React.Component {
 
 				</View>
 				<View style={[styles.boxContainer, styles.signUpBox]}>
-					<Button
-						rounded={true}
-						icon={{name:"user-o", type:'font-awesome'}}
-						backgroundColor="green"
-						onPress={() => this.handleNewCreateAccount()}
-						title={'Create new Account'}
-					>
-					</Button>
-
-				</View>
+				<Animated.View style={[animatedStyles]}>
+						<Button
+							rounded={true}
+							icon={{name:"user-o", type:'font-awesome'}}
+							backgroundColor="green"
+							onPress={() => this.handleNewCreateAccount()}
+							title={'Create new Account'}
+						>
+						</Button>
+					</Animated.View>
+					</View>
 			</View>
 		);
 	}
@@ -193,6 +216,11 @@ const styles = {
 
 	forgotPassBox: {
 		alignItems: 'center'
+	},
+	box: {
+		width: 340,
+		height: 20,
+		backgroundColor: "tomato",
 	},
 
 	boxInputs: {

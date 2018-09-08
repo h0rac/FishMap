@@ -74,10 +74,7 @@ ShallowWrapper {
             }
           }
         >
-          <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
+          <Component
             style={
               Object {
                 "color": "gray",
@@ -85,7 +82,7 @@ ShallowWrapper {
             }
           >
             GENERAL
-          </Text>
+          </Component>
         </Component>,
         <Component
           style={
@@ -109,10 +106,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "paddingTop": 5,
@@ -120,7 +114,7 @@ ShallowWrapper {
               }
             >
               Enable waypoint updates
-            </Text>
+            </Component>
           </Component>
           <Component
             style={
@@ -163,10 +157,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "paddingTop": 5,
@@ -174,7 +165,7 @@ ShallowWrapper {
               }
             >
               Language settings
-            </Text>
+            </Component>
           </Component>
           <Component
             style={
@@ -186,7 +177,8 @@ ShallowWrapper {
               }
             }
           >
-            <UNDEFINED
+            <Icon
+              allowFontScaling={false}
               color="gray"
               name="angle-right"
               size={28}
@@ -207,10 +199,7 @@ ShallowWrapper {
         "key": undefined,
         "nodeType": "class",
         "props": Object {
-          "children": <Text
-            accessible={true}
-            allowFontScaling={true}
-            ellipsizeMode="tail"
+          "children": <Component
             style={
               Object {
                 "color": "gray",
@@ -218,7 +207,7 @@ ShallowWrapper {
             }
           >
             GENERAL
-          </Text>,
+          </Component>,
           "style": Object {
             "alignItems": "center",
             "backgroundColor": "whitesmoke",
@@ -234,10 +223,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "accessible": true,
-            "allowFontScaling": true,
             "children": "GENERAL",
-            "ellipsizeMode": "tail",
             "style": Object {
               "color": "gray",
             },
@@ -264,10 +250,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "paddingTop": 5,
@@ -275,7 +258,7 @@ ShallowWrapper {
                 }
               >
                 Enable waypoint updates
-              </Text>
+              </Component>
             </Component>,
             <Component
               style={
@@ -310,10 +293,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              "children": <Component
                 style={
                   Object {
                     "paddingTop": 5,
@@ -321,7 +301,7 @@ ShallowWrapper {
                 }
               >
                 Enable waypoint updates
-              </Text>,
+              </Component>,
               "style": Object {
                 "flex": 3,
                 "flexDirection": "row",
@@ -335,10 +315,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Enable waypoint updates",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "paddingTop": 5,
                 },
@@ -402,10 +379,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "paddingTop": 5,
@@ -413,7 +387,7 @@ ShallowWrapper {
                 }
               >
                 Language settings
-              </Text>
+              </Component>
             </Component>,
             <Component
               style={
@@ -425,7 +399,8 @@ ShallowWrapper {
                 }
               }
             >
-              <UNDEFINED
+              <Icon
+                allowFontScaling={false}
                 color="gray"
                 name="angle-right"
                 size={28}
@@ -449,10 +424,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              "children": <Component
                 style={
                   Object {
                     "paddingTop": 5,
@@ -460,7 +432,7 @@ ShallowWrapper {
                 }
               >
                 Language settings
-              </Text>,
+              </Component>,
               "style": Object {
                 "flex": 3,
                 "flexDirection": "row",
@@ -474,10 +446,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Language settings",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "paddingTop": 5,
                 },
@@ -493,7 +462,8 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "children": <UNDEFINED
+              "children": <Icon
+                allowFontScaling={false}
                 color="gray"
                 name="angle-right"
                 size={28}
@@ -509,15 +479,16 @@ ShallowWrapper {
             "rendered": Object {
               "instance": null,
               "key": undefined,
-              "nodeType": "function",
+              "nodeType": "class",
               "props": Object {
+                "allowFontScaling": false,
                 "color": "gray",
                 "name": "angle-right",
                 "size": 28,
               },
               "ref": null,
               "rendered": null,
-              "type": Object {},
+              "type": [Function],
             },
             "type": [Function],
           },
@@ -546,10 +517,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -557,7 +525,7 @@ ShallowWrapper {
               }
             >
               GENERAL
-            </Text>
+            </Component>
           </Component>,
           <Component
             style={
@@ -581,10 +549,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "paddingTop": 5,
@@ -592,7 +557,7 @@ ShallowWrapper {
                 }
               >
                 Enable waypoint updates
-              </Text>
+              </Component>
             </Component>
             <Component
               style={
@@ -635,10 +600,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "paddingTop": 5,
@@ -646,7 +608,7 @@ ShallowWrapper {
                 }
               >
                 Language settings
-              </Text>
+              </Component>
             </Component>
             <Component
               style={
@@ -658,7 +620,8 @@ ShallowWrapper {
                 }
               }
             >
-              <UNDEFINED
+              <Icon
+                allowFontScaling={false}
                 color="gray"
                 name="angle-right"
                 size={28}
@@ -679,10 +642,7 @@ ShallowWrapper {
           "key": undefined,
           "nodeType": "class",
           "props": Object {
-            "children": <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            "children": <Component
               style={
                 Object {
                   "color": "gray",
@@ -690,7 +650,7 @@ ShallowWrapper {
               }
             >
               GENERAL
-            </Text>,
+            </Component>,
             "style": Object {
               "alignItems": "center",
               "backgroundColor": "whitesmoke",
@@ -706,10 +666,7 @@ ShallowWrapper {
             "key": undefined,
             "nodeType": "class",
             "props": Object {
-              "accessible": true,
-              "allowFontScaling": true,
               "children": "GENERAL",
-              "ellipsizeMode": "tail",
               "style": Object {
                 "color": "gray",
               },
@@ -736,10 +693,7 @@ ShallowWrapper {
                   }
                 }
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "paddingTop": 5,
@@ -747,7 +701,7 @@ ShallowWrapper {
                   }
                 >
                   Enable waypoint updates
-                </Text>
+                </Component>
               </Component>,
               <Component
                 style={
@@ -782,10 +736,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                "children": <Component
                   style={
                     Object {
                       "paddingTop": 5,
@@ -793,7 +744,7 @@ ShallowWrapper {
                   }
                 >
                   Enable waypoint updates
-                </Text>,
+                </Component>,
                 "style": Object {
                   "flex": 3,
                   "flexDirection": "row",
@@ -807,10 +758,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Enable waypoint updates",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "paddingTop": 5,
                   },
@@ -874,10 +822,7 @@ ShallowWrapper {
                   }
                 }
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "paddingTop": 5,
@@ -885,7 +830,7 @@ ShallowWrapper {
                   }
                 >
                   Language settings
-                </Text>
+                </Component>
               </Component>,
               <Component
                 style={
@@ -897,7 +842,8 @@ ShallowWrapper {
                   }
                 }
               >
-                <UNDEFINED
+                <Icon
+                  allowFontScaling={false}
                   color="gray"
                   name="angle-right"
                   size={28}
@@ -921,10 +867,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                "children": <Component
                   style={
                     Object {
                       "paddingTop": 5,
@@ -932,7 +875,7 @@ ShallowWrapper {
                   }
                 >
                   Language settings
-                </Text>,
+                </Component>,
                 "style": Object {
                   "flex": 3,
                   "flexDirection": "row",
@@ -946,10 +889,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Language settings",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "paddingTop": 5,
                   },
@@ -965,7 +905,8 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "children": <UNDEFINED
+                "children": <Icon
+                  allowFontScaling={false}
                   color="gray"
                   name="angle-right"
                   size={28}
@@ -981,15 +922,16 @@ ShallowWrapper {
               "rendered": Object {
                 "instance": null,
                 "key": undefined,
-                "nodeType": "function",
+                "nodeType": "class",
                 "props": Object {
+                  "allowFontScaling": false,
                   "color": "gray",
                   "name": "angle-right",
                   "size": 28,
                 },
                 "ref": null,
                 "rendered": null,
-                "type": Object {},
+                "type": [Function],
               },
               "type": [Function],
             },

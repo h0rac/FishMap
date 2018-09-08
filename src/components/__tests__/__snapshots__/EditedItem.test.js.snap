@@ -49,10 +49,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -62,11 +59,8 @@ ShallowWrapper {
               }
             >
               Name:
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            </Component>
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -76,7 +70,7 @@ ShallowWrapper {
               }
             >
               Marker
-            </Text>
+            </Component>
           </Component>
         </TouchableOpacity>,
         <TouchableOpacity
@@ -103,10 +97,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -116,11 +107,8 @@ ShallowWrapper {
               }
             >
               Fish type:
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            </Component>
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -130,7 +118,7 @@ ShallowWrapper {
               }
             >
               perch
-            </Text>
+            </Component>
           </Component>
         </TouchableOpacity>,
       ],
@@ -158,10 +146,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -171,11 +156,8 @@ ShallowWrapper {
               }
             >
               Name:
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            </Component>
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -185,7 +167,7 @@ ShallowWrapper {
               }
             >
               Marker
-            </Text>
+            </Component>
           </Component>,
           "onPress": [Function],
           "style": Object {
@@ -204,10 +186,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -217,11 +196,8 @@ ShallowWrapper {
                 }
               >
                 Name:
-              </Text>,
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              </Component>,
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -231,7 +207,7 @@ ShallowWrapper {
                 }
               >
                 Marker
-              </Text>,
+              </Component>,
             ],
             "style": Object {
               "flex": 3,
@@ -247,10 +223,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Name:",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "display": "flex",
                   "flex": 1,
@@ -266,10 +239,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Marker",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "display": "flex",
                   "flex": 4,
@@ -301,10 +271,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -314,11 +281,8 @@ ShallowWrapper {
               }
             >
               Fish type:
-            </Text>
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            </Component>
+            <Component
               style={
                 Object {
                   "display": "flex",
@@ -328,7 +292,7 @@ ShallowWrapper {
               }
             >
               perch
-            </Text>
+            </Component>
           </Component>,
           "onPress": [Function],
           "style": Object {
@@ -347,10 +311,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -360,11 +321,8 @@ ShallowWrapper {
                 }
               >
                 Fish type:
-              </Text>,
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              </Component>,
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -374,7 +332,7 @@ ShallowWrapper {
                 }
               >
                 perch
-              </Text>,
+              </Component>,
             ],
             "style": Object {
               "flex": 3,
@@ -390,10 +348,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Fish type:",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "display": "flex",
                   "flex": 1,
@@ -409,10 +364,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "perch",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "display": "flex",
                   "flex": 4,
@@ -462,10 +414,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -475,11 +424,8 @@ ShallowWrapper {
                 }
               >
                 Name:
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              </Component>
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -489,7 +435,7 @@ ShallowWrapper {
                 }
               >
                 Marker
-              </Text>
+              </Component>
             </Component>
           </TouchableOpacity>,
           <TouchableOpacity
@@ -516,10 +462,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -529,11 +472,8 @@ ShallowWrapper {
                 }
               >
                 Fish type:
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              </Component>
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -543,7 +483,7 @@ ShallowWrapper {
                 }
               >
                 perch
-              </Text>
+              </Component>
             </Component>
           </TouchableOpacity>,
         ],
@@ -571,10 +511,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -584,11 +521,8 @@ ShallowWrapper {
                 }
               >
                 Name:
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              </Component>
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -598,7 +532,7 @@ ShallowWrapper {
                 }
               >
                 Marker
-              </Text>
+              </Component>
             </Component>,
             "onPress": [Function],
             "style": Object {
@@ -617,10 +551,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": Array [
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "display": "flex",
@@ -630,11 +561,8 @@ ShallowWrapper {
                   }
                 >
                   Name:
-                </Text>,
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                </Component>,
+                <Component
                   style={
                     Object {
                       "display": "flex",
@@ -644,7 +572,7 @@ ShallowWrapper {
                   }
                 >
                   Marker
-                </Text>,
+                </Component>,
               ],
               "style": Object {
                 "flex": 3,
@@ -660,10 +588,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Name:",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "display": "flex",
                     "flex": 1,
@@ -679,10 +604,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Marker",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "display": "flex",
                     "flex": 4,
@@ -714,10 +636,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -727,11 +646,8 @@ ShallowWrapper {
                 }
               >
                 Fish type:
-              </Text>
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              </Component>
+              <Component
                 style={
                   Object {
                     "display": "flex",
@@ -741,7 +657,7 @@ ShallowWrapper {
                 }
               >
                 perch
-              </Text>
+              </Component>
             </Component>,
             "onPress": [Function],
             "style": Object {
@@ -760,10 +676,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": Array [
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "display": "flex",
@@ -773,11 +686,8 @@ ShallowWrapper {
                   }
                 >
                   Fish type:
-                </Text>,
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                </Component>,
+                <Component
                   style={
                     Object {
                       "display": "flex",
@@ -787,7 +697,7 @@ ShallowWrapper {
                   }
                 >
                   perch
-                </Text>,
+                </Component>,
               ],
               "style": Object {
                 "flex": 3,
@@ -803,10 +713,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Fish type:",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "display": "flex",
                     "flex": 1,
@@ -822,10 +729,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "perch",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "display": "flex",
                     "flex": 4,

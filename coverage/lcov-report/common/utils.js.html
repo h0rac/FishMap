@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">29.41% </span>
+        <span class="strong">52% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>5/17</span>
+        <span class='fraction'>13/25</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,16 +35,16 @@
         <span class='fraction'>0/6</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">35.71% </span>
+        <span class="strong">47.06% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>5/14</span>
+        <span class='fraction'>8/17</span>
       </div>
     </div>
     <p class="quiet">
       Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
     </p>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -76,7 +76,7 @@
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
 <a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L31'></a><a href='#L31'>31</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -87,7 +87,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -101,27 +101,27 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Alert, AsyncStorage } from 'react-native';
 &nbsp;
-export const displayAlert = <span class="fstat-no" title="function not covered" >(t</span>itle, msg) =&gt; {
+export const displayAlert = <span class="fstat-no" title="function not covered" >(title, msg) </span>=&gt; {
 <span class="cstat-no" title="statement not covered" >  Alert.alert(</span>
     title,
     msg,
     [
-      { text: 'OK', onPress: <span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >console.log('Cancel Pressed'),</span> style: 'cancel' },
+      { text: 'OK', onPress: () =&gt;<span class="fstat-no" title="function not covered" > console</span>.lo<span class="cstat-no" title="statement not covered" >g('Cancel Pressed'), style: 'cancel' }</span>,
     ],
     { cancelable: true },
   );
 };
 &nbsp;
-export const removeDuplicates = <span class="fstat-no" title="function not covered" >(a</span>rr, prop) =&gt; {
-  const newArr = <span class="cstat-no" title="statement not covered" >[];</span>
-  const lookup = <span class="cstat-no" title="statement not covered" >{};</span>
+export const removeDuplicates = <span class="fstat-no" title="function not covered" >(arr, prop) =&gt; {</span>
+  const newArr <span class="cstat-no" title="statement not covered" >= [</span>];
+  const lookup <span class="cstat-no" title="statement not covered" >= {</span>};
 &nbsp;
 <span class="cstat-no" title="statement not covered" >  for (const i in arr) {</span>
 <span class="cstat-no" title="statement not covered" >    lookup[arr[i][prop]] = arr[i];</span>
@@ -133,16 +133,16 @@ export const removeDuplicates = <span class="fstat-no" title="function not cover
 <span class="cstat-no" title="statement not covered" >  return newArr;</span>
 };
 &nbsp;
-export const getToken = <span class="fstat-no" title="function not covered" >to</span>ken =&gt; (<span class="cstat-no" title="statement not covered" >AsyncStorage.getItem(token))</span>;
-export const removeToken = <span class="fstat-no" title="function not covered" >to</span>ken =&gt; (<span class="cstat-no" title="statement not covered" >AsyncStorage.removeItem(token))</span>;
-export const setToken = <span class="fstat-no" title="function not covered" >to</span>ken =&gt; <span class="cstat-no" title="statement not covered" >AsyncStorage.setItem('token', JSON.stringify(token));</span>
+export const getToken = <span class="fstat-no" title="function not covered" >token =&gt; </span>(AsyncSt<span class="cstat-no" title="statement not covered" >orage.getItem(token));</span>
+export const removeToken = <span class="fstat-no" title="function not covered" >token =&gt; (As</span>yncStora<span class="cstat-no" title="statement not covered" >ge.removeItem(token));</span>
+export const setToken = <span class="fstat-no" title="function not covered" >token =&gt; </span>AsyncSto<span class="cstat-no" title="statement not covered" >rage.setItem('token', JSON.stringify(token));</span>
 &nbsp;</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Aug 27 2018 18:31:17 GMT+0200 (CEST)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Tue Sep 04 2018 23:38:47 GMT+0200 (CEST)
 </div>
 </div>
 <script src="../prettify.js"></script>

@@ -81,10 +81,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -93,7 +90,7 @@ ShallowWrapper {
               }
             >
               Login:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -111,10 +108,7 @@ ShallowWrapper {
               }
               underlineColorAndroid="rgba(0,0,0,0)"
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -124,7 +118,7 @@ ShallowWrapper {
               }
             >
               Password:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -143,10 +137,7 @@ ShallowWrapper {
               }
               underlineColorAndroid="rgba(0,0,0,0)"
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -156,7 +147,7 @@ ShallowWrapper {
               }
             >
               Repeat password:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -181,10 +172,7 @@ ShallowWrapper {
               onPress={[Function]}
               underlayColor={null}
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "#2F95D6",
@@ -193,7 +181,7 @@ ShallowWrapper {
                 }
               >
                 Resend verification e-mail
-              </Text>
+              </Component>
             </TouchableHighlight>
             <Component
               style={
@@ -249,10 +237,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -261,7 +246,7 @@ ShallowWrapper {
               }
             >
               Login:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -279,10 +264,7 @@ ShallowWrapper {
               }
               underlineColorAndroid="rgba(0,0,0,0)"
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -292,7 +274,7 @@ ShallowWrapper {
               }
             >
               Password:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -311,10 +293,7 @@ ShallowWrapper {
               }
               underlineColorAndroid="rgba(0,0,0,0)"
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -324,7 +303,7 @@ ShallowWrapper {
               }
             >
               Repeat password:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -349,10 +328,7 @@ ShallowWrapper {
               onPress={[Function]}
               underlayColor={null}
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "#2F95D6",
@@ -361,7 +337,7 @@ ShallowWrapper {
                 }
               >
                 Resend verification e-mail
-              </Text>
+              </Component>
             </TouchableHighlight>
             <Component
               style={
@@ -411,10 +387,7 @@ ShallowWrapper {
               }
             }
           >
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -423,7 +396,7 @@ ShallowWrapper {
               }
             >
               Login:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -441,10 +414,7 @@ ShallowWrapper {
               }
               underlineColorAndroid="rgba(0,0,0,0)"
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -454,7 +424,7 @@ ShallowWrapper {
               }
             >
               Password:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -473,10 +443,7 @@ ShallowWrapper {
               }
               underlineColorAndroid="rgba(0,0,0,0)"
             />
-            <Text
-              accessible={true}
-              allowFontScaling={true}
-              ellipsizeMode="tail"
+            <Component
               style={
                 Object {
                   "color": "gray",
@@ -486,7 +453,7 @@ ShallowWrapper {
               }
             >
               Repeat password:
-            </Text>
+            </Component>
             <TextInput
               allowFontScaling={true}
               maxLength={40}
@@ -511,10 +478,7 @@ ShallowWrapper {
               onPress={[Function]}
               underlayColor={null}
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "#2F95D6",
@@ -523,7 +487,7 @@ ShallowWrapper {
                 }
               >
                 Resend verification e-mail
-              </Text>
+              </Component>
             </TouchableHighlight>
             <Component
               style={
@@ -563,10 +527,7 @@ ShallowWrapper {
           "nodeType": "class",
           "props": Object {
             "children": Array [
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -575,7 +536,7 @@ ShallowWrapper {
                 }
               >
                 Login:
-              </Text>,
+              </Component>,
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -593,10 +554,7 @@ ShallowWrapper {
                 }
                 underlineColorAndroid="rgba(0,0,0,0)"
               />,
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -606,7 +564,7 @@ ShallowWrapper {
                 }
               >
                 Password:
-              </Text>,
+              </Component>,
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -626,10 +584,7 @@ ShallowWrapper {
                 underlineColorAndroid="rgba(0,0,0,0)"
               />,
               null,
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -639,7 +594,7 @@ ShallowWrapper {
                 }
               >
                 Repeat password:
-              </Text>,
+              </Component>,
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -665,10 +620,7 @@ ShallowWrapper {
                 onPress={[Function]}
                 underlayColor={null}
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "color": "#2F95D6",
@@ -677,7 +629,7 @@ ShallowWrapper {
                   }
                 >
                   Resend verification e-mail
-                </Text>
+                </Component>
               </TouchableHighlight>,
               <Component
                 style={
@@ -718,10 +670,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Login:",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "color": "gray",
                   "paddingBottom": 5,
@@ -759,10 +708,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Password:",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "color": "gray",
                   "paddingBottom": 5,
@@ -803,10 +749,7 @@ ShallowWrapper {
               "key": undefined,
               "nodeType": "class",
               "props": Object {
-                "accessible": true,
-                "allowFontScaling": true,
                 "children": "Repeat password:",
-                "ellipsizeMode": "tail",
                 "style": Object {
                   "color": "gray",
                   "paddingBottom": 5,
@@ -848,10 +791,7 @@ ShallowWrapper {
               "nodeType": "class",
               "props": Object {
                 "activeOpacity": 0.85,
-                "children": <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                "children": <Component
                   style={
                     Object {
                       "color": "#2F95D6",
@@ -860,7 +800,7 @@ ShallowWrapper {
                   }
                 >
                   Resend verification e-mail
-                </Text>,
+                </Component>,
                 "delayPressOut": 100,
                 "onPress": [Function],
                 "underlayColor": null,
@@ -871,10 +811,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Resend verification e-mail",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "color": "#2F95D6",
                     "paddingTop": 20,
@@ -977,10 +914,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -989,7 +923,7 @@ ShallowWrapper {
                 }
               >
                 Login:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1007,10 +941,7 @@ ShallowWrapper {
                 }
                 underlineColorAndroid="rgba(0,0,0,0)"
               />
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1020,7 +951,7 @@ ShallowWrapper {
                 }
               >
                 Password:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1039,10 +970,7 @@ ShallowWrapper {
                 }
                 underlineColorAndroid="rgba(0,0,0,0)"
               />
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1052,7 +980,7 @@ ShallowWrapper {
                 }
               >
                 Repeat password:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1077,10 +1005,7 @@ ShallowWrapper {
                 onPress={[Function]}
                 underlayColor={null}
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "color": "#2F95D6",
@@ -1089,7 +1014,7 @@ ShallowWrapper {
                   }
                 >
                   Resend verification e-mail
-                </Text>
+                </Component>
               </TouchableHighlight>
               <Component
                 style={
@@ -1145,10 +1070,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1157,7 +1079,7 @@ ShallowWrapper {
                 }
               >
                 Login:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1175,10 +1097,7 @@ ShallowWrapper {
                 }
                 underlineColorAndroid="rgba(0,0,0,0)"
               />
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1188,7 +1107,7 @@ ShallowWrapper {
                 }
               >
                 Password:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1207,10 +1126,7 @@ ShallowWrapper {
                 }
                 underlineColorAndroid="rgba(0,0,0,0)"
               />
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1220,7 +1136,7 @@ ShallowWrapper {
                 }
               >
                 Repeat password:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1245,10 +1161,7 @@ ShallowWrapper {
                 onPress={[Function]}
                 underlayColor={null}
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "color": "#2F95D6",
@@ -1257,7 +1170,7 @@ ShallowWrapper {
                   }
                 >
                   Resend verification e-mail
-                </Text>
+                </Component>
               </TouchableHighlight>
               <Component
                 style={
@@ -1307,10 +1220,7 @@ ShallowWrapper {
                 }
               }
             >
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1319,7 +1229,7 @@ ShallowWrapper {
                 }
               >
                 Login:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1337,10 +1247,7 @@ ShallowWrapper {
                 }
                 underlineColorAndroid="rgba(0,0,0,0)"
               />
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1350,7 +1257,7 @@ ShallowWrapper {
                 }
               >
                 Password:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1369,10 +1276,7 @@ ShallowWrapper {
                 }
                 underlineColorAndroid="rgba(0,0,0,0)"
               />
-              <Text
-                accessible={true}
-                allowFontScaling={true}
-                ellipsizeMode="tail"
+              <Component
                 style={
                   Object {
                     "color": "gray",
@@ -1382,7 +1286,7 @@ ShallowWrapper {
                 }
               >
                 Repeat password:
-              </Text>
+              </Component>
               <TextInput
                 allowFontScaling={true}
                 maxLength={40}
@@ -1407,10 +1311,7 @@ ShallowWrapper {
                 onPress={[Function]}
                 underlayColor={null}
               >
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "color": "#2F95D6",
@@ -1419,7 +1320,7 @@ ShallowWrapper {
                   }
                 >
                   Resend verification e-mail
-                </Text>
+                </Component>
               </TouchableHighlight>
               <Component
                 style={
@@ -1459,10 +1360,7 @@ ShallowWrapper {
             "nodeType": "class",
             "props": Object {
               "children": Array [
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "color": "gray",
@@ -1471,7 +1369,7 @@ ShallowWrapper {
                   }
                 >
                   Login:
-                </Text>,
+                </Component>,
                 <TextInput
                   allowFontScaling={true}
                   maxLength={40}
@@ -1489,10 +1387,7 @@ ShallowWrapper {
                   }
                   underlineColorAndroid="rgba(0,0,0,0)"
                 />,
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "color": "gray",
@@ -1502,7 +1397,7 @@ ShallowWrapper {
                   }
                 >
                   Password:
-                </Text>,
+                </Component>,
                 <TextInput
                   allowFontScaling={true}
                   maxLength={40}
@@ -1522,10 +1417,7 @@ ShallowWrapper {
                   underlineColorAndroid="rgba(0,0,0,0)"
                 />,
                 null,
-                <Text
-                  accessible={true}
-                  allowFontScaling={true}
-                  ellipsizeMode="tail"
+                <Component
                   style={
                     Object {
                       "color": "gray",
@@ -1535,7 +1427,7 @@ ShallowWrapper {
                   }
                 >
                   Repeat password:
-                </Text>,
+                </Component>,
                 <TextInput
                   allowFontScaling={true}
                   maxLength={40}
@@ -1561,10 +1453,7 @@ ShallowWrapper {
                   onPress={[Function]}
                   underlayColor={null}
                 >
-                  <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
+                  <Component
                     style={
                       Object {
                         "color": "#2F95D6",
@@ -1573,7 +1462,7 @@ ShallowWrapper {
                     }
                   >
                     Resend verification e-mail
-                  </Text>
+                  </Component>
                 </TouchableHighlight>,
                 <Component
                   style={
@@ -1614,10 +1503,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Login:",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "color": "gray",
                     "paddingBottom": 5,
@@ -1655,10 +1541,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Password:",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "color": "gray",
                     "paddingBottom": 5,
@@ -1699,10 +1582,7 @@ ShallowWrapper {
                 "key": undefined,
                 "nodeType": "class",
                 "props": Object {
-                  "accessible": true,
-                  "allowFontScaling": true,
                   "children": "Repeat password:",
-                  "ellipsizeMode": "tail",
                   "style": Object {
                     "color": "gray",
                     "paddingBottom": 5,
@@ -1744,10 +1624,7 @@ ShallowWrapper {
                 "nodeType": "class",
                 "props": Object {
                   "activeOpacity": 0.85,
-                  "children": <Text
-                    accessible={true}
-                    allowFontScaling={true}
-                    ellipsizeMode="tail"
+                  "children": <Component
                     style={
                       Object {
                         "color": "#2F95D6",
@@ -1756,7 +1633,7 @@ ShallowWrapper {
                     }
                   >
                     Resend verification e-mail
-                  </Text>,
+                  </Component>,
                   "delayPressOut": 100,
                   "onPress": [Function],
                   "underlayColor": null,
@@ -1767,10 +1644,7 @@ ShallowWrapper {
                   "key": undefined,
                   "nodeType": "class",
                   "props": Object {
-                    "accessible": true,
-                    "allowFontScaling": true,
                     "children": "Resend verification e-mail",
-                    "ellipsizeMode": "tail",
                     "style": Object {
                       "color": "#2F95D6",
                       "paddingTop": 20,

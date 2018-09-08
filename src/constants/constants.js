@@ -14,8 +14,8 @@ export const LOAD_FISHMARKS_POSITIONS = 'LOAD_FISHMARKS_POSITIONS';
 
 
 //export const API_ENDPOINT = "192.168.0.115:3999" // Local DEV
-export const API_ENDPOINT = '31.186.87.151:3999';
-//export const API_ENDPOINT = '127.0.0.1:3999';
+//export const API_ENDPOINT = '31.186.87.151:3999';
+export const API_ENDPOINT = '127.0.0.1:3999';
 export const SET_USER_DATA = 'SET_USER_DATA';
 
 export const CLEAR_DATA = 'CLEAR_DATA';

@@ -212,7 +212,7 @@ textRepeatPassword: {
 };
 
 CreateAccountScreen.propTypes = {
-  navigation: PropTypes.func,
+  navigation: PropTypes.object,
   dispatch: PropTypes.func,
 }
 
